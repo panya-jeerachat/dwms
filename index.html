@@ -156,7 +156,6 @@
   .dl dt{color:var(--gray-500);font-size:12px;font-weight:600;}
   .dl dd{color:var(--gray-900);word-break:break-word;}
 
-  /* แถบรับรองแบบดิจิทัล (แทนช่องเซ็นชื่อ) */
   .e-verify{margin-top:13px;border:1.5px solid #BBE3CF;background:linear-gradient(135deg,#E9F7EF,#F5FBF7);border-radius:12px;padding:12px 14px;}
   .e-verify .ev-t{font-family:'Kanit';font-size:12.5px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:7px;margin-bottom:6px;}
   .e-verify p{font-size:11.5px;color:var(--gray-700);line-height:1.7;}
@@ -345,7 +344,8 @@
   .section-head h2::before{content:"";width:6px;height:26px;background:var(--blue);border-radius:4px;}
   .section-head p{color:var(--gray-500);font-size:13.5px;margin-top:8px;margin-left:16px;}
 
-  .quick-grid{max-width:1300px;margin:0 auto 60px;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;}
+  /* ===== QUICK CARDS (4 ระบบ) ===== */
+  .quick-grid{max-width:1300px;margin:0 auto 60px;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;}
   .quick-card{background:#fff;border-radius:var(--radius);padding:26px 24px;box-shadow:var(--shadow);transition:.25s;}
   .quick-card:hover{transform:translateY(-8px);box-shadow:0 14px 30px rgba(21,101,192,.18);}
   .quick-card .tag{display:inline-block;background:var(--blue-pale);color:var(--blue-dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;margin-bottom:14px;}
@@ -354,11 +354,17 @@
   @keyframes glowDb{0%,100%{box-shadow:0 6px 16px rgba(21,101,192,.28);}50%{box-shadow:0 6px 26px rgba(33,150,243,.62);}}
   .quick-card:nth-child(1) .qicon svg .scan{animation:scanMove 2.2s ease-in-out infinite;}
   @keyframes scanMove{0%,100%{transform:translate(0,0);}50%{transform:translate(2px,-3px);}}
+  .quick-card:nth-child(4) .tag{background:#E7F5EC;color:#1B7A43;}
+  .quick-card:nth-child(4) .qicon{background:linear-gradient(135deg,#43A047,#1B5E20);animation:glowGreen 2.8s ease-in-out infinite;}
+  @keyframes glowGreen{0%,100%{box-shadow:0 6px 16px rgba(27,94,32,.28);}50%{box-shadow:0 6px 26px rgba(67,160,71,.60);}}
+  .quick-card:nth-child(4) .qicon svg .pin{animation:pinBob 2.4s ease-in-out infinite;transform-origin:center;}
+  @keyframes pinBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
   .quick-card h3{font-family:'Kanit';font-size:17px;margin-bottom:8px;}
-  .quick-card p{font-size:13.5px;color:var(--gray-700);margin-bottom:18px;min-height:44px;}
+  .quick-card p{font-size:13.5px;color:var(--gray-700);margin-bottom:18px;min-height:66px;}
   .btn-go{display:inline-block;color:#fff;padding:9px 18px;border-radius:24px;font-size:13.5px;font-weight:500;background:var(--blue);transition:opacity .25s;}
   .quick-card:nth-child(2) .btn-go{background:var(--blue-dark);}
   .quick-card:nth-child(3) .btn-go{background:var(--blue-deep);}
+  .quick-card:nth-child(4) .btn-go{background:#2E7D32;}
   .btn-go:hover{opacity:.85;}
 
   footer{background:var(--blue-deep);color:#D6E6F5;padding:40px 24px 22px;}
@@ -379,7 +385,7 @@
   .footer-bottom a{color:#8ECBFF;}
   @media(max-width:700px){.nav-links{width:100%;justify-content:center;}.qr-box{flex-direction:column;text-align:center;}.bars{height:200px;}}
 
-  /* ================= PRINT : A4 หน้าเดียวจบ (ไม่มีช่องลงนาม) ================= */
+  /* ================= PRINT : A4 หน้าเดียวจบ ================= */
   @page{size:A4 portrait;margin:12mm 12mm;}
   @media print{
     html,body{background:#fff !important;width:186mm;}
@@ -676,8 +682,43 @@
     <p>ผู้ช่วยค้นหาข้อมูลภาระงาน ตอบคำถามและสรุปข้อมูลจากฐานข้อมูลภาระงานโสตทัศนูปกรณ์แบบอัตโนมัติ</p>
     <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-assistant/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
   </div>
-  <div class="quick-card"><span class="tag">CALENDAR BOOKING</span><div class="qicon">🗓️</div><h3>DWMS-Calendar</h3><p>ปฏิทินการสนับสนุนกิจกรรมโสตทัศนูปกรณ์ สำหรับตรวจสอบคิวและขอใช้ห้อง/อุปกรณ์ล่วงหน้า</p><a class="btn-go" href="https://panya-jeerachat.github.io/dwms-calendar/" target="_blank" rel="noopener">เข้าใช้งาน →</a></div>
-  <div class="quick-card"><span class="tag">READINESS REPORT</span><div class="qicon">✅</div><h3>DWMS-Ready</h3><p>รายงานสถานะความพร้อมโครงสร้างพื้นฐานและสิ่งสนับสนุนการเรียนการสอนของคณะวิศวกรรมศาสตร์</p><a class="btn-go" href="https://panya-jeerachat.github.io/dwms-ready/" target="_blank" rel="noopener">เข้าใช้งาน →</a></div>
+
+  <div class="quick-card">
+    <span class="tag">CALENDAR BOOKING</span>
+    <div class="qicon">🗓️</div>
+    <h3>DWMS-Calendar</h3>
+    <p>ปฏิทินการสนับสนุนกิจกรรมโสตทัศนูปกรณ์ สำหรับตรวจสอบคิวและขอใช้ห้อง/อุปกรณ์ล่วงหน้า</p>
+    <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-calendar/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
+  </div>
+
+  <div class="quick-card">
+    <span class="tag">READINESS REPORT</span>
+    <div class="qicon">✅</div>
+    <h3>DWMS-Ready</h3>
+    <p>รายงานสถานะความพร้อมโครงสร้างพื้นฐานและสิ่งสนับสนุนการเรียนการสอนของคณะวิศวกรรมศาสตร์</p>
+    <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-ready/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
+  </div>
+
+  <div class="quick-card">
+    <span class="tag">PERSONNEL LOCATOR</span>
+    <div class="qicon">
+      <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="9" width="20" height="31" rx="2.4" fill="#FFFFFF" opacity=".95"/>
+        <rect x="10" y="14" width="4.4" height="4.4" rx=".8" fill="#1B5E20" opacity=".55"/>
+        <rect x="17.6" y="14" width="4.4" height="4.4" rx=".8" fill="#1B5E20" opacity=".55"/>
+        <rect x="10" y="21.6" width="4.4" height="4.4" rx=".8" fill="#1B5E20" opacity=".55"/>
+        <rect x="17.6" y="21.6" width="4.4" height="4.4" rx=".8" fill="#1B5E20" opacity=".55"/>
+        <rect x="13.6" y="31" width="5" height="9" rx=".8" fill="#1B5E20" opacity=".4"/>
+        <g class="pin">
+          <path d="M34 15c-4.4 0-8 3.5-8 7.9 0 5.8 8 14.1 8 14.1s8-8.3 8-14.1c0-4.4-3.6-7.9-8-7.9z" fill="#0F3D14" stroke="#A5F3A0" stroke-width="2.4" stroke-linejoin="round"/>
+          <circle cx="34" cy="22.6" r="3.4" fill="#A5F3A0"/>
+        </g>
+      </svg>
+    </div>
+    <h3>DWMS-Personnel</h3>
+    <p>ผู้ช่วยค้นหาห้องพัก/ห้องทำงานบุคลากร คณะวิศวกรรมศาสตร์ มหาวิทยาลัยมหาสารคาม สำหรับติดต่อประสานงานได้อย่างรวดเร็ว</p>
+    <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-personnel/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
+  </div>
 </div>
 
 <footer>
