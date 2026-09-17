@@ -344,28 +344,39 @@
   .section-head h2::before{content:"";width:6px;height:26px;background:var(--blue);border-radius:4px;}
   .section-head p{color:var(--gray-500);font-size:13.5px;margin-top:8px;margin-left:16px;}
 
-  /* ===== QUICK CARDS (4 ระบบ) ===== */
-  .quick-grid{max-width:1300px;margin:0 auto 60px;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;}
-  .quick-card{background:#fff;border-radius:var(--radius);padding:26px 24px;box-shadow:var(--shadow);transition:.25s;}
+  /* ===== QUICK CARDS (5 ระบบ) ===== */
+  .quick-grid{max-width:1300px;margin:0 auto 60px;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:20px;}
+  .quick-card{background:#fff;border-radius:var(--radius);padding:24px 22px;box-shadow:var(--shadow);transition:.25s;display:flex;flex-direction:column;}
   .quick-card:hover{transform:translateY(-8px);box-shadow:0 14px 30px rgba(21,101,192,.18);}
-  .quick-card .tag{display:inline-block;background:var(--blue-pale);color:var(--blue-dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;margin-bottom:14px;}
-  .quick-card .qicon{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#E3F2FD,#BBDEFB);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;box-shadow:0 6px 16px rgba(21,101,192,.18);}
+  .quick-card .tag{display:inline-block;align-self:flex-start;background:var(--blue-pale);color:var(--blue-dark);font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:12px;margin-bottom:14px;letter-spacing:.2px;}
+  .quick-card .qicon{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#E3F2FD,#BBDEFB);display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:14px;box-shadow:0 6px 16px rgba(21,101,192,.18);}
+  .quick-card h3{font-family:'Kanit';font-size:16.5px;margin-bottom:8px;}
+  .quick-card p{font-size:13px;color:var(--gray-700);margin-bottom:18px;flex:1;line-height:1.7;}
+  .btn-go{display:inline-block;align-self:flex-start;color:#fff;padding:9px 18px;border-radius:24px;font-size:13.5px;font-weight:500;background:var(--blue);transition:opacity .25s;}
+  .btn-go:hover{opacity:.85;}
+  /* 1 · Assistant */
   .quick-card:nth-child(1) .qicon{background:linear-gradient(135deg,#1E88E5,#0D47A1);animation:glowDb 2.6s ease-in-out infinite;}
   @keyframes glowDb{0%,100%{box-shadow:0 6px 16px rgba(21,101,192,.28);}50%{box-shadow:0 6px 26px rgba(33,150,243,.62);}}
   .quick-card:nth-child(1) .qicon svg .scan{animation:scanMove 2.2s ease-in-out infinite;}
   @keyframes scanMove{0%,100%{transform:translate(0,0);}50%{transform:translate(2px,-3px);}}
+  /* 2 · Calendar */
+  .quick-card:nth-child(2) .btn-go{background:var(--blue-dark);}
+  /* 3 · Ready */
+  .quick-card:nth-child(3) .btn-go{background:var(--blue-deep);}
+  /* 4 · Personnel */
   .quick-card:nth-child(4) .tag{background:#E7F5EC;color:#1B7A43;}
   .quick-card:nth-child(4) .qicon{background:linear-gradient(135deg,#43A047,#1B5E20);animation:glowGreen 2.8s ease-in-out infinite;}
   @keyframes glowGreen{0%,100%{box-shadow:0 6px 16px rgba(27,94,32,.28);}50%{box-shadow:0 6px 26px rgba(67,160,71,.60);}}
   .quick-card:nth-child(4) .qicon svg .pin{animation:pinBob 2.4s ease-in-out infinite;transform-origin:center;}
   @keyframes pinBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
-  .quick-card h3{font-family:'Kanit';font-size:17px;margin-bottom:8px;}
-  .quick-card p{font-size:13.5px;color:var(--gray-700);margin-bottom:18px;min-height:66px;}
-  .btn-go{display:inline-block;color:#fff;padding:9px 18px;border-radius:24px;font-size:13.5px;font-weight:500;background:var(--blue);transition:opacity .25s;}
-  .quick-card:nth-child(2) .btn-go{background:var(--blue-dark);}
-  .quick-card:nth-child(3) .btn-go{background:var(--blue-deep);}
   .quick-card:nth-child(4) .btn-go{background:#2E7D32;}
-  .btn-go:hover{opacity:.85;}
+  /* 5 · Documents */
+  .quick-card:nth-child(5) .tag{background:#F0E9FF;color:#5E35B1;}
+  .quick-card:nth-child(5) .qicon{background:linear-gradient(135deg,#7C4DFF,#3F1F9E);animation:glowViolet 2.7s ease-in-out infinite;}
+  @keyframes glowViolet{0%,100%{box-shadow:0 6px 16px rgba(63,31,158,.28);}50%{box-shadow:0 6px 26px rgba(124,77,255,.62);}}
+  .quick-card:nth-child(5) .qicon svg .tick{animation:tickPop 2.4s ease-in-out infinite;transform-origin:center;}
+  @keyframes tickPop{0%,100%{transform:scale(1);}50%{transform:scale(1.13);}}
+  .quick-card:nth-child(5) .btn-go{background:#5E35B1;}
 
   footer{background:var(--blue-deep);color:#D6E6F5;padding:40px 24px 22px;}
   .footer-inner{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;}
@@ -666,7 +677,7 @@
   <div class="quick-card">
     <span class="tag">DATABASE ASSISTANT</span>
     <div class="qicon">
-      <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <ellipse cx="21" cy="11" rx="14" ry="5.2" fill="#FFFFFF" opacity=".95"/>
         <path d="M7 11v9c0 2.9 6.3 5.2 14 5.2S35 22.9 35 20v-9" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" opacity=".95"/>
         <path d="M7 20v9c0 2.9 6.3 5.2 14 5.2S35 31.9 35 29v-9" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" opacity=".7"/>
@@ -702,7 +713,7 @@
   <div class="quick-card">
     <span class="tag">PERSONNEL LOCATOR</span>
     <div class="qicon">
-      <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="6" y="9" width="20" height="31" rx="2.4" fill="#FFFFFF" opacity=".95"/>
         <rect x="10" y="14" width="4.4" height="4.4" rx=".8" fill="#1B5E20" opacity=".55"/>
         <rect x="17.6" y="14" width="4.4" height="4.4" rx=".8" fill="#1B5E20" opacity=".55"/>
@@ -718,6 +729,26 @@
     <h3>DWMS-Personnel</h3>
     <p>ผู้ช่วยค้นหาห้องพัก/ห้องทำงานบุคลากร คณะวิศวกรรมศาสตร์ มหาวิทยาลัยมหาสารคาม สำหรับติดต่อประสานงานได้อย่างรวดเร็ว</p>
     <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-personnel/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
+  </div>
+
+  <div class="quick-card">
+    <span class="tag">DOCUMENT TRACKING</span>
+    <div class="qicon">
+      <svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 6h16l9 9v21.5c0 1.4-1.1 2.5-2.5 2.5h-22.5C9.6 39 8.5 37.9 8.5 36.5v-28C8.5 7.1 9.6 6 11 6z" fill="#FFFFFF" opacity=".96"/>
+        <path d="M27 6l9 9h-7c-1.1 0-2-.9-2-2V6z" fill="#3F1F9E" opacity=".45"/>
+        <rect x="13.5" y="18" width="14" height="2.4" rx="1.2" fill="#3F1F9E" opacity=".5"/>
+        <rect x="13.5" y="23.6" width="14" height="2.4" rx="1.2" fill="#3F1F9E" opacity=".5"/>
+        <rect x="13.5" y="29.2" width="9" height="2.4" rx="1.2" fill="#3F1F9E" opacity=".5"/>
+        <g class="tick">
+          <circle cx="35" cy="33" r="9.5" fill="#3F1F9E" stroke="#D6C6FF" stroke-width="2.6"/>
+          <path d="M30.6 33.2l3 3.1 5.8-6" stroke="#D6C6FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+    </div>
+    <h3>DWMS-Documents</h3>
+    <p>ระบบกำกับติดตามสถานะบันทึกข้อความงานโสตทัศนศึกษา คณะวิศวกรรมศาสตร์ มหาวิทยาลัยมหาสารคาม ตรวจสอบความคืบหน้าของเอกสารได้ทุกขั้นตอน</p>
+    <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-documents/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
   </div>
 </div>
 
