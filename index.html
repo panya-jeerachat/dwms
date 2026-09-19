@@ -904,11 +904,18 @@ function buildRows(labels,matrix){
   var iDate=findIdx(labels,["วันที่ให้บริการ","วันที่"]),iType=findIdx(labels,["ประเภท"]),
       iDetail=findIdx(labels,["รายละเอียด"]),iRoom=findIdx(labels,["ห้อง","สถานที่"]),
       iDur=findIdx(labels,["ระยะเวลา"]),iW=findIdx(labels,["ค่าภาระงานรวม","ภาระงาน"]),
-      iSt=findIdx(labels,["สถานะ"]),iNote=findIdx(labels,["หมายเหตุ"]),iTs=findIdx(labels,["ประทับเวลา"]);
+      iSt=findIdx(labels,["สถานะ"]),iNote=findIdx(labels,["หมายเหตุ"]),iTs=findIdx(labels,["ประทับเวลา"]),
+      /* คอลัมน์ใหม่จากหน้าผู้ดูแล — ไม่มีก็ยังทำงานได้ตามเดิม */
+      iNo=findIdx(labels,["เลขที่งาน"]),iFile=findIdx(labels,["ลิงก์ไฟล์ข้อมูล"]),
+      iRate=findIdx(labels,["คะแนนความพึงพอใจ"]),iFb=findIdx(labels,["ความคิดเห็นผู้รับบริการ"]);
   var out=[];
   for(var r=0;r<matrix.length;r++){
     var row=matrix[r];if(!row||row.join('').trim()==='')continue;
-    out.push({no:"AV-"+String(out.length+1).padStart(4,"0"),ts:(iTs>=0?row[iTs]:"")||"-",date:row[iDate]||"-",type:row[iType]||"-",detail:row[iDetail]||"-",room:row[iRoom]||"-",duration:(parseFloat(row[iDur])||0)*15,weight:parseFloat(row[iW])||0,status:row[iSt]||"-",note:row[iNote]||"-"});
+    /* ใช้เลขที่งานที่บันทึกไว้ในชีทเป็นหลัก เพื่อให้ QR/ลิงก์ที่เคยส่งทางอีเมลชี้งานเดิมเสมอ
+       แม้จะมีการลบแถวใด ๆ ออกไปภายหลัง — ถ้าชีทยังไม่มีคอลัมน์นี้ค่อยนับตามลำดับแบบเดิม */
+    var jobNo=(iNo>=0?String(row[iNo]||"").trim():"");
+    if(!jobNo)jobNo="AV-"+String(out.length+1).padStart(4,"0");
+    out.push({no:jobNo,ts:(iTs>=0?row[iTs]:"")||"-",date:row[iDate]||"-",type:row[iType]||"-",detail:row[iDetail]||"-",room:row[iRoom]||"-",duration:(parseFloat(row[iDur])||0)*15,weight:parseFloat(row[iW])||0,status:row[iSt]||"-",note:row[iNote]||"-",fileUrl:(iFile>=0?String(row[iFile]||"").trim():""),rating:(iRate>=0?parseInt(row[iRate],10)||0:0),feedback:(iFb>=0?String(row[iFb]||"").trim():"")});
   }
   return out.reverse();
 }
@@ -1306,6 +1313,8 @@ function renderJobModal(r){
       '<dt>ระยะเวลา</dt><dd>'+r.duration+' นาที ('+(r.duration/60).toFixed(2)+' ชม.)</dd>'+
       '<dt>ภาระงาน</dt><dd>'+r.weight.toFixed(2)+' หน่วย</dd>'+
       '<dt>หมายเหตุ</dt><dd>'+esc(r.note)+'</dd>'+
+      (r.fileUrl?'<dt>ไฟล์ข้อมูล</dt><dd><a href="'+esc(r.fileUrl)+'" target="_blank" rel="noopener" style="color:#1565C0;font-weight:600;text-decoration:underline;">📎 เปิดไฟล์ประกอบ</a></dd>':'')+
+      (r.rating?'<dt>ความพึงพอใจ</dt><dd><span style="color:#F9A825;letter-spacing:2px;">'+'★'.repeat(r.rating)+'</span><span style="color:#D7E3EF;letter-spacing:2px;">'+'★'.repeat(5-r.rating)+'</span> <span style="color:#64748B;font-weight:400;">('+r.rating+'/5)</span>'+(r.feedback?'<div style="color:#4A5B6B;font-weight:400;margin-top:3px;">"'+esc(r.feedback)+'"</div>':'')+'</dd>':'')+
       '<dt>ผู้ให้บริการ</dt><dd>นายปัญญา จีระฉัตร · นักวิชาการโสตทัศนศึกษา · โทร. 087-235-9848</dd>'+
     '</dl>'+
     '<div class="e-verify">'+
