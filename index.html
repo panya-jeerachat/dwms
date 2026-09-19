@@ -85,27 +85,71 @@
   /* REGISTRY */
   .registry-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:36px;}
   .registry-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:20px 24px;border-bottom:1px solid var(--gray-100);}
-  .registry-title-block{display:flex;gap:12px;align-items:flex-start;}
-  .registry-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--blue-light),var(--blue));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-  .registry-title{font-family:'Kanit';font-weight:600;font-size:17px;}
-  .registry-title .count{font-family:'Sarabun';font-weight:400;font-size:13px;color:var(--gray-500);margin-left:4px;}
-  .registry-sub{font-size:12.5px;color:var(--gray-500);margin-top:3px;}
-  .registry-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-  .registry-controls input[type=text]{padding:9px 14px;border:1px solid var(--gray-300);border-radius:20px;font-size:13px;font-family:'Sarabun';outline:none;min-width:210px;}
-  .registry-controls input[type=text]:focus{border-color:var(--blue);}
-  .registry-controls select{padding:9px 12px;border:1px solid var(--gray-300);border-radius:20px;font-size:13px;font-family:'Sarabun';background:#fff;outline:none;cursor:pointer;}
-  .btn-csv{padding:9px 16px;border:none;border-radius:20px;background:var(--blue-dark);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;}
-  .btn-csv:hover{background:var(--blue-deep);}
-  .btn-sync{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1.5px solid var(--blue);border-radius:20px;background:var(--blue-pale);color:var(--blue-deep);font-size:13px;font-weight:600;font-family:'Sarabun';cursor:pointer;transition:.2s;}
-  .btn-sync:hover:not(:disabled){background:var(--blue);color:#fff;}
-  .btn-sync:disabled{opacity:.65;cursor:progress;}
-  .btn-sync.loading .ic{animation:spin .9s linear infinite;}
-  @keyframes spin{to{transform:rotate(360deg);}}
-  .sync-note{font-size:11.5px;color:var(--green);font-weight:600;opacity:0;transition:opacity .3s;}
-  .sync-note.show{opacity:1;}
-  .next-sync{font-size:11.5px;color:var(--blue-dark);background:var(--blue-pale);border:1px solid var(--blue-light);border-radius:12px;padding:2px 9px;margin-left:4px;white-space:nowrap;}
-  .next-sync.paused{color:#B26A00;background:var(--amber-bg);border-color:#F5D08A;}
 
+  /* ===== แถบผลประเมิน + ให้คะแนน (ท้ายหน้า · โทนทอง) ===== */
+  .sat-strip{
+    max-width:1300px;margin:4px auto 28px;padding:13px 18px;border-radius:16px;
+    background:linear-gradient(115deg,#FFB300 0%,#FFC93C 45%,#FFE082 100%);
+    box-shadow:0 8px 22px rgba(245,158,11,.26);color:#5A3E00;
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    position:relative;overflow:hidden;transition:box-shadow .3s ease;
+  }
+  .sat-strip:hover{box-shadow:0 12px 28px rgba(245,158,11,.36);}
+  .sat-strip::before{content:"";position:absolute;right:-50px;top:-70px;width:190px;height:190px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.5),transparent 65%);pointer-events:none;}
+
+  /* บล็อกซ้าย: คะแนน + ดาว + แท่งสัดส่วน รวมอยู่ด้วยกันเพื่อประหยัดพื้นที่ */
+  .sat-sum{display:flex;align-items:center;gap:13px;position:relative;z-index:1;width:352px;flex-shrink:0;}
+  .sat-score{font-family:'Kanit';font-weight:700;font-size:36px;line-height:1;color:#4A3000;
+             text-shadow:0 2px 5px rgba(255,255,255,.45);flex-shrink:0;}
+  .sat-score small{font-size:13px;font-weight:600;opacity:.6;margin-left:1px;}
+  .sat-sum-r{flex:1;min-width:0;}
+  .sat-sum-r .cap{font-family:'Kanit';font-size:12.5px;font-weight:600;opacity:.92;line-height:1.3;}
+  .sat-stars{position:relative;display:inline-block;font-size:16px;line-height:1.3;letter-spacing:2.5px;white-space:nowrap;}
+  .sat-stars .bg{color:rgba(255,255,255,.6);}
+  .sat-stars .fg{position:absolute;left:0;top:0;overflow:hidden;width:0;color:#B35C00;
+                 transition:width 1s cubic-bezier(.22,1,.36,1);}
+  .sat-meta{font-size:11px;opacity:.88;line-height:1.4;}
+  .sat-mini-track{display:flex;height:8px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.55);margin-top:5px;}
+  .sat-seg{height:100%;width:0;transition:width 1s cubic-bezier(.22,1,.36,1);}
+  .sat-legend{font-size:10px;opacity:.85;line-height:1.5;margin-top:3px;}
+  .sat-legend i{font-style:normal;white-space:nowrap;margin-right:9px;}
+
+  /* บล็อกขวา: ฟอร์มให้คะแนน บรรทัดเดียว */
+  .sat-form{flex:1;min-width:430px;margin-left:auto;position:relative;z-index:1;
+            display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+            background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.72);
+            border-radius:13px;padding:8px 12px;}
+  .sat-form .ft{font-family:'Kanit';font-size:12px;font-weight:600;white-space:nowrap;}
+  .sat-pick{display:flex;gap:0;flex-shrink:0;}
+  .sat-pick button{background:none;border:none;cursor:pointer;font-size:22px;line-height:1;padding:0 1px;
+                   color:rgba(255,255,255,.9);transition:transform .14s,color .14s;font-family:inherit;}
+  .sat-pick button:hover{transform:scale(1.22);}
+  .sat-pick button.on{color:#B35C00;}
+  .sat-form input{border:1px solid rgba(180,120,0,.35);border-radius:9px;padding:6px 9px;font-family:'Sarabun';
+                  font-size:12.5px;background:#fff;color:#3E2B00;outline:none;min-width:0;}
+  .sat-form input:focus{border-color:#B35C00;box-shadow:0 0 0 2px rgba(179,92,0,.18);}
+  .sat-form input.cmt{flex:1;min-width:170px;}
+  .sat-send{background:#8A4600;color:#fff;border:none;border-radius:9px;padding:7px 14px;font-family:'Kanit';
+            font-size:12.5px;cursor:pointer;transition:.2s;white-space:nowrap;flex-shrink:0;}
+  .sat-send:hover{background:#6E3700;}
+  .sat-send:disabled{opacity:.6;cursor:progress;}
+  .sat-msg{width:100%;font-size:11.5px;font-weight:600;line-height:1.45;}
+  .sat-msg:empty{display:none;}
+  .sat-msg.ok{color:#1B5E20;}
+  .sat-msg.bad{color:#8A1B1B;}
+  .sat-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
+
+  @media (max-width:1100px){
+    .sat-sum{width:100%;}
+    .sat-form{min-width:0;width:100%;margin-left:0;}
+  }
+  @media (max-width:900px){
+    .sat-strip{margin:4px 14px 22px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .sat-strip,.sat-stars .fg,.sat-seg,.sat-pick button{transition:none;}
+  }
   .hint-bar{display:flex;align-items:center;gap:8px;margin:0 24px;padding:9px 14px;background:linear-gradient(90deg,#E8F4FE,#F4FAFF);border:1px dashed var(--blue-light);border-radius:11px;font-size:12.5px;color:var(--blue-deep);}
   .hint-bar b{font-family:'Kanit';font-weight:600;}
 
@@ -790,6 +834,29 @@
   </div>
 </div>
 
+<!-- ══════════ แถบผลประเมิน + ให้คะแนนความพึงพอใจ (ท้ายหน้า) ══════════ -->
+<section class="sat-strip" id="satStrip">
+  <div class="sat-sum">
+    <div class="sat-score"><span id="satAvg">0.00</span><small>/5</small></div>
+    <div class="sat-sum-r">
+      <div class="cap">⭐ ความพึงพอใจของผู้รับบริการ</div>
+      <div class="sat-stars"><span class="bg">★★★★★</span><span class="fg" id="satFg">★★★★★</span></div>
+      <div class="sat-meta" id="satMeta">ยังไม่มีผลประเมิน</div>
+      <div class="sat-mini-track" id="satTrack"></div>
+      <div class="sat-legend" id="satLegend"></div>
+    </div>
+  </div>
+
+  <form class="sat-form" id="satForm" onsubmit="return submitRating(event)">
+    <span class="ft">ให้คะแนนบริการ</span>
+    <div class="sat-pick" id="satPick"></div>
+    <input class="cmt" id="satCmt" placeholder="ข้อเสนอแนะ (ไม่บังคับ)" maxlength="300" autocomplete="off">
+    <input class="sat-hp" id="satHp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button class="sat-send" id="satSend" type="submit">ส่งคะแนน</button>
+    <div class="sat-msg" id="satMsg"></div>
+  </form>
+</section>
+
 <footer>
   <div class="footer-inner">
     <div class="footer-col">
@@ -828,6 +895,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 var LOGO_SRC    = "logo.png";   /* ⬅ ชื่อไฟล์โลโก้ EN-MSU ที่อัปโหลดไว้บน GitHub */
 var ADMIN_URL   = "https://script.google.com/a/macros/msu.ac.th/s/AKfycbz3ryLEOy1BilaqATR1K5wAjt-q6mTzMCrnB680Lg8_mCD2Z6E4jZNV582i0UDe1jJDmA/exec";
 var REQUEST_URL = "https://panya-jeerachat.github.io/dwms/request";
+/* ปลายทางรับคะแนนความพึงพอใจ = Apps Script Web App ตัวเดียวกับหน้าผู้ดูแล
+   ⚠ ต้อง Deploy โดยตั้ง "Who has access: Anyone" และใช้ URL แบบ
+   https://script.google.com/macros/s/<ID>/exec (ไม่ใช่แบบ /a/macros/msu.ac.th/…)
+   มิฉะนั้นผู้รับบริการที่ไม่ได้ล็อกอินบัญชี มมส. จะส่งคะแนนไม่ได้ */
+var RATE_POST_URL = ADMIN_URL;
 
 var SHEET_ID="1am2WPhKcEzATV4478hIq-5R3Oh81eBk0UvC_cp-ZLTs";
 var GID="1452503207";
@@ -907,7 +979,8 @@ function buildRows(labels,matrix){
       iSt=findIdx(labels,["สถานะ"]),iNote=findIdx(labels,["หมายเหตุ"]),iTs=findIdx(labels,["ประทับเวลา"]),
       /* คอลัมน์ใหม่จากหน้าผู้ดูแล — ไม่มีก็ยังทำงานได้ตามเดิม */
       iNo=findIdx(labels,["เลขที่งาน"]),iFile=findIdx(labels,["ลิงก์ไฟล์ข้อมูล"]),
-      iRate=findIdx(labels,["คะแนนความพึงพอใจ"]),iFb=findIdx(labels,["ความคิดเห็นผู้รับบริการ"]);
+      iRate=findIdx(labels,["คะแนนความพึงพอใจ"]),iFb=findIdx(labels,["ความคิดเห็นผู้รับบริการ"]),
+      iRat=findIdx(labels,["วันที่ประเมิน"]);
   var out=[];
   for(var r=0;r<matrix.length;r++){
     var row=matrix[r];if(!row||row.join('').trim()==='')continue;
@@ -915,7 +988,7 @@ function buildRows(labels,matrix){
        แม้จะมีการลบแถวใด ๆ ออกไปภายหลัง — ถ้าชีทยังไม่มีคอลัมน์นี้ค่อยนับตามลำดับแบบเดิม */
     var jobNo=(iNo>=0?String(row[iNo]||"").trim():"");
     if(!jobNo)jobNo="AV-"+String(out.length+1).padStart(4,"0");
-    out.push({no:jobNo,ts:(iTs>=0?row[iTs]:"")||"-",date:row[iDate]||"-",type:row[iType]||"-",detail:row[iDetail]||"-",room:row[iRoom]||"-",duration:(parseFloat(row[iDur])||0)*15,weight:parseFloat(row[iW])||0,status:row[iSt]||"-",note:row[iNote]||"-",fileUrl:(iFile>=0?String(row[iFile]||"").trim():""),rating:(iRate>=0?parseInt(row[iRate],10)||0:0),feedback:(iFb>=0?String(row[iFb]||"").trim():"")});
+    out.push({no:jobNo,ts:(iTs>=0?row[iTs]:"")||"-",date:row[iDate]||"-",type:row[iType]||"-",detail:row[iDetail]||"-",room:row[iRoom]||"-",duration:(parseFloat(row[iDur])||0)*15,weight:parseFloat(row[iW])||0,status:row[iSt]||"-",note:row[iNote]||"-",fileUrl:(iFile>=0?String(row[iFile]||"").trim():""),rating:(iRate>=0?parseInt(row[iRate],10)||0:0),feedback:(iFb>=0?String(row[iFb]||"").trim():""),ratedAt:(iRat>=0?String(row[iRat]||"").trim():"")});
   }
   return out.reverse();
 }
@@ -966,6 +1039,26 @@ function gvizLoad(sheetId,gid,onOK,onFail){
   s.src="https://docs.google.com/spreadsheets/d/"+sheetId+"/gviz/tq?gid="+gid+"&tqx=out:json;responseHandler:"+cb+"&_="+Date.now();
   document.body.appendChild(s);
 }
+/* แบบเดียวกับ gvizLoad แต่อ้างแท็บด้วย "ชื่อ" แทน gid — สะดวกกับแท็บที่ระบบสร้างเองภายหลัง */
+function gvizLoadByName(sheetId,sheetName,onOK,onFail){
+  var cb="dwmsNB_"+Math.random().toString(36).slice(2),done=false;
+  var s=document.createElement('script');
+  var t=setTimeout(function(){if(!done){done=true;clean();onFail();}},10000);
+  function clean(){try{delete window[cb];}catch(e){window[cb]=undefined;}if(s.parentNode)s.parentNode.removeChild(s);clearTimeout(t);}
+  window[cb]=function(json){
+    if(done)return;done=true;
+    try{
+      var labels=json.table.cols.map(function(c){return c.label||"";});
+      var matrix=json.table.rows.map(function(r){return r.c.map(function(c){
+        if(!c)return"";if(c.f!==undefined&&c.f!==null)return String(c.f);
+        return (c.v!==undefined&&c.v!==null)?String(c.v):"";});});
+      clean();onOK(labels,matrix);
+    }catch(e){clean();onFail();}
+  };
+  s.onerror=function(){if(!done){done=true;clean();onFail();}};
+  s.src="https://docs.google.com/spreadsheets/d/"+sheetId+"/gviz/tq?sheet="+encodeURIComponent(sheetName)+"&tqx=out:json;responseHandler:"+cb+"&_="+Date.now();
+  document.body.appendChild(s);
+}
 function parseCSV(text){
   var rows=[],cur='',row=[],inQ=false;
   for(var i=0;i<text.length;i++){var c=text[i];
@@ -976,15 +1069,16 @@ function parseCSV(text){
   if(cur!==''||row.length){row.push(cur);rows.push(row);}
   return rows.filter(function(r){return r.join('').trim()!=='';});
 }
-function loadTrackingData(){
-  gvizLoad(SHEET_ID,GID,function(l,m){finish(buildRows(l,m));},function(){
+function loadTrackingData(cb){
+  var done=function(rows){finish(rows);if(typeof cb==='function')cb();};
+  gvizLoad(SHEET_ID,GID,function(l,m){done(buildRows(l,m));},function(){
     if(allRows.length===0)setMsg('⏳ กำลังลองช่องทางสำรอง...');
     fetch(CSV_URL+"&_="+Date.now(),{cache:"no-store"})
       .then(function(r){if(!r.ok)throw 0;return r.text();})
-      .then(function(t){var rows=parseCSV(t);if(rows.length<2)throw 0;finish(buildRows(rows[0],rows.slice(1)));})
+      .then(function(t){var rows=parseCSV(t);if(rows.length<2)throw 0;done(buildRows(rows[0],rows.slice(1)));})
       .catch(function(){
         if(allRows.length===0)setMsg('⚠️ ไม่สามารถโหลดข้อมูลได้<br><span style="font-size:12px;color:#8A99A8;">ตรวจสอบการแชร์ชีตเป็น "ทุกคนที่มีลิงก์ · ผู้ดู"</span>','#D64545');
-        endSync(false);
+        endSync(false);if(typeof cb==='function')cb();
       });
   });
 }
@@ -1199,7 +1293,144 @@ function updateSummary(){
   setText('sRate',(closed?(c.done/closed*100):0).toFixed(1)+'%');
   setText('sWorkload',workload.toLocaleString('th-TH',{maximumFractionDigits:1}));
   setText('sAvgTime',avgTime.toFixed(0));
+  renderSatisfaction();
 }
+/* ===== แถบผลประเมินความพึงพอใจท้ายหน้า =====
+   ค่าเฉลี่ยคำนวณจากทั้งทะเบียนเสมอ (ไม่ผูกกับตัวกรองด้านบน) เพื่อให้เป็นตัวเลขภาพรวมตัวเดียว
+   เอฟเฟกต์เล่นครั้งเดียวตอนค่าเปลี่ยน ไม่วนซ้ำ */
+var satShown=0;
+var SAT_COLORS=['#8D3B00','#B35C00','#D07A00','#E8930A','#FFB300'];
+function animateNumber(el,from,to,ms){
+  if(!el)return;
+  var t0=null;
+  function step(ts){
+    if(!t0)t0=ts;
+    var k=Math.min(1,(ts-t0)/ms);k=1-Math.pow(1-k,3);
+    el.textContent=(from+(to-from)*k).toFixed(2);
+    if(k<1)requestAnimationFrame(step);else el.textContent=to.toFixed(2);
+  }
+  requestAnimationFrame(step);
+}
+function renderSatisfaction(){
+  /* รวมคะแนน 2 ทาง: ที่ผู้รับบริการให้ผ่านลิงก์ในอีเมล + ที่โหวตจากแถบนี้ เป็นตัวเลขเดียวกัน */
+  var scores=[];
+  allRows.forEach(function(r){if(r.rating>=1&&r.rating<=5)scores.push(r.rating);});
+  VOTES.forEach(function(v){if(v>=1&&v<=5)scores.push(v);});
+  var n=scores.length,dist=[0,0,0,0,0],sum=0;
+  scores.forEach(function(v){dist[v-1]++;sum+=v;});
+  var avg=n?sum/n:0,good=n?Math.round((dist[3]+dist[4])/n*100):0;
+
+  animateNumber(document.getElementById('satAvg'),satShown,avg,600);satShown=avg;
+  var fg=document.getElementById('satFg');
+  if(fg)setTimeout(function(){fg.style.width=(avg/5*100)+'%';},60);
+
+  setText('satMeta',n?('จากผู้ประเมิน '+n+' ราย · '+good+'% ให้ 4–5 ดาว'):'ยังไม่มีผลประเมิน');
+
+  var track=document.getElementById('satTrack'),legend=document.getElementById('satLegend');
+  if(!track)return;
+  if(!n){
+    track.innerHTML='';
+    legend.innerHTML='ระบบส่งแบบประเมินทางอีเมลให้ผู้รับบริการอัตโนมัติเมื่อปิดงานสำเร็จ · หรือกรอกเลขที่งานทางขวาเพื่อให้คะแนนเองได้เลย';
+    return;
+  }
+  var html='',leg='';
+  for(var s=5;s>=1;s--){
+    var c=dist[s-1];if(!c)continue;
+    html+='<span class="sat-seg" data-w="'+(c/n*100)+'" style="background:'+SAT_COLORS[s-1]+'" title="'+s+' ดาว · '+c+' ราย"></span>';
+    leg+='<i><b style="color:'+SAT_COLORS[s-1]+'">●</b> '+s+'★ '+c+'</i>';
+  }
+  track.innerHTML=html;legend.innerHTML=leg;
+  var segs=track.querySelectorAll('.sat-seg');
+  segs.forEach(function(b,i){setTimeout(function(){b.style.width=b.dataset.w+'%';},70+i*60);});
+}
+
+/* ── ฟอร์มโหวตความพึงพอใจแบบไม่ระบุตัวตน ──
+   ไม่ถามชื่อ อีเมล หรือเลขที่งาน และไม่ส่งข้อมูลอะไรนอกจากคะแนนกับข้อเสนอแนะ
+   โหวตจากหน้านี้เก็บแยกจากคะแนนรายงานที่ผู้รับบริการให้ผ่านลิงก์ในอีเมล
+   เพื่อไม่ให้ตัวเลขที่ใช้รายงานถูกโหวตซ้ำจากคนนอกจนเพี้ยน */
+var satPicked=0,satGuard=null,VOTES=[];
+function buildSatPick(){
+  var box=document.getElementById('satPick');if(!box)return;
+  var LB={1:'น้อยที่สุด',2:'น้อย',3:'ปานกลาง',4:'มาก',5:'มากที่สุด'};
+  for(var i=1;i<=5;i++){
+    (function(v){
+      var b=document.createElement('button');
+      b.type='button';b.textContent='★';b.title=v+' ดาว · '+LB[v];b.setAttribute('aria-label',v+' ดาว');
+      b.onclick=function(){satPicked=v;paintSatPick(v);};
+      b.onmouseenter=function(){paintSatPick(v);};
+      b.onmouseleave=function(){paintSatPick(satPicked);};
+      box.appendChild(b);
+    })(i);
+  }
+}
+function paintSatPick(n){
+  document.querySelectorAll('#satPick button').forEach(function(el,i){el.classList.toggle('on',i<n);});
+}
+function satNote(text,ok){
+  var m=document.getElementById('satMsg');
+  m.textContent=text;m.className='sat-msg '+(ok?'ok':'bad');
+}
+/* จำไว้ในเครื่องผู้ใช้เองว่าโหวตไปแล้ว ไม่ได้ส่งไปเก็บที่เซิร์ฟเวอร์
+   (ถ้าเบราว์เซอร์ปิด storage ไว้ ก็แค่โหวตซ้ำได้ ไม่ทำให้หน้าเว็บพัง) */
+function satVotedBefore(){
+  try{return localStorage.getItem('dwms_voted')||'';}catch(e){return '';}
+}
+function satMarkVoted(){
+  try{localStorage.setItem('dwms_voted',new Date().toISOString().slice(0,10));}catch(e){}
+}
+function submitRating(ev){
+  ev.preventDefault();
+  if(document.getElementById('satHp').value)return false;   /* กันบอท */
+  if(!satPicked){satNote('กรุณาเลือกจำนวนดาวก่อนส่ง',false);return false;}
+
+  var btn=document.getElementById('satSend');btn.disabled=true;btn.textContent='กำลังส่ง…';
+  satNote('กำลังส่งคะแนน…',true);
+
+  var body=new URLSearchParams();
+  body.set('action','vote');
+  body.set('score',String(satPicked));
+  body.set('comment',document.getElementById('satCmt').value.trim());
+
+  clearTimeout(satGuard);
+  satGuard=setTimeout(function(){
+    btn.disabled=false;btn.textContent='ส่งคะแนน';
+    satNote('ส่งคะแนนไม่สำเร็จ กรุณาลองใหม่อีกครั้ง',false);
+  },15000);
+
+  fetch(RATE_POST_URL,{method:'POST',mode:'no-cors',body:body})
+    .then(function(){
+      clearTimeout(satGuard);satGuard=null;
+      btn.disabled=false;btn.textContent='ส่งคะแนน';
+      satMarkVoted();
+      satNote('✓ ขอบคุณสำหรับการประเมิน '+satPicked+' ดาว ความเห็นของท่านช่วยให้เราพัฒนาบริการให้ดีขึ้น',true);
+      document.getElementById('satForm').reset();satPicked=0;paintSatPick(0);
+      setTimeout(loadVoteStats,1500);
+    })
+    .catch(function(){
+      clearTimeout(satGuard);satGuard=null;
+      btn.disabled=false;btn.textContent='ส่งคะแนน';
+      satNote('ส่งไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองใหม่',false);
+    });
+  return false;
+}
+
+/* สรุปโหวตสาธารณะ อ่านจากแท็บ DWMS_Votes โดยอ้างชื่อแท็บ ไม่ต้องรู้ gid */
+function loadVoteStats(){
+  gvizLoadByName(SHEET_ID,'DWMS_Votes',function(labels,matrix){
+    var iS=findIdx(labels,["คะแนน"]);
+    if(iS<0)return;
+    VOTES=[];
+    matrix.forEach(function(r){
+      var v=parseInt(r[iS],10);
+      if(v>=1&&v<=5)VOTES.push(v);
+    });
+    renderSatisfaction();
+  },function(){ /* ยังไม่มีแท็บโหวต (ยังไม่มีใครโหวต) -> ใช้คะแนนจากงานบริการอย่างเดียว */ });
+}
+
+buildSatPick();
+if(satVotedBefore())satNote('ท่านเคยให้คะแนนจากอุปกรณ์นี้แล้วเมื่อ '+satVotedBefore()+' · ส่งใหม่ได้หากต้องการ',true);
+
 function renderPage(){
   var tbody=document.getElementById('registryBody');
   var start=(currentPage-1)*perPage,pageData=filteredRows.slice(start,start+perPage);
@@ -1425,6 +1656,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeJob();}
 
 /* ===== ผูกโลโก้ + ลิงก์จากตัวแปรกลางให้ทุกจุดอัตโนมัติ ===== */
 function applyGlobalAssets(){
+  loadVoteStats();
   /* โลโก้ EN-MSU ทุกจุด + favicon */
   document.querySelectorAll('#brandLogo,#footerLogo').forEach(function(im){im.src=LOGO_SRC;});
   document.querySelectorAll('link[rel="icon"],link[rel="shortcut icon"],link[rel="apple-touch-icon"]').forEach(function(l){l.href=LOGO_SRC;});
