@@ -1370,14 +1370,6 @@ function satNote(text,ok){
   var m=document.getElementById('satMsg');
   m.textContent=text;m.className='sat-msg '+(ok?'ok':'bad');
 }
-/* จำไว้ในเครื่องผู้ใช้เองว่าโหวตไปแล้ว ไม่ได้ส่งไปเก็บที่เซิร์ฟเวอร์
-   (ถ้าเบราว์เซอร์ปิด storage ไว้ ก็แค่โหวตซ้ำได้ ไม่ทำให้หน้าเว็บพัง) */
-function satVotedBefore(){
-  try{return localStorage.getItem('dwms_voted')||'';}catch(e){return '';}
-}
-function satMarkVoted(){
-  try{localStorage.setItem('dwms_voted',new Date().toISOString().slice(0,10));}catch(e){}
-}
 function submitRating(ev){
   ev.preventDefault();
   if(document.getElementById('satHp').value)return false;   /* กันบอท */
@@ -1401,7 +1393,6 @@ function submitRating(ev){
     .then(function(){
       clearTimeout(satGuard);satGuard=null;
       btn.disabled=false;btn.textContent='ส่งคะแนน';
-      satMarkVoted();
       satNote('✓ ขอบคุณสำหรับการประเมิน '+satPicked+' ดาว ความเห็นของท่านช่วยให้เราพัฒนาบริการให้ดีขึ้น',true);
       document.getElementById('satForm').reset();satPicked=0;paintSatPick(0);
       setTimeout(loadVoteStats,1500);
@@ -1429,7 +1420,6 @@ function loadVoteStats(){
 }
 
 buildSatPick();
-if(satVotedBefore())satNote('ท่านเคยให้คะแนนจากอุปกรณ์นี้แล้วเมื่อ '+satVotedBefore()+' · ส่งใหม่ได้หากต้องการ',true);
 
 function renderPage(){
   var tbody=document.getElementById('registryBody');
