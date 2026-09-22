@@ -85,6 +85,27 @@
   /* REGISTRY */
   .registry-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:36px;}
   .registry-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:20px 24px;border-bottom:1px solid var(--gray-100);}
+  .registry-title-block{display:flex;gap:12px;align-items:flex-start;}
+  .registry-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--blue-light),var(--blue));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .registry-title{font-family:'Kanit';font-weight:600;font-size:17px;}
+  .registry-title .count{font-family:'Sarabun';font-weight:400;font-size:13px;color:var(--gray-500);margin-left:4px;}
+  .registry-sub{font-size:12.5px;color:var(--gray-500);margin-top:3px;}
+  .registry-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .registry-controls input[type=text]{padding:9px 14px;border:1px solid var(--gray-300);border-radius:20px;font-size:13px;font-family:'Sarabun';outline:none;min-width:210px;}
+  .registry-controls input[type=text]:focus{border-color:var(--blue);}
+  .registry-controls select{padding:9px 12px;border:1px solid var(--gray-300);border-radius:20px;font-size:13px;font-family:'Sarabun';background:#fff;outline:none;cursor:pointer;}
+  .btn-csv{padding:9px 16px;border:none;border-radius:20px;background:var(--blue-dark);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;}
+  .btn-csv:hover{background:var(--blue-deep);}
+  .btn-sync{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1.5px solid var(--blue);border-radius:20px;background:var(--blue-pale);color:var(--blue-deep);font-size:13px;font-weight:600;font-family:'Sarabun';cursor:pointer;transition:.2s;}
+  .btn-sync:hover:not(:disabled){background:var(--blue);color:#fff;}
+  .btn-sync:disabled{opacity:.65;cursor:progress;}
+  .btn-sync.loading .ic{animation:spin .9s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .sync-note{font-size:11.5px;color:var(--green);font-weight:600;opacity:0;transition:opacity .3s;}
+  .sync-note.show{opacity:1;}
+  .next-sync{font-size:11.5px;color:var(--blue-dark);background:var(--blue-pale);border:1px solid var(--blue-light);border-radius:12px;padding:2px 9px;margin-left:4px;white-space:nowrap;}
+  .next-sync.paused{color:#B26A00;background:var(--amber-bg);border-color:#F5D08A;}
+
 
   /* ===== แถบผลประเมิน + ให้คะแนน (ท้ายหน้า · โทนทอง) ===== */
   .sat-strip{
@@ -149,6 +170,27 @@
   }
   @media (prefers-reduced-motion:reduce){
     .sat-strip,.sat-stars .fg,.sat-seg,.sat-pick button{transition:none;}
+  }
+  /* ===== ตัวกรองช่วงวันที่ให้บริการ ===== */
+  .range-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 24px 0;padding:11px 14px;
+    background:linear-gradient(90deg,#F4F9FF,#EAF4FE);border:1px solid #D6E8F9;border-radius:12px;}
+  .range-bar .rl{font-size:12.5px;font-weight:600;color:var(--blue-700,#1565C0);white-space:nowrap;}
+  .range-bar input[type=date]{border:1px solid #C3DCF2;border-radius:9px;padding:6px 10px;font-family:'Sarabun';
+    font-size:12.5px;color:#25405C;background:#fff;outline:none;}
+  .range-bar input[type=date]:focus{border-color:#2196F3;box-shadow:0 0 0 2px rgba(33,150,243,.15);}
+  .range-bar .range-dash{color:#8FAECB;font-weight:600;}
+  .range-presets{display:flex;gap:6px;flex-wrap:wrap;}
+  .range-presets button{border:1px solid #C3DCF2;background:#fff;color:#2C5A8D;border-radius:20px;
+    padding:5px 12px;font-family:'Sarabun';font-size:11.5px;cursor:pointer;transition:.15s;}
+  .range-presets button:hover{background:#E3F1FD;border-color:#7FB8E8;}
+  .range-presets button.on{background:#1565C0;border-color:#1565C0;color:#fff;font-weight:600;}
+  .range-clear{margin-left:auto;background:#fff;border:1px solid #F3C6CC;color:#C0394B;border-radius:9px;
+    padding:6px 13px;font-family:'Sarabun';font-size:11.5px;cursor:pointer;white-space:nowrap;}
+  .range-clear:hover{background:#FDEEF0;}
+  .range-info{width:100%;font-size:11.5px;color:#5C748F;}
+  @media (max-width:760px){
+    .range-bar{margin:12px 14px 0;}
+    .range-clear{margin-left:0;}
   }
   .hint-bar{display:flex;align-items:center;gap:8px;margin:0 24px;padding:9px 14px;background:linear-gradient(90deg,#E8F4FE,#F4FAFF);border:1px dashed var(--blue-light);border-radius:11px;font-size:12.5px;color:var(--blue-deep);}
   .hint-bar b{font-family:'Kanit';font-weight:600;}
@@ -576,6 +618,21 @@
         <button class="btn-sync" id="syncBtn" onclick="manualSync()"><span class="ic">🔄</span><span id="syncLabel">ซิงก์ข้อมูลล่าสุด</span></button>
         <button class="btn-csv" onclick="exportCSV()">⬇ CSV</button>
       </div>
+    </div>
+
+    <div class="range-bar">
+      <span class="rl">📅 ช่วงวันที่ให้บริการ</span>
+      <input type="date" id="dateFrom" onchange="onRangeChange()" aria-label="วันที่เริ่มต้น">
+      <span class="range-dash">ถึง</span>
+      <input type="date" id="dateTo" onchange="onRangeChange()" aria-label="วันที่สิ้นสุด">
+      <div class="range-presets" id="rangePresets">
+        <button type="button" data-p="30d" onclick="setRangePreset('30d')">30 วันล่าสุด</button>
+        <button type="button" data-p="tm" onclick="setRangePreset('tm')">เดือนนี้</button>
+        <button type="button" data-p="lm" onclick="setRangePreset('lm')">เดือนที่แล้ว</button>
+        <button type="button" data-p="fy" onclick="setRangePreset('fy')">ปีงบประมาณนี้</button>
+      </div>
+      <button type="button" class="range-clear" onclick="clearRange()">ล้างช่วงวันที่</button>
+      <div class="range-info" id="rangeInfo"></div>
     </div>
 
     <div class="hint-bar">📱 <b>คลิกที่รายการใดก็ได้</b> เพื่อดูรายละเอียดฉบับเต็ม · รับ <b>QR ติดตามสถานะเรียลไทม์</b> · และพิมพ์ <b>ใบปะหน้า A4</b> ไว้ประกอบหลักฐานเมื่อจำเป็นเท่านั้น (ระบบปิดงานด้วยหลักฐานดิจิทัล ไม่ต้องลงนามกระดาษ)</div>
@@ -1265,18 +1322,94 @@ function filterCategory(cat,el){
   if(el)el.classList.add('active');
   document.getElementById('catFilter').value=cat;currentPage=1;applyFilters();
 }
+/* ===== ตัวกรองช่วงวันที่ =====
+   แปลงวันที่จากชีท (d/M/yyyy) เป็นตัวเลข yyyymmdd เพื่อเทียบช่วงได้ตรง
+   ไม่ใช้ new Date(string) เพราะรูปแบบ d/M/yyyy เบราว์เซอร์แต่ละตัวตีความไม่เหมือนกัน */
+function dateKey(s){
+  if(!s)return 0;
+  var m=String(s).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(!m)return 0;
+  var day=+m[1],mon=+m[2],year=+m[3];
+  if(year>2400)year-=543;                 /* เผื่อชีทบันทึกเป็น พ.ศ. */
+  if(mon<1||mon>12||day<1||day>31)return 0;
+  return year*10000+mon*100+day;
+}
+function isoKey(s){                        /* จาก input type=date (yyyy-mm-dd) */
+  if(!s)return 0;
+  var m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m?(+m[1])*10000+(+m[2])*100+(+m[3]):0;
+}
+function keyToThai(k){
+  if(!k)return '';
+  return (k%100)+'/'+(Math.floor(k/100)%100)+'/'+Math.floor(k/10000);
+}
+function pad2(n){return (n<10?'0':'')+n;}
+function toISO(dt){return dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate());}
+
+function onRangeChange(){
+  document.querySelectorAll('#rangePresets button').forEach(function(b){b.classList.remove('on');});
+  currentPage=1;applyFilters();
+}
+function setRangePreset(p){
+  var now=new Date(),from,to;
+  if(p==='30d'){to=now;from=new Date(now.getFullYear(),now.getMonth(),now.getDate()-29);}
+  else if(p==='tm'){from=new Date(now.getFullYear(),now.getMonth(),1);to=new Date(now.getFullYear(),now.getMonth()+1,0);}
+  else if(p==='lm'){from=new Date(now.getFullYear(),now.getMonth()-1,1);to=new Date(now.getFullYear(),now.getMonth(),0);}
+  else if(p==='fy'){
+    /* ปีงบประมาณไทย: 1 ต.ค. ถึง 30 ก.ย. */
+    var y=now.getMonth()>=9?now.getFullYear():now.getFullYear()-1;
+    from=new Date(y,9,1);to=new Date(y+1,8,30);
+  }
+  document.getElementById('dateFrom').value=toISO(from);
+  document.getElementById('dateTo').value=toISO(to);
+  document.querySelectorAll('#rangePresets button').forEach(function(b){b.classList.toggle('on',b.dataset.p===p);});
+  currentPage=1;applyFilters();
+}
+function clearRange(){
+  document.getElementById('dateFrom').value='';
+  document.getElementById('dateTo').value='';
+  document.querySelectorAll('#rangePresets button').forEach(function(b){b.classList.remove('on');});
+  currentPage=1;applyFilters();
+}
+
 function applyFilters(){
   var search=document.getElementById('searchInput').value.toLowerCase();
   var statusF=document.getElementById('statusFilter').value;
   var catF=document.getElementById('catFilter').value;
+  var fromK=isoKey(document.getElementById('dateFrom').value);
+  var toK=isoKey(document.getElementById('dateTo').value);
+  /* กรอกสลับกันมาก็ให้ทำงานได้ ไม่ต้องขึ้น error ให้เสียอารมณ์ */
+  if(fromK&&toK&&fromK>toK){var t=fromK;fromK=toK;toK=t;}
+
   document.querySelectorAll('.chip').forEach(function(c){c.classList.toggle('active',c.dataset.cat===catF);});
+  var noDate=0;
   filteredRows=allRows.filter(function(r){
     var okCat=catF==='all'||r.type.indexOf(catF)!==-1;
     var okS=!search||(r.no+r.type+r.detail+r.room).toLowerCase().indexOf(search)!==-1;
     var okSt=statusF==='all'||getStatusClass(r.status).key===statusF;
-    return okCat&&okS&&okSt;
+    var okD=true;
+    if(fromK||toK){
+      var k=dateKey(r.date);
+      if(!k){okD=false;noDate++;}            /* ไม่มีวันที่ -> ตัดออกเมื่อเลือกช่วง */
+      else okD=(!fromK||k>=fromK)&&(!toK||k<=toK);
+    }
+    return okCat&&okS&&okSt&&okD;
   });
+  updateRangeInfo(fromK,toK,noDate);
   updateSummary();currentPage=1;renderPage();
+}
+
+function updateRangeInfo(fromK,toK,noDate){
+  var el=document.getElementById('rangeInfo');if(!el)return;
+  if(!fromK&&!toK){el.textContent='';return;}
+  var span=fromK&&toK?('ช่วง '+keyToThai(fromK)+' – '+keyToThai(toK))
+        :(fromK?('ตั้งแต่ '+keyToThai(fromK)+' เป็นต้นไป'):('ถึง '+keyToThai(toK)));
+  var wl=filteredRows.reduce(function(s,r){return s+r.weight;},0);
+  var mins=filteredRows.reduce(function(s,r){return s+r.duration;},0);
+  el.innerHTML='📊 '+span+' · พบ <b>'+filteredRows.length+'</b> รายการ · ภาระงานรวม <b>'+
+    (Math.round(wl*100)/100).toLocaleString('th-TH')+'</b> หน่วย · เวลาปฏิบัติงานรวม <b>'+
+    (Math.round(mins/60*100)/100).toLocaleString('th-TH')+'</b> ชั่วโมง'+
+    (noDate?' <span style="color:#C0394B;">(ข้าม '+noDate+' รายการที่ไม่มีวันที่)</span>':'');
 }
 function updateSummary(){
   var total=filteredRows.length,c={done:0,fail:0,prog:0,recv:0,other:0};
