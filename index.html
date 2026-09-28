@@ -192,22 +192,32 @@
     .range-bar{margin:12px 14px 0;}
     .range-clear{margin-left:0;}
   }
-  /* ===== ป็อปอัปเลือกบัญชี Google (คลิกล้วน ไม่ต้องพิมพ์) ===== */
-  .acct-pop{position:fixed;z-index:9999;display:none;background:#fff;border-radius:14px;
-    box-shadow:0 18px 44px rgba(10,35,66,.3);border:1px solid #E1ECF7;overflow:hidden;
-    width:262px;font-family:'Sarabun';}
-  .acct-pop.open{display:block;}
-  .acct-pop .hd{padding:11px 15px 9px;background:#F4F9FF;border-bottom:1px solid #E1ECF7;}
-  .acct-pop .hd b{font-family:'Kanit';font-size:13px;color:#0D47A1;display:block;}
-  .acct-pop .hd span{font-size:10.5px;color:#7B93AA;}
-  .acct-pop a{display:flex;align-items:center;gap:9px;padding:11px 15px;font-size:13px;
-    color:#25405C;text-decoration:none;border-bottom:1px solid #F1F6FB;transition:.15s;cursor:pointer;}
-  .acct-pop a:last-child{border-bottom:none;}
-  .acct-pop a:hover{background:#EAF4FE;color:#0D47A1;}
-  .acct-pop a .em{font-size:15px;width:19px;text-align:center;}
-  .acct-pop a .sub{font-size:10.5px;color:#93A8BD;margin-left:auto;}
-  .acct-mask2{position:fixed;inset:0;z-index:9998;display:none;}
-  .acct-mask2.open{display:block;}
+  /* ===== กล่องเลือกวิธีเข้าสู่ระบบผู้ดูแล ===== */
+  .nav-admin-more{border:none;cursor:pointer;color:#fff;background:linear-gradient(135deg,#1E88E5,#0D47A1);
+    border-radius:50%;width:26px;height:26px;font-size:11px;line-height:1;margin-left:-4px;
+    box-shadow:0 4px 11px rgba(13,71,161,.3);transition:.2s;flex-shrink:0;}
+  .nav-admin-more:hover{background:linear-gradient(135deg,#0D47A1,#1E88E5);transform:translateY(-1px);}
+
+  .lgn-mask{position:fixed;inset:0;background:rgba(15,32,50,.5);z-index:9999;display:none;
+    align-items:center;justify-content:center;padding:18px;}
+  .lgn-mask.open{display:flex;}
+  .lgn-box{background:#fff;border-radius:18px;max-width:480px;width:100%;padding:24px 24px 20px;
+    box-shadow:0 22px 52px rgba(10,35,66,.32);font-family:'Sarabun';position:relative;
+    max-height:92vh;overflow:auto;}
+  .lgn-box h3{font-family:'Kanit';font-size:18.5px;color:#0D47A1;margin:0 0 8px;padding-right:28px;}
+  .lgn-box .lead{font-size:12.5px;color:#5C748F;line-height:1.65;margin:0 0 17px;}
+  .lgn-x{position:absolute;top:16px;right:18px;background:none;border:none;font-size:24px;
+    line-height:1;color:#9FB4C9;cursor:pointer;padding:0;}
+  .lgn-x:hover{color:#42607F;}
+  .lgn-opt{display:block;width:100%;text-align:left;border:1px solid #DCE9F6;background:#F9FCFF;
+    border-radius:13px;padding:14px 16px;margin-bottom:11px;cursor:pointer;transition:.18s;
+    font-family:'Sarabun';}
+  .lgn-opt:hover{border-color:#5CA8E8;background:#EAF4FE;transform:translateY(-1px);
+    box-shadow:0 7px 18px rgba(21,101,192,.14);}
+  .lgn-opt .t{font-family:'Kanit';font-size:14.5px;color:#123C6B;display:flex;align-items:center;gap:9px;}
+  .lgn-opt .d{font-size:11.5px;color:#6A829B;line-height:1.6;margin-top:5px;}
+  .lgn-note{font-size:11px;color:#8CA3BA;line-height:1.7;border-top:1px solid #EEF4FA;
+    padding-top:13px;margin-top:4px;}
   .hint-bar{display:flex;align-items:center;gap:8px;margin:0 24px;padding:9px 14px;background:linear-gradient(90deg,#E8F4FE,#F4FAFF);border:1px dashed var(--blue-light);border-radius:11px;font-size:12.5px;color:var(--blue-deep);}
   .hint-bar b{font-family:'Kanit';font-weight:600;}
 
@@ -599,7 +609,7 @@
       <a href="#registry" class="active">📋 ทะเบียนงานบริการ</a>
       <a href="#dashboard">📊 แดชบอร์ดผู้บริหาร</a>
       <a href="#looker">🔗 รายงาน Looker</a>
-      <a class="nav-admin" href="https://script.google.com/a/macros/msu.ac.th/s/AKfycbz3ryLEOy1BilaqATR1K5wAjt-q6mTzMCrnB680Lg8_mCD2Z6E4jZNV582i0UDe1jJDmA/exec" target="_blank" rel="noopener" title="สำหรับผู้ดูแลระบบเท่านั้น"><span>🔐</span> เข้าสู่ระบบผู้ดูแล</a>
+      <a class="nav-admin" href="https://script.google.com/a/macros/msu.ac.th/s/AKfycbz3ryLEOy1BilaqATR1K5wAjt-q6mTzMCrnB680Lg8_mCD2Z6E4jZNV582i0UDe1jJDmA/exec" target="_blank" rel="noopener" title="สำหรับผู้ดูแลระบบเท่านั้น"><span>🔐</span> เข้าสู่ระบบผู้ดูแล</a><button class="nav-admin-more" id="navAdminMore" title="เปลี่ยนวิธีเข้าสู่ระบบ" aria-label="เปลี่ยนวิธีเข้าสู่ระบบ">▾</button>
       <a class="nav-qr" href="https://panya-jeerachat.github.io/dwms/request" target="_blank" rel="noopener" title="แบบฟอร์มขอรับบริการโสตทัศนูปกรณ์">
         <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="QR แบบฟอร์มขอรับบริการ">
         <span><span class="t1">แบบฟอร์มขอรับบริการ</span><br><span class="t2">สแกน QR หรือคลิกที่รูป</span></span>
@@ -941,7 +951,7 @@
       <h4>E-Service งานโสตทัศนศึกษา</h4>
       <p>คณะวิศวกรรมศาสตร์ มหาวิทยาลัยมหาสารคาม</p>
       <a class="footer-admin" href="#" target="_blank" rel="noopener">🔐 เข้าสู่ระบบผู้ดูแล</a>
-      <a class="admin-switch" href="#" onclick="return resetAcct(event)">เปลี่ยนบัญชีที่ใช้เข้าระบบ</a>
+      <a class="admin-switch" href="#" onclick="return openLgn(event)">เปลี่ยนวิธีเข้าสู่ระบบ</a>
     </div>
     <div class="footer-col"><h4>ติดต่อเจ้าหน้าที่</h4><p>นายปัญญา จีระฉัตร</p><p>นักวิชาการโสตทัศนศึกษา</p><p>โทรศัพท์: 087-235-9848</p></div>
     <div class="footer-col">
@@ -1831,16 +1841,17 @@ function applyGlobalAssets(){
   if(fl){fl.onerror=function(){fl.style.display='none';};}
   /* ลิงก์ */
   /* ปุ่มเข้าสู่ระบบผู้ดูแล
-     โดเมน @msu.ac.th บล็อกการ Deploy แบบ Anyone จึงต้องเข้าด้วยบัญชีที่มีสิทธิ์
-     ครั้งแรกให้เลือกบัญชีหนึ่งครั้ง หลังจากนั้นคลิกเดียวเข้าได้เลย */
+     โดเมน @msu.ac.th ไม่อนุญาตให้ Deploy แบบเปิดสาธารณะ จึงต้องให้ Google เลือกบัญชีให้ถูก
+     ครั้งแรกเลือกวิธีหนึ่งครั้ง หลังจากนั้นคลิกเดียวเข้าได้เลย */
+  refreshAdminLinks();
   document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){
-    a.href=adminUrlFor(savedAcct());
     a.addEventListener('click',function(ev){
-      if(savedAcct()!==null)return;            /* เคยเลือกไว้แล้ว -> ปล่อยให้ลิงก์ทำงานตามปกติ */
-      ev.preventDefault();
-      openAcctPop(a);
+      if(savedLgn())return;                    /* เคยเลือกแล้ว -> ปล่อยให้ลิงก์ทำงานตามปกติ */
+      ev.preventDefault();openLgn(ev);
     });
   });
+  var more=document.getElementById('navAdminMore');
+  if(more)more.addEventListener('click',function(ev){ev.preventDefault();openLgn(ev);});
   document.querySelectorAll('.nav-qr,.qr-box').forEach(function(a){a.href=REQUEST_URL;});
   var navImg=document.querySelector('.nav-qr img'),ftImg=document.querySelector('.qr-box img');
   if(navImg)navImg.src=makeQR(REQUEST_URL,180);
@@ -1859,58 +1870,71 @@ document.addEventListener('DOMContentLoaded',function(){
   },AUTO_MS);
 });
 
-/* ══════════ เลือกบัญชี Google (คลิกล้วน จำค่าไว้ในเครื่อง) ══════════ */
-function savedAcct(){
-  try{
-    var v=localStorage.getItem('dwms_acct');
-    if(v===null||v==='')return null;
-    return v==='chooser'?'chooser':parseInt(v,10);
-  }catch(e){return null;}
+/* ══════════ วิธีเข้าสู่ระบบผู้ดูแล ══════════
+   โดเมน msu.ac.th บล็อกการ Deploy แบบ "Anyone" ไว้ Google จึงต้องรู้ว่าจะใช้บัญชีไหนเปิด
+   มีสองรูปแบบ URL ที่ใช้ได้ ต่างกันที่วิธีที่ Google เลือกบัญชี:
+     domain -> /a/macros/msu.ac.th/s/<ID>/exec  บังคับใช้บัญชีของโดเมนมหาวิทยาลัย
+     plain  -> /macros/s/<ID>/exec              ใช้บัญชีเริ่มต้นของเบราว์เซอร์
+   เครื่องแต่ละเครื่องใช้ได้ไม่เหมือนกัน จึงให้ผู้ใช้เลือกเองครั้งเดียวแล้วจำไว้ */
+var LGN_DOMAIN='msu.ac.th';
+function execId(){
+  var m=String(ADMIN_PAGE_URL).match(/\/s\/([\w-]+)\/exec/);
+  return m?m[1]:'';
 }
-function adminUrlFor(who){
-  if(who==='chooser')return 'https://accounts.google.com/AccountChooser?continue='+encodeURIComponent(ADMIN_PAGE_URL);
-  if(typeof who==='number')return ADMIN_PAGE_URL.replace('/macros/s/','/macros/u/'+who+'/s/');
-  return ADMIN_PAGE_URL;
+function lgnUrl(mode){
+  var id=execId();
+  if(!id)return ADMIN_PAGE_URL;
+  if(mode==='domain')return 'https://script.google.com/a/macros/'+LGN_DOMAIN+'/s/'+id+'/exec';
+  return 'https://script.google.com/macros/s/'+id+'/exec';
 }
-function openAcctPop(anchorEl){
-  var pop=document.getElementById('acctPop'),mask=document.getElementById('acctMask2');
-  if(!pop)return;
-  var r=anchorEl.getBoundingClientRect();
-  var left=Math.min(Math.max(8,r.left+r.width/2-131),window.innerWidth-270);
-  var top=r.bottom+8;
-  if(top+250>window.innerHeight)top=Math.max(8,r.top-250);   /* ปุ่มอยู่ล่างจอ -> เปิดขึ้นบน */
-  pop.style.left=left+'px';pop.style.top=top+'px';
-  pop.classList.add('open');mask.classList.add('open');
+function savedLgn(){
+  try{var v=localStorage.getItem('dwms_lgn');return (v==='domain'||v==='plain')?v:'';}catch(e){return '';}
 }
-function closeAcctPop(){
-  document.getElementById('acctPop').classList.remove('open');
-  document.getElementById('acctMask2').classList.remove('open');
-}
-function pickAcct(who){
-  try{localStorage.setItem('dwms_acct',String(who));}catch(e){}
-  var url=adminUrlFor(who);
+function refreshAdminLinks(){
+  var mode=savedLgn()||'domain';
+  var url=lgnUrl(mode);
   document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){a.href=url;});
-  closeAcctPop();
-  window.open(url,'_blank','noopener');
 }
-function resetAcct(ev){
-  ev.preventDefault();
-  try{localStorage.removeItem('dwms_acct');}catch(e){}
-  document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){a.href=ADMIN_PAGE_URL;});
-  openAcctPop(document.querySelector('.footer-admin')||ev.target);
+function openLgn(ev){
+  if(ev&&ev.preventDefault)ev.preventDefault();
+  var m=document.getElementById('lgnMask');
+  if(m)m.classList.add('open');
   return false;
 }
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAcctPop();});
+function closeLgn(){
+  var m=document.getElementById('lgnMask');
+  if(m)m.classList.remove('open');
+}
+function pickLgn(mode){
+  try{localStorage.setItem('dwms_lgn',mode);}catch(e){}
+  refreshAdminLinks();
+  closeLgn();
+  window.open(lgnUrl(mode),'_blank','noopener');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLgn();});
 </script>
 
-<!-- ══════════ ป็อปอัปเลือกบัญชี Google (คลิกล้วน) ══════════ -->
-<div class="acct-mask2" id="acctMask2" onclick="closeAcctPop()"></div>
-<div class="acct-pop" id="acctPop">
-  <div class="hd"><b>เลือกบัญชีที่จะใช้เข้าระบบ</b><span>เลือกครั้งเดียว ครั้งต่อไปเข้าได้ทันที</span></div>
-  <a onclick="pickAcct('chooser')"><span class="em">🔵</span> เลือกจากรายชื่อบัญชี Google<span class="sub">แนะนำ</span></a>
-  <a onclick="pickAcct(0)"><span class="em">1️⃣</span> บัญชีที่ 1 ในเบราว์เซอร์</a>
-  <a onclick="pickAcct(1)"><span class="em">2️⃣</span> บัญชีที่ 2 ในเบราว์เซอร์</a>
-  <a onclick="pickAcct(2)"><span class="em">3️⃣</span> บัญชีที่ 3 ในเบราว์เซอร์</a>
+<!-- ══════════ กล่องเลือกวิธีเข้าสู่ระบบผู้ดูแล ══════════ -->
+<div class="lgn-mask" id="lgnMask" onclick="if(event.target===this)closeLgn()">
+  <div class="lgn-box">
+    <button class="lgn-x" onclick="closeLgn()" aria-label="ปิด">&times;</button>
+    <h3>🔐 เข้าสู่ระบบผู้ดูแล</h3>
+    <p class="lead">เลือกวิธีที่ใช้ได้กับเครื่องนี้ ระบบจะจำไว้ให้ ครั้งต่อไปกดปุ่มเดียวเข้าได้เลย
+      (เปลี่ยนภายหลังได้ที่ปุ่ม ▾ ข้างปุ่มเข้าสู่ระบบ)</p>
+
+    <button class="lgn-opt" onclick="pickLgn('domain')">
+      <div class="t">🏛️ เข้าด้วยบัญชี @msu.ac.th</div>
+      <div class="d">สำหรับเครื่องที่ลงชื่อเข้าใช้ Google ด้วยอีเมลมหาวิทยาลัยอยู่แล้ว เช่น มือถือที่ล็อกอิน msu.ac.th ไว้ — แนะนำสำหรับเจ้าหน้าที่ส่วนใหญ่</div>
+    </button>
+
+    <button class="lgn-opt" onclick="pickLgn('plain')">
+      <div class="t">🌐 เข้าแบบไม่ผูกบัญชี Google</div>
+      <div class="d">ใช้เมื่อวิธีแรกขึ้นหน้าปฏิเสธสิทธิ์ หรือเครื่องนั้นลงชื่อ Google ไว้หลายบัญชี / ไม่ได้ลงชื่อด้วยอีเมลมหาวิทยาลัย</div>
+    </button>
+
+    <div class="lgn-note">ทั้งสองวิธีเข้าหน้าเดียวกันและยังต้องกรอกชื่อผู้ใช้/รหัสผ่านของระบบเหมือนเดิม
+      ต่างกันแค่วิธีที่ Google เลือกบัญชีให้เท่านั้น ถ้ากดแล้วขึ้นข้อผิดพลาด ให้กลับมาเลือกอีกวิธีได้ทันที</div>
+  </div>
 </div>
 
 </body>
