@@ -192,6 +192,31 @@
     .range-bar{margin:12px 14px 0;}
     .range-clear{margin-left:0;}
   }
+  /* ===== กล่องเลือกบัญชี Google ก่อนเข้าหน้าผู้ดูแล ===== */
+  .acct-mask{position:fixed;inset:0;background:rgba(15,32,50,.55);z-index:9999;display:none;
+    align-items:center;justify-content:center;padding:18px;}
+  .acct-mask.open{display:flex;}
+  .acct-box{background:#fff;border-radius:18px;max-width:430px;width:100%;padding:24px;
+    box-shadow:0 22px 50px rgba(10,35,66,.32);font-family:'Sarabun';}
+  .acct-box h3{font-family:'Kanit';font-size:18px;color:#0D47A1;margin:0 0 6px;}
+  .acct-box p{font-size:12.5px;color:#5C748F;margin:0 0 16px;line-height:1.6;}
+  .acct-box label{display:block;font-size:12px;font-weight:600;color:#42607F;margin-bottom:5px;}
+  .acct-box input{width:100%;border:1px solid #C3DCF2;border-radius:10px;padding:10px 12px;
+    font-family:'Sarabun';font-size:13.5px;color:#25405C;outline:none;box-sizing:border-box;}
+  .acct-box input:focus{border-color:#2196F3;box-shadow:0 0 0 3px rgba(33,150,243,.16);}
+  .acct-go{width:100%;margin-top:11px;background:linear-gradient(135deg,#1E88E5,#0D47A1);color:#fff;
+    border:none;border-radius:11px;padding:12px;font-family:'Kanit';font-size:14px;cursor:pointer;}
+  .acct-go:hover{background:linear-gradient(135deg,#0D47A1,#1E88E5);}
+  .acct-or{display:flex;align-items:center;gap:10px;margin:17px 0 11px;color:#9FB4C9;font-size:11.5px;}
+  .acct-or::before,.acct-or::after{content:"";flex:1;height:1px;background:#E1ECF7;}
+  .acct-slots{display:flex;gap:7px;flex-wrap:wrap;}
+  .acct-slots button{flex:1;min-width:84px;border:1px solid #C3DCF2;background:#F7FBFF;color:#2C5A8D;
+    border-radius:10px;padding:9px 6px;font-family:'Sarabun';font-size:12px;cursor:pointer;}
+  .acct-slots button:hover{background:#E3F1FD;border-color:#7FB8E8;}
+  .acct-tip{font-size:11px;color:#8CA3BA;margin-top:14px;line-height:1.6;}
+  .acct-close{background:none;border:none;color:#7B93AA;font-size:12.5px;cursor:pointer;
+    margin-top:12px;width:100%;padding:6px;}
+  .acct-close:hover{color:#42607F;}
   .hint-bar{display:flex;align-items:center;gap:8px;margin:0 24px;padding:9px 14px;background:linear-gradient(90deg,#E8F4FE,#F4FAFF);border:1px dashed var(--blue-light);border-radius:11px;font-size:12.5px;color:var(--blue-deep);}
   .hint-bar b{font-family:'Kanit';font-weight:600;}
 
@@ -960,10 +985,13 @@ function canonicalExecUrl(u){
     .replace(/\/a\/macros\/[^/]+\/s\//,'/macros/s/');    /* ตัดการผูกเฉพาะโดเมน */
 }
 
-/* ⬇⬇⬇ แก้บรรทัดนี้หลัง Deploy โปรเจกต์ DWMS Admin ⬇⬇⬇
-   เอา URL มาจากการรัน showWebAppUrl() ใน Apps Script Editor เท่านั้น
-   อย่าคัดลอกจากแถบที่อยู่ของเบราว์เซอร์ เพราะจะติด /u/1/ มาด้วย
-   Deploy ต้องตั้ง Execute as: Me · Who has access: Anyone */
+/* URL ของ Web App โปรเจกต์ "DWMS Admin" — ใส่ค่าไว้เรียบร้อยแล้ว ไม่ต้องแก้อีก
+   ใช้สำหรับ 2 อย่าง: ปุ่มเข้าสู่ระบบผู้ดูแล และปลายทางรับโหวตความพึงพอใจ
+
+   จะต้องกลับมาแก้บรรทัดนี้ก็ต่อเมื่อสร้าง Deployment ใหม่ที่เป็นคนละ URL เท่านั้น
+   (ถ้า Deploy แบบ Manage deployments > New version ทับตัวเดิม URL ไม่เปลี่ยน ไม่ต้องแก้)
+   เวลาจะเอา URL ใหม่ ให้รัน showWebAppUrl() ใน Apps Script Editor แล้วคัดลอกจากตรงนั้น
+   อย่าคัดลอกจากแถบที่อยู่ของเบราว์เซอร์ เพราะจะติด /u/1/ ซึ่งคนอื่นเปิดไม่ได้ */
 var ADMIN_URL = canonicalExecUrl("https://script.google.com/macros/s/AKfycbxTurcLkyGnBFWFEk6OnZCnF7ro_zrRRKU_goPx90GLRf_JMmSkDsjpWh5jiBs2ocU7Ww/exec");
 
 var REQUEST_URL = "https://panya-jeerachat.github.io/dwms/request";
@@ -1806,7 +1834,13 @@ function applyGlobalAssets(){
   var fl=document.getElementById('footerLogo');
   if(fl){fl.onerror=function(){fl.style.display='none';};}
   /* ลิงก์ */
-  document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){a.href=ADMIN_PAGE_URL;});
+  /* ปุ่มเข้าสู่ระบบผู้ดูแล: เปิดกล่องเลือกบัญชีก่อน แทนการลิงก์ตรง
+     เพราะเครื่องที่มีหลายบัญชี Google เปิดตรง ๆ แล้วจะใช้บัญชีเริ่มต้นซึ่งมักไม่ใช่บัญชีที่มีสิทธิ์ */
+  document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){
+    a.href=ADMIN_PAGE_URL;
+    a.removeAttribute('target');
+    a.addEventListener('click',function(ev){ev.preventDefault();openAcct();});
+  });
   document.querySelectorAll('.nav-qr,.qr-box').forEach(function(a){a.href=REQUEST_URL;});
   var navImg=document.querySelector('.nav-qr img'),ftImg=document.querySelector('.qr-box img');
   if(navImg)navImg.src=makeQR(REQUEST_URL,180);
@@ -1824,7 +1858,70 @@ document.addEventListener('DOMContentLoaded',function(){
     loadTrackingData();loadMonthly();
   },AUTO_MS);
 });
+
+/* ══════════ กล่องเลือกบัญชี Google ══════════ */
+var ADMIN_MAIL_DOMAIN='@msu.ac.th';
+function rememberedMail(){
+  try{return localStorage.getItem('dwms_admin_mail')||'';}catch(e){return '';}
+}
+function openAcct(){
+  var box=document.getElementById('acctMask');if(!box)return;
+  var inp=document.getElementById('acctMail');
+  if(inp&&!inp.value)inp.value=rememberedMail();
+  box.classList.add('open');
+  setTimeout(function(){if(inp)inp.focus();},60);
+}
+function closeAcct(){
+  var box=document.getElementById('acctMask');
+  if(box)box.classList.remove('open');
+}
+/* who = 'mail' | ลำดับบัญชี 0,1,2 | null (บัญชีเริ่มต้น) */
+function openAdminAs(who){
+  var url=ADMIN_PAGE_URL;
+  if(!/^https:\/\/script\.google\.com\/macros\/(u\/\d+\/)?s\/[\w-]+\/exec/.test(url)){
+    alert('ADMIN_URL ในไฟล์ DWMS.html ไม่ถูกต้อง\nต้องเป็นรูปแบบ https://script.google.com/macros/s/<ID>/exec');
+    return;
+  }
+  if(who==='mail'){
+    var inp=document.getElementById('acctMail');
+    var mail=(inp.value||'').trim();
+    if(!mail){inp.focus();return;}
+    if(mail.indexOf('@')===-1)mail+=ADMIN_MAIL_DOMAIN;   /* พิมพ์แค่ชื่อผู้ใช้ก็พอ */
+    try{localStorage.setItem('dwms_admin_mail',mail);}catch(e){}
+    url+=(url.indexOf('?')===-1?'?':'&')+'authuser='+encodeURIComponent(mail);
+  }else if(typeof who==='number'){
+    /* แทรกลำดับบัญชีลงใน path ตามรูปแบบที่ Google ใช้ */
+    url=url.replace('/macros/s/','/macros/u/'+who+'/s/');
+  }
+  closeAcct();
+  window.open(url,'_blank','noopener');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAcct();});
 </script>
+
+<!-- ══════════ กล่องเลือกบัญชี Google ก่อนเข้าหน้าผู้ดูแล ══════════ -->
+<div class="acct-mask" id="acctMask" onclick="if(event.target===this)closeAcct()">
+  <div class="acct-box">
+    <h3>🔐 เข้าสู่ระบบผู้ดูแล</h3>
+    <p>เครื่องที่ล็อกอิน Google ไว้หลายบัญชี ต้องระบุว่าจะเปิดด้วยบัญชีไหน มิฉะนั้นเบราว์เซอร์จะใช้บัญชีเริ่มต้นและเปิดไม่ได้</p>
+
+    <label for="acctMail">บัญชีอีเมลของมหาวิทยาลัย</label>
+    <input id="acctMail" placeholder="ชื่อผู้ใช้@msu.ac.th" autocomplete="username"
+           onkeydown="if(event.key==='Enter')openAdminAs('mail')">
+    <button class="acct-go" onclick="openAdminAs('mail')">เปิดด้วยบัญชีนี้</button>
+
+    <div class="acct-or">หรือเลือกตามลำดับบัญชีในเบราว์เซอร์</div>
+    <div class="acct-slots">
+      <button type="button" onclick="openAdminAs(0)">บัญชีที่ 1</button>
+      <button type="button" onclick="openAdminAs(1)">บัญชีที่ 2</button>
+      <button type="button" onclick="openAdminAs(2)">บัญชีที่ 3</button>
+      <button type="button" onclick="openAdminAs(null)">บัญชีเริ่มต้น</button>
+    </div>
+
+    <div class="acct-tip">ลำดับบัญชีดูได้จากรูปโปรไฟล์มุมขวาบนของ Chrome เรียงจากบนลงล่าง · ระบบจำอีเมลที่กรอกไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งไปที่ใด</div>
+    <button class="acct-close" onclick="closeAcct()">ปิดหน้าต่างนี้</button>
+  </div>
+</div>
 
 </body>
 </html>
