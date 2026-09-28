@@ -950,16 +950,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 <script>
 /* ===== ตั้งค่าโลโก้ / ลิงก์หลัก (แก้ที่เดียวใช้ได้ทั้งเว็บ) ===== */
 var LOGO_SRC    = "logo.png";   /* ⬅ ชื่อไฟล์โลโก้ EN-MSU ที่อัปโหลดไว้บน GitHub */
-var ADMIN_URL   = "https://script.google.com/a/macros/msu.ac.th/s/AKfycbz3ryLEOy1BilaqATR1K5wAjt-q6mTzMCrnB680Lg8_mCD2Z6E4jZNV582i0UDe1jJDmA/exec";
+/* ⬇⬇⬇ แก้ 1 บรรทัดนี้หลัง Deploy โปรเจกต์ DWMS Admin ตัวใหม่ ⬇⬇⬇
+   เป็น URL ของ "โปรเจกต์แยก" ที่มีแค่ Code.gs + Index.html + Rate.html
+   ต้องเป็นรูปแบบ https://script.google.com/macros/s/<ID>/exec
+   และตั้ง Deploy เป็น Execute as: Me · Who has access: Anyone
+   (อย่าใช้ URL ของโปรเจกต์ API เดิมที่ป้อนข้อมูลให้ Looker เด็ดขาด) */
+var ADMIN_URL   = "https://script.google.com/macros/s/AKfycbxTurcLkyGnBFWFEk6OnZCnF7ro_zrRRKU_goPx90GLRf_JMmSkDsjpWh5jiBs2ocU7Ww/exec";
+
 var REQUEST_URL = "https://panya-jeerachat.github.io/dwms/request";
-/* ปลายทางรับคะแนนความพึงพอใจ = Apps Script Web App ตัวเดียวกับหน้าผู้ดูแล
-   ⚠ ต้อง Deploy โดยตั้ง "Who has access: Anyone" และใช้ URL แบบ
-   https://script.google.com/macros/s/<ID>/exec (ไม่ใช่แบบ /a/macros/msu.ac.th/…)
-   มิฉะนั้นผู้รับบริการที่ไม่ได้ล็อกอินบัญชี มมส. จะส่งคะแนนไม่ได้ */
-var RATE_POST_URL = ADMIN_URL;
-/* ลิงก์ปุ่ม "เข้าสู่ระบบผู้ดูแล" — ต้องมี ?page=admin เสมอ
-   เพราะโปรเจกต์ Apps Script เดียวกันยังมี API เดิม (Looker/ค้นหา) ใช้ /exec เปล่า ๆ อยู่ */
-var ADMIN_PAGE_URL = ADMIN_URL + (ADMIN_URL.indexOf('?') === -1 ? '?' : '&') + 'page=admin';
+/* ปุ่มเข้าสู่ระบบผู้ดูแล และปลายทางรับโหวตความพึงพอใจ ใช้ URL เดียวกันนี้
+   เพราะโปรเจกต์ใหม่แยกออกมาแล้ว /exec เปล่า ๆ จึงเข้าหน้าผู้ดูแลได้ตรง ๆ */
+var ADMIN_PAGE_URL = ADMIN_URL;
+var RATE_POST_URL  = ADMIN_URL;
 
 var SHEET_ID="1am2WPhKcEzATV4478hIq-5R3Oh81eBk0UvC_cp-ZLTs";
 var GID="1452503207";
