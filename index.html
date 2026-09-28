@@ -950,16 +950,24 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 <script>
 /* ===== ตั้งค่าโลโก้ / ลิงก์หลัก (แก้ที่เดียวใช้ได้ทั้งเว็บ) ===== */
 var LOGO_SRC    = "logo.png";   /* ⬅ ชื่อไฟล์โลโก้ EN-MSU ที่อัปโหลดไว้บน GitHub */
-/* ⬇⬇⬇ แก้ 1 บรรทัดนี้หลัง Deploy โปรเจกต์ DWMS Admin ตัวใหม่ ⬇⬇⬇
-   เป็น URL ของ "โปรเจกต์แยก" ที่มีแค่ Code.gs + Index.html + Rate.html
-   ต้องเป็นรูปแบบ https://script.google.com/macros/s/<ID>/exec
-   และตั้ง Deploy เป็น Execute as: Me · Who has access: Anyone
-   (อย่าใช้ URL ของโปรเจกต์ API เดิมที่ป้อนข้อมูลให้ Looker เด็ดขาด) */
-var ADMIN_URL   = "https://script.google.com/macros/s/AKfycbxTurcLkyGnBFWFEk6OnZCnF7ro_zrRRKU_goPx90GLRf_JMmSkDsjpWh5jiBs2ocU7Ww/exec";
+/* ทำ URL ของ Apps Script ให้อยู่ในรูปที่ "ทุกคนเปิดได้"
+   Chrome ที่ล็อกอินหลายบัญชีจะแทรก /u/0/ /u/1/ ลงใน URL ซึ่งผูกกับลำดับบัญชี
+   ของเครื่องนั้น ๆ คนอื่นเปิดแล้วจะขึ้นว่า "ไม่สามารถเปิดไฟล์ได้ในเวลานี้"
+   ฟังก์ชันนี้ตัดส่วนนั้นทิ้งให้อัตโนมัติ ต่อให้เผลอวาง URL แบบมี /u/1/ มาก็ยังใช้ได้ */
+function canonicalExecUrl(u){
+  return String(u||'')
+    .replace(/\/macros\/u\/\d+\/s\//,'/macros/s/')      /* ตัดเลขบัญชีของเบราว์เซอร์ */
+    .replace(/\/a\/macros\/[^/]+\/s\//,'/macros/s/');    /* ตัดการผูกเฉพาะโดเมน */
+}
+
+/* ⬇⬇⬇ แก้บรรทัดนี้หลัง Deploy โปรเจกต์ DWMS Admin ⬇⬇⬇
+   เอา URL มาจากการรัน showWebAppUrl() ใน Apps Script Editor เท่านั้น
+   อย่าคัดลอกจากแถบที่อยู่ของเบราว์เซอร์ เพราะจะติด /u/1/ มาด้วย
+   Deploy ต้องตั้ง Execute as: Me · Who has access: Anyone */
+var ADMIN_URL = canonicalExecUrl("https://script.google.com/macros/s/AKfycbxTurcLkyGnBFWFEk6OnZCnF7ro_zrRRKU_goPx90GLRf_JMmSkDsjpWh5jiBs2ocU7Ww/exec");
 
 var REQUEST_URL = "https://panya-jeerachat.github.io/dwms/request";
-/* ปุ่มเข้าสู่ระบบผู้ดูแล และปลายทางรับโหวตความพึงพอใจ ใช้ URL เดียวกันนี้
-   เพราะโปรเจกต์ใหม่แยกออกมาแล้ว /exec เปล่า ๆ จึงเข้าหน้าผู้ดูแลได้ตรง ๆ */
+/* ปุ่มเข้าสู่ระบบผู้ดูแล และปลายทางรับโหวตความพึงพอใจ ใช้ URL เดียวกันนี้ */
 var ADMIN_PAGE_URL = ADMIN_URL;
 var RATE_POST_URL  = ADMIN_URL;
 
