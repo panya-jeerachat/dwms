@@ -957,6 +957,9 @@ var REQUEST_URL = "https://panya-jeerachat.github.io/dwms/request";
    https://script.google.com/macros/s/<ID>/exec (ไม่ใช่แบบ /a/macros/msu.ac.th/…)
    มิฉะนั้นผู้รับบริการที่ไม่ได้ล็อกอินบัญชี มมส. จะส่งคะแนนไม่ได้ */
 var RATE_POST_URL = ADMIN_URL;
+/* ลิงก์ปุ่ม "เข้าสู่ระบบผู้ดูแล" — ต้องมี ?page=admin เสมอ
+   เพราะโปรเจกต์ Apps Script เดียวกันยังมี API เดิม (Looker/ค้นหา) ใช้ /exec เปล่า ๆ อยู่ */
+var ADMIN_PAGE_URL = ADMIN_URL + (ADMIN_URL.indexOf('?') === -1 ? '?' : '&') + 'page=admin';
 
 var SHEET_ID="1am2WPhKcEzATV4478hIq-5R3Oh81eBk0UvC_cp-ZLTs";
 var GID="1452503207";
@@ -1793,7 +1796,7 @@ function applyGlobalAssets(){
   var fl=document.getElementById('footerLogo');
   if(fl){fl.onerror=function(){fl.style.display='none';};}
   /* ลิงก์ */
-  document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){a.href=ADMIN_URL;});
+  document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){a.href=ADMIN_PAGE_URL;});
   document.querySelectorAll('.nav-qr,.qr-box').forEach(function(a){a.href=REQUEST_URL;});
   var navImg=document.querySelector('.nav-qr img'),ftImg=document.querySelector('.qr-box img');
   if(navImg)navImg.src=makeQR(REQUEST_URL,180);
