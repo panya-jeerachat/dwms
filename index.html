@@ -192,31 +192,22 @@
     .range-bar{margin:12px 14px 0;}
     .range-clear{margin-left:0;}
   }
-  /* ===== กล่องเลือกบัญชี Google ก่อนเข้าหน้าผู้ดูแล ===== */
-  .acct-mask{position:fixed;inset:0;background:rgba(15,32,50,.55);z-index:9999;display:none;
-    align-items:center;justify-content:center;padding:18px;}
-  .acct-mask.open{display:flex;}
-  .acct-box{background:#fff;border-radius:18px;max-width:430px;width:100%;padding:24px;
-    box-shadow:0 22px 50px rgba(10,35,66,.32);font-family:'Sarabun';}
-  .acct-box h3{font-family:'Kanit';font-size:18px;color:#0D47A1;margin:0 0 6px;}
-  .acct-box p{font-size:12.5px;color:#5C748F;margin:0 0 16px;line-height:1.6;}
-  .acct-box label{display:block;font-size:12px;font-weight:600;color:#42607F;margin-bottom:5px;}
-  .acct-box input{width:100%;border:1px solid #C3DCF2;border-radius:10px;padding:10px 12px;
-    font-family:'Sarabun';font-size:13.5px;color:#25405C;outline:none;box-sizing:border-box;}
-  .acct-box input:focus{border-color:#2196F3;box-shadow:0 0 0 3px rgba(33,150,243,.16);}
-  .acct-go{width:100%;margin-top:11px;background:linear-gradient(135deg,#1E88E5,#0D47A1);color:#fff;
-    border:none;border-radius:11px;padding:12px;font-family:'Kanit';font-size:14px;cursor:pointer;}
-  .acct-go:hover{background:linear-gradient(135deg,#0D47A1,#1E88E5);}
-  .acct-or{display:flex;align-items:center;gap:10px;margin:17px 0 11px;color:#9FB4C9;font-size:11.5px;}
-  .acct-or::before,.acct-or::after{content:"";flex:1;height:1px;background:#E1ECF7;}
-  .acct-slots{display:flex;gap:7px;flex-wrap:wrap;}
-  .acct-slots button{flex:1;min-width:84px;border:1px solid #C3DCF2;background:#F7FBFF;color:#2C5A8D;
-    border-radius:10px;padding:9px 6px;font-family:'Sarabun';font-size:12px;cursor:pointer;}
-  .acct-slots button:hover{background:#E3F1FD;border-color:#7FB8E8;}
-  .acct-tip{font-size:11px;color:#8CA3BA;margin-top:14px;line-height:1.6;}
-  .acct-close{background:none;border:none;color:#7B93AA;font-size:12.5px;cursor:pointer;
-    margin-top:12px;width:100%;padding:6px;}
-  .acct-close:hover{color:#42607F;}
+  /* ===== ป็อปอัปเลือกบัญชี Google (คลิกล้วน ไม่ต้องพิมพ์) ===== */
+  .acct-pop{position:fixed;z-index:9999;display:none;background:#fff;border-radius:14px;
+    box-shadow:0 18px 44px rgba(10,35,66,.3);border:1px solid #E1ECF7;overflow:hidden;
+    width:262px;font-family:'Sarabun';}
+  .acct-pop.open{display:block;}
+  .acct-pop .hd{padding:11px 15px 9px;background:#F4F9FF;border-bottom:1px solid #E1ECF7;}
+  .acct-pop .hd b{font-family:'Kanit';font-size:13px;color:#0D47A1;display:block;}
+  .acct-pop .hd span{font-size:10.5px;color:#7B93AA;}
+  .acct-pop a{display:flex;align-items:center;gap:9px;padding:11px 15px;font-size:13px;
+    color:#25405C;text-decoration:none;border-bottom:1px solid #F1F6FB;transition:.15s;cursor:pointer;}
+  .acct-pop a:last-child{border-bottom:none;}
+  .acct-pop a:hover{background:#EAF4FE;color:#0D47A1;}
+  .acct-pop a .em{font-size:15px;width:19px;text-align:center;}
+  .acct-pop a .sub{font-size:10.5px;color:#93A8BD;margin-left:auto;}
+  .acct-mask2{position:fixed;inset:0;z-index:9998;display:none;}
+  .acct-mask2.open{display:block;}
   .hint-bar{display:flex;align-items:center;gap:8px;margin:0 24px;padding:9px 14px;background:linear-gradient(90deg,#E8F4FE,#F4FAFF);border:1px dashed var(--blue-light);border-radius:11px;font-size:12.5px;color:var(--blue-deep);}
   .hint-bar b{font-family:'Kanit';font-weight:600;}
 
@@ -525,6 +516,10 @@
   .footer-logo{height:46px;width:auto;max-width:180px;background:#fff;padding:7px 11px;border-radius:10px;display:block;margin-bottom:13px;object-fit:contain;}
   .footer-admin{display:inline-block;margin-top:10px;padding:9px 16px;border-radius:20px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);font-size:12.5px;font-weight:600;color:#fff;transition:.25s;}
   .footer-admin:hover{background:#fff;color:var(--blue-deep);}
+  /* ลิงก์สำรอง เผื่อเครื่องที่ล็อกอิน Google หลายบัญชีแล้วเปิดด้วยบัญชีผิด */
+  .admin-switch{display:block;margin-top:8px;font-size:11.5px;color:rgba(255,255,255,.6);
+    text-decoration:underline;text-underline-offset:3px;transition:.2s;}
+  .admin-switch:hover{color:#fff;}
   .qr-box{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:14px 16px;transition:.25s;}
   .qr-box:hover{background:rgba(255,255,255,.16);transform:translateY(-3px);}
   .qr-box img{width:112px;height:112px;background:#fff;padding:7px;border-radius:10px;display:block;flex-shrink:0;}
@@ -945,7 +940,8 @@
       <img class="footer-logo" id="footerLogo" src="logo.png" alt="EN-MSU">
       <h4>E-Service งานโสตทัศนศึกษา</h4>
       <p>คณะวิศวกรรมศาสตร์ มหาวิทยาลัยมหาสารคาม</p>
-      <a class="footer-admin" href="https://script.google.com/a/macros/msu.ac.th/s/AKfycbz3ryLEOy1BilaqATR1K5wAjt-q6mTzMCrnB680Lg8_mCD2Z6E4jZNV582i0UDe1jJDmA/exec" target="_blank" rel="noopener">🔐 เข้าสู่ระบบผู้ดูแล</a>
+      <a class="footer-admin" href="#" target="_blank" rel="noopener">🔐 เข้าสู่ระบบผู้ดูแล</a>
+      <a class="admin-switch" href="#" onclick="return resetAcct(event)">เปลี่ยนบัญชีที่ใช้เข้าระบบ</a>
     </div>
     <div class="footer-col"><h4>ติดต่อเจ้าหน้าที่</h4><p>นายปัญญา จีระฉัตร</p><p>นักวิชาการโสตทัศนศึกษา</p><p>โทรศัพท์: 087-235-9848</p></div>
     <div class="footer-col">
@@ -1834,12 +1830,16 @@ function applyGlobalAssets(){
   var fl=document.getElementById('footerLogo');
   if(fl){fl.onerror=function(){fl.style.display='none';};}
   /* ลิงก์ */
-  /* ปุ่มเข้าสู่ระบบผู้ดูแล: เปิดกล่องเลือกบัญชีก่อน แทนการลิงก์ตรง
-     เพราะเครื่องที่มีหลายบัญชี Google เปิดตรง ๆ แล้วจะใช้บัญชีเริ่มต้นซึ่งมักไม่ใช่บัญชีที่มีสิทธิ์ */
+  /* ปุ่มเข้าสู่ระบบผู้ดูแล
+     โดเมน @msu.ac.th บล็อกการ Deploy แบบ Anyone จึงต้องเข้าด้วยบัญชีที่มีสิทธิ์
+     ครั้งแรกให้เลือกบัญชีหนึ่งครั้ง หลังจากนั้นคลิกเดียวเข้าได้เลย */
   document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){
-    a.href=ADMIN_PAGE_URL;
-    a.removeAttribute('target');
-    a.addEventListener('click',function(ev){ev.preventDefault();openAcct();});
+    a.href=adminUrlFor(savedAcct());
+    a.addEventListener('click',function(ev){
+      if(savedAcct()!==null)return;            /* เคยเลือกไว้แล้ว -> ปล่อยให้ลิงก์ทำงานตามปกติ */
+      ev.preventDefault();
+      openAcctPop(a);
+    });
   });
   document.querySelectorAll('.nav-qr,.qr-box').forEach(function(a){a.href=REQUEST_URL;});
   var navImg=document.querySelector('.nav-qr img'),ftImg=document.querySelector('.qr-box img');
@@ -1859,68 +1859,58 @@ document.addEventListener('DOMContentLoaded',function(){
   },AUTO_MS);
 });
 
-/* ══════════ กล่องเลือกบัญชี Google ══════════ */
-var ADMIN_MAIL_DOMAIN='@msu.ac.th';
-function rememberedMail(){
-  try{return localStorage.getItem('dwms_admin_mail')||'';}catch(e){return '';}
+/* ══════════ เลือกบัญชี Google (คลิกล้วน จำค่าไว้ในเครื่อง) ══════════ */
+function savedAcct(){
+  try{
+    var v=localStorage.getItem('dwms_acct');
+    if(v===null||v==='')return null;
+    return v==='chooser'?'chooser':parseInt(v,10);
+  }catch(e){return null;}
 }
-function openAcct(){
-  var box=document.getElementById('acctMask');if(!box)return;
-  var inp=document.getElementById('acctMail');
-  if(inp&&!inp.value)inp.value=rememberedMail();
-  box.classList.add('open');
-  setTimeout(function(){if(inp)inp.focus();},60);
+function adminUrlFor(who){
+  if(who==='chooser')return 'https://accounts.google.com/AccountChooser?continue='+encodeURIComponent(ADMIN_PAGE_URL);
+  if(typeof who==='number')return ADMIN_PAGE_URL.replace('/macros/s/','/macros/u/'+who+'/s/');
+  return ADMIN_PAGE_URL;
 }
-function closeAcct(){
-  var box=document.getElementById('acctMask');
-  if(box)box.classList.remove('open');
+function openAcctPop(anchorEl){
+  var pop=document.getElementById('acctPop'),mask=document.getElementById('acctMask2');
+  if(!pop)return;
+  var r=anchorEl.getBoundingClientRect();
+  var left=Math.min(Math.max(8,r.left+r.width/2-131),window.innerWidth-270);
+  var top=r.bottom+8;
+  if(top+250>window.innerHeight)top=Math.max(8,r.top-250);   /* ปุ่มอยู่ล่างจอ -> เปิดขึ้นบน */
+  pop.style.left=left+'px';pop.style.top=top+'px';
+  pop.classList.add('open');mask.classList.add('open');
 }
-/* who = 'mail' | ลำดับบัญชี 0,1,2 | null (บัญชีเริ่มต้น) */
-function openAdminAs(who){
-  var url=ADMIN_PAGE_URL;
-  if(!/^https:\/\/script\.google\.com\/macros\/(u\/\d+\/)?s\/[\w-]+\/exec/.test(url)){
-    alert('ADMIN_URL ในไฟล์ DWMS.html ไม่ถูกต้อง\nต้องเป็นรูปแบบ https://script.google.com/macros/s/<ID>/exec');
-    return;
-  }
-  if(who==='mail'){
-    var inp=document.getElementById('acctMail');
-    var mail=(inp.value||'').trim();
-    if(!mail){inp.focus();return;}
-    if(mail.indexOf('@')===-1)mail+=ADMIN_MAIL_DOMAIN;   /* พิมพ์แค่ชื่อผู้ใช้ก็พอ */
-    try{localStorage.setItem('dwms_admin_mail',mail);}catch(e){}
-    url+=(url.indexOf('?')===-1?'?':'&')+'authuser='+encodeURIComponent(mail);
-  }else if(typeof who==='number'){
-    /* แทรกลำดับบัญชีลงใน path ตามรูปแบบที่ Google ใช้ */
-    url=url.replace('/macros/s/','/macros/u/'+who+'/s/');
-  }
-  closeAcct();
+function closeAcctPop(){
+  document.getElementById('acctPop').classList.remove('open');
+  document.getElementById('acctMask2').classList.remove('open');
+}
+function pickAcct(who){
+  try{localStorage.setItem('dwms_acct',String(who));}catch(e){}
+  var url=adminUrlFor(who);
+  document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){a.href=url;});
+  closeAcctPop();
   window.open(url,'_blank','noopener');
 }
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAcct();});
+function resetAcct(ev){
+  ev.preventDefault();
+  try{localStorage.removeItem('dwms_acct');}catch(e){}
+  document.querySelectorAll('.nav-admin,.footer-admin').forEach(function(a){a.href=ADMIN_PAGE_URL;});
+  openAcctPop(document.querySelector('.footer-admin')||ev.target);
+  return false;
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAcctPop();});
 </script>
 
-<!-- ══════════ กล่องเลือกบัญชี Google ก่อนเข้าหน้าผู้ดูแล ══════════ -->
-<div class="acct-mask" id="acctMask" onclick="if(event.target===this)closeAcct()">
-  <div class="acct-box">
-    <h3>🔐 เข้าสู่ระบบผู้ดูแล</h3>
-    <p>เครื่องที่ล็อกอิน Google ไว้หลายบัญชี ต้องระบุว่าจะเปิดด้วยบัญชีไหน มิฉะนั้นเบราว์เซอร์จะใช้บัญชีเริ่มต้นและเปิดไม่ได้</p>
-
-    <label for="acctMail">บัญชีอีเมลของมหาวิทยาลัย</label>
-    <input id="acctMail" placeholder="ชื่อผู้ใช้@msu.ac.th" autocomplete="username"
-           onkeydown="if(event.key==='Enter')openAdminAs('mail')">
-    <button class="acct-go" onclick="openAdminAs('mail')">เปิดด้วยบัญชีนี้</button>
-
-    <div class="acct-or">หรือเลือกตามลำดับบัญชีในเบราว์เซอร์</div>
-    <div class="acct-slots">
-      <button type="button" onclick="openAdminAs(0)">บัญชีที่ 1</button>
-      <button type="button" onclick="openAdminAs(1)">บัญชีที่ 2</button>
-      <button type="button" onclick="openAdminAs(2)">บัญชีที่ 3</button>
-      <button type="button" onclick="openAdminAs(null)">บัญชีเริ่มต้น</button>
-    </div>
-
-    <div class="acct-tip">ลำดับบัญชีดูได้จากรูปโปรไฟล์มุมขวาบนของ Chrome เรียงจากบนลงล่าง · ระบบจำอีเมลที่กรอกไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งไปที่ใด</div>
-    <button class="acct-close" onclick="closeAcct()">ปิดหน้าต่างนี้</button>
-  </div>
+<!-- ══════════ ป็อปอัปเลือกบัญชี Google (คลิกล้วน) ══════════ -->
+<div class="acct-mask2" id="acctMask2" onclick="closeAcctPop()"></div>
+<div class="acct-pop" id="acctPop">
+  <div class="hd"><b>เลือกบัญชีที่จะใช้เข้าระบบ</b><span>เลือกครั้งเดียว ครั้งต่อไปเข้าได้ทันที</span></div>
+  <a onclick="pickAcct('chooser')"><span class="em">🔵</span> เลือกจากรายชื่อบัญชี Google<span class="sub">แนะนำ</span></a>
+  <a onclick="pickAcct(0)"><span class="em">1️⃣</span> บัญชีที่ 1 ในเบราว์เซอร์</a>
+  <a onclick="pickAcct(1)"><span class="em">2️⃣</span> บัญชีที่ 2 ในเบราว์เซอร์</a>
+  <a onclick="pickAcct(2)"><span class="em">3️⃣</span> บัญชีที่ 3 ในเบราว์เซอร์</a>
 </div>
 
 </body>
