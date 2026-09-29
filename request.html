@@ -19,6 +19,27 @@
  .req{color:#e11d48}
  .hidden{display:none!important}
  .honeypot{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
+
+ /* ── กล่องค้นหาชื่อบุคลากร ── */
+ .combo{position:relative}
+ .combo-list{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:60;background:#fff;
+   border:1px solid #cbd5e1;border-radius:14px;box-shadow:0 14px 34px rgba(21,101,192,.2);
+   max-height:300px;overflow:auto;padding:5px;-webkit-overflow-scrolling:touch}
+ .combo-item{padding:.6rem .7rem;border-radius:10px;cursor:pointer;line-height:1.4}
+ .combo-item:hover,.combo-item.act{background:var(--bp)}
+ .combo-nm{font-weight:600;font-size:.95rem;color:#153A66}
+ .combo-sub{font-size:.75rem;color:#64748B;margin-top:1px}
+ .combo-mail{font-size:.75rem;color:var(--bd)}
+ .combo-empty{padding:.75rem;font-size:.85rem;color:#94a3b8;line-height:1.5}
+ .combo-hint{font-size:.7rem;color:#94a3b8;padding:.4rem .7rem;border-top:1px dashed #e2e8f0;margin-top:3px}
+ mark{background:#FFF1A8;color:inherit;border-radius:3px;padding:0 1px}
+ .dir-state{font-size:.75rem;margin-top:.35rem}
+ .mail-ok{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:#2E7D32;margin-top:.35rem}
+ .opt-box{border:1px dashed #cbd5e1;background:#fafcff;border-radius:14px;padding:1rem}
+ .opt-head{font-family:'Kanit';font-size:.95rem;color:var(--bd);display:flex;align-items:center;gap:.5rem}
+ .opt-tag{font-family:'Sarabun';font-size:.7rem;font-weight:600;color:#64748B;
+   background:#eef2f7;border-radius:20px;padding:.15rem .6rem}
+ .opt-note{font-size:.78rem;color:#7b8ea3;line-height:1.6;margin:.35rem 0 .9rem}
 </style>
 </head>
 <body>
@@ -39,6 +60,27 @@
    <!-- honeypot: ฟิลด์หลอกกันบอท ผู้ใช้จริงจะมองไม่เห็นและไม่กรอก -->
    <div class="honeypot" aria-hidden="true">
     <label>Website</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+   </div>
+
+   <div class="opt-box mb-5">
+    <div class="opt-head">ข้อมูลผู้ขอรับบริการ <span class="opt-tag">ไม่บังคับ</span></div>
+    <p class="opt-note">กรอกหรือไม่กรอกก็ส่งคำขอได้ตามปกติ · ถ้ากรอกอีเมลไว้ ระบบจะส่งเลขที่งาน ลิงก์ติดตามสถานะ และแจ้งเตือนทุกครั้งที่งานมีความคืบหน้าไปให้</p>
+
+    <div class="combo mb-3">
+     <label>ชื่อ-นามสกุล</label>
+     <input id="fRequester" autocomplete="off"
+            placeholder="บุคลากรพิมพ์ชื่อ 1-3 ตัวอักษรเพื่อค้นหา · นิสิตหรือบุคคลทั่วไปพิมพ์เองได้"
+            oninput="comboRender(this.value)" onfocus="comboRender(this.value)"
+            onblur="setTimeout(comboClose,150)" onkeydown="comboKey(event)">
+     <div id="reqList" class="combo-list hidden"></div>
+     <div id="dirState" class="dir-state text-slate-400">กำลังโหลดรายชื่อบุคลากร…</div>
+    </div>
+
+    <div>
+     <label>อีเมลสำหรับรับแจ้งผล</label>
+     <input type="email" id="fEmail" autocomplete="email" placeholder="name@msu.ac.th หรืออีเมลอื่นที่ใช้ได้">
+     <div id="mailAuto" class="mail-ok hidden">✓ กรอกอีเมลให้อัตโนมัติจากรายชื่อแล้ว</div>
+    </div>
    </div>
 
    <div class="mb-4">
@@ -100,14 +142,213 @@
 </div>
 
 <script>
-// แก้เป็น URL ของ Web App หลังสั่ง Deploy (ใน Apps Script: Deploy > Manage
-// deployments > ไอคอนดินสอ > Version: New > Deploy) — คัดลอก URL ที่ลงท้ายด้วย
-// "/exec" มาวางแทนที่นี่ (ไม่ใช่ URL ของ Google Sheets และไม่ใช่ URL ของตัว
-// Apps Script editor เอง) ต้องตั้ง "Who has access" เป็น "Anyone" (ไม่ใช่
-// "Anyone with Google account") ไม่เช่นนั้นผู้ใช้จะยังถูกบังคับให้ล็อกอิน Gmail
-// เหมือน Google Form เดิม — และทุกครั้งที่แก้ Code.gs ต้องกด Deploy เวอร์ชันใหม่
-// ด้วย ไม่งั้น Web App ที่ใช้งานจริงจะยังรันโค้ดเวอร์ชันเก่าอยู่
+/* ══════════════════════════════════════════════════════════════════
+   ⚠ เปลี่ยนปลายทางเป็นโปรเจกต์ DWMS Admin แล้ว
+
+   ของเดิมชี้ไปที่ deployment เก่า (AKfycbyfu_pvA4Mg...) ซึ่งเป็นโค้ดชุดก่อน
+   ที่ยังไม่รู้จักช่อง "ชื่อผู้ขอรับบริการ" และ "อีเมล" ถ้าไม่เปลี่ยน ข้อมูล
+   สองช่องใหม่นี้จะถูกส่งไปแล้วทิ้งหายไปเฉย ๆ ไม่มีใครเก็บ
+
+   ปลายทางใหม่คือ DWMS Admin ซึ่งจะ: บันทึกชื่อและอีเมลลงชีท ·
+   ออกเลขที่งาน AV-xxxx ให้อัตโนมัติ · ส่งอีเมลยืนยันพร้อม QR ติดตามสถานะ
+   ไปหาผู้ขอรับบริการทันที · และแจ้งเตือนทุกครั้งที่สถานะเปลี่ยน
+
+   ★ หลังอัปโหลดไฟล์นี้ ให้ทดสอบส่งคำขอ 1 รายการทันที
+     ถ้าขึ้นหน้าให้ล็อกอิน Google หรือส่งไม่สำเร็จ แปลว่า deployment ของ
+     DWMS Admin ยังไม่ได้ตั้ง "Who has access: Anyone" ให้กลับไปใช้ URL เดิม
+     ที่เก็บไว้ในบรรทัดล่างนี้ก่อน แล้วแจ้งผมเพื่อหาทางอื่น
+
+   URL เดิม (สำรองไว้เผื่อต้องย้อนกลับ):
+   https://script.google.com/macros/s/AKfycbxTurcLkyGnBFWFEk6OnZCnF7ro_zrRRKU_goPx90GLRf_JMmSkDsjpWh5jiBs2ocU7Ww/exec
+   ══════════════════════════════════════════════════════════════════ */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfu_pvA4MgDVzyUnW94aUo3doGvrARUY9_orz8847bdgTjwty2wakSU5NTj0sNTYQn7Q/exec';
+
+/* ══════════════════════════════════════════════════════════
+   ทะเบียนบุคลากร — อ่านตรงจากสเปรดชีตรายชื่อผ่าน gviz (JSONP)
+   ไม่ต้องผ่าน Apps Script จึงไม่ต้องล็อกอินและไม่ต้อง Deploy ใหม่
+   ชีตต้องแชร์แบบ "ทุกคนที่มีลิงก์ · ผู้ดู" (ตอนนี้แชร์ไว้แล้ว)
+   ══════════════════════════════════════════════════════════ */
+const DIR_SHEET_ID = '1aHKzP3MQw7YJNTIhIqHgFeq_eM1_eHNBceHZUVPCoTw';
+const DIR_GID = 0;
+let DIR = [];
+
+/* ตัดคำนำหน้าออกก่อนเทียบ จะได้พิมพ์ "สมชาย" แล้วเจอ "นายสมชาย" ด้วย */
+const TITLES = ['ศาสตราจารย์ ดร.','รองศาสตราจารย์ ดร.','ผู้ช่วยศาสตราจารย์ ดร.','อาจารย์ ดร.',
+  'ศาสตราจารย์','รองศาสตราจารย์','ผู้ช่วยศาสตราจารย์','อาจารย์',
+  'ศ.ดร.','รศ.ดร.','ผศ.ดร.','ศ.','รศ.','ผศ.','อ.','ดร.',
+  'นางสาว','น.ส.','นาย','นาง','คุณ','ว่าที่ร้อยตรี','ว่าที่ ร.ต.'];
+function stripTitle(s){
+  let t = String(s||'').trim();
+  for (let g=0; g<4; g++){
+    let hit=false;
+    for (const p of TITLES){ if (t.indexOf(p)===0){ t=t.slice(p.length).trim(); hit=true; break; } }
+    if (!hit) break;
+  }
+  return t;
+}
+const nk = s => stripTitle(s).toLowerCase().replace(/\s+/g,' ').trim();
+const compact = s => nk(s).replace(/[\s.\u2013\u2014\-_]/g,'');
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function gvizLoad(sheetId,gid,onOK,onFail){
+  const cb = 'reqDir_' + Math.random().toString(36).slice(2);
+  let done = false;
+  const s = document.createElement('script');
+  const t = setTimeout(()=>{ if(!done){done=true;clean();onFail();} }, 12000);
+  function clean(){ try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
+    if (s.parentNode) s.parentNode.removeChild(s); clearTimeout(t); }
+  window[cb] = function(json){
+    if (done) return; done = true;
+    try{
+      const labels = json.table.cols.map(c=>c.label||'');
+      const rows = json.table.rows.map(r=>r.c.map(c=>{
+        if(!c) return '';
+        if(c.f!=null) return String(c.f);
+        return c.v!=null ? String(c.v) : '';
+      }));
+      clean(); onOK(labels, rows);
+    }catch(e){ clean(); onFail(); }
+  };
+  s.onerror = ()=>{ if(!done){done=true;clean();onFail();} };
+  s.src = 'https://docs.google.com/spreadsheets/d/'+sheetId+'/gviz/tq?gid='+gid+
+          '&tqx=out:json;responseHandler:'+cb+'&_='+Date.now();
+  document.body.appendChild(s);
+}
+
+function colIdx(labels, keys){
+  for (let i=0;i<labels.length;i++){
+    const h = String(labels[i]).toLowerCase();
+    for (const k of keys) if (h.indexOf(String(k).toLowerCase()) !== -1) return i;
+  }
+  return -1;
+}
+
+function loadDirectory(){
+  const state = document.getElementById('dirState');
+  gvizLoad(DIR_SHEET_ID, DIR_GID, function(labels, rows){
+    const cName = colIdx(labels, ['ชื่อ - นามสกุล','ชื่อ-นามสกุล','ชื่อ']);
+    const cMail = colIdx(labels, ['e-mail','email','อีเมล']);
+    const cTitle = colIdx(labels, ['ตำแหน่งทางวิชาการ']);
+    const cPos  = colIdx(labels, ['ตำแหน่ง']);
+    const cDept = colIdx(labels, ['หน่วยงาน','สาขา']);
+    const seen = {};
+    DIR = [];
+    rows.forEach(function(r){
+      const name = cName>=0 ? String(r[cName]||'').trim() : '';
+      if (!name) return;
+      const email = cMail>=0 ? String(r[cMail]||'').replace(/\s+/g,'') : '';
+      const key = name+'|'+email.toLowerCase();
+      if (seen[key]) return; seen[key]=true;
+      const parts = nk(name).split(' ').filter(Boolean);
+      DIR.push({
+        name:name, email:email,
+        title: cTitle>=0 ? String(r[cTitle]||'').trim() : '',
+        position: cPos>=0 ? String(r[cPos]||'').trim() : '',
+        dept: cDept>=0 ? String(r[cDept]||'').trim() : '',
+        _name: nk(name), _c: compact(name),
+        _first: parts[0]||'', _last: parts.slice(1).join(' '),
+        _lastc: compact(parts.slice(1).join(' ')),
+        _email: email.toLowerCase(),
+        _dept: nk(cDept>=0 ? r[cDept] : ''), _pos: nk(cPos>=0 ? r[cPos] : '')
+      });
+    });
+    state.textContent = 'พร้อมค้นหาจากรายชื่อบุคลากร ' + DIR.length + ' คน';
+    state.className = 'dir-state text-slate-400';
+  }, function(){
+    DIR = [];
+    state.innerHTML = 'โหลดรายชื่อบุคลากรไม่สำเร็จ — พิมพ์ชื่อและอีเมลเองได้ตามปกติ ' +
+      '<button type="button" onclick="loadDirectory()" class="underline">ลองใหม่</button>';
+    state.className = 'dir-state text-rose-500';
+  });
+}
+
+/* ให้คะแนนความตรง — ชื่อมาก่อนเสมอ ตำแหน่ง/สาขาเป็นตัวช่วยท้ายสุด */
+function scorePerson(p, qn, qc){
+  let s = 0;
+  if (p._name===qn || p._c===qc) s = 1000;
+  else if (p._first.indexOf(qn)===0) s = 900;
+  else if (p._c.indexOf(qc)===0) s = 880;
+  else if (p._last.indexOf(qn)===0 || p._lastc.indexOf(qc)===0) s = 860;
+  else if (p._c.indexOf(qc)!==-1) s = 760;
+  if (!s){
+    const toks = qn.split(' ').filter(Boolean);
+    if (toks.length>1 && toks.every(t=>p._first.indexOf(t)===0||p._last.indexOf(t)===0||p._c.indexOf(compact(t))!==-1)) s = 700;
+  }
+  if (!s && p._email){
+    if (p._email.indexOf(qc)===0) s = 430;
+    else if (p._email.indexOf(qc)!==-1) s = 400;
+  }
+  if (!s && (p._dept.indexOf(qn)!==-1 || p._pos.indexOf(qn)!==-1)) s = 120;
+  if (!s) return 0;
+  return s + Math.max(0, 60 - p._c.length)/1000;
+}
+function searchPeople(q, limit){
+  const qn = nk(q), qc = compact(q);
+  if (!qc) return [];
+  const scored = [];
+  for (const p of DIR){ const s = scorePerson(p,qn,qc); if (s>0) scored.push({p,s}); }
+  scored.sort((a,b)=>b.s-a.s);
+  const strong = scored.filter(x=>x.s>=200);
+  const list = strong.length>=5 ? strong : strong.concat(scored.filter(x=>x.s<200));
+  return list.slice(0, limit||8).map(x=>x.p);
+}
+function hl(text,q){
+  const t = String(text||''), qn = nk(q);
+  if (!qn) return esc(t);
+  const i = t.toLowerCase().indexOf(qn);
+  if (i===-1) return esc(t);
+  return esc(t.slice(0,i))+'<mark>'+esc(t.slice(i,i+qn.length))+'</mark>'+esc(t.slice(i+qn.length));
+}
+
+let comboIdx = -1, comboItems = [];
+function comboRender(q){
+  const box = document.getElementById('reqList');
+  comboItems = searchPeople(q, 8);
+  comboIdx = -1;
+  if (!String(q).trim()){ box.classList.add('hidden'); box.innerHTML=''; return; }
+  if (!comboItems.length){
+    box.innerHTML = '<div class="combo-empty">ไม่พบชื่อนี้ในทะเบียนบุคลากร<br>พิมพ์ชื่อและอีเมลเองได้เลย</div>';
+    box.classList.remove('hidden'); return;
+  }
+  box.innerHTML = comboItems.map((p,i)=>
+    '<div class="combo-item" onmousedown="comboPick('+i+')">'+
+      '<div class="combo-nm">'+hl(p.name,q)+'</div>'+
+      '<div class="combo-sub">'+esc([p.title,p.position,p.dept].filter(Boolean).join(' · '))+'</div>'+
+      '<div class="combo-mail">'+esc(p.email||'— ไม่มีอีเมลในทะเบียน —')+'</div>'+
+    '</div>').join('') +
+    '<div class="combo-hint">แตะเพื่อเลือก · ↑ ↓ เลื่อน · Enter เลือก</div>';
+  box.classList.remove('hidden');
+}
+function comboPick(i){
+  const p = comboItems[i];
+  if (!p) return;
+  document.getElementById('fRequester').value = p.name;
+  const mail = document.getElementById('fEmail');
+  const note = document.getElementById('mailAuto');
+  mail.value = p.email || '';
+  note.classList.toggle('hidden', !p.email);
+  if (!p.email){ mail.focus(); }
+  comboClose();
+}
+function comboClose(){
+  document.getElementById('reqList').classList.add('hidden');
+  comboIdx = -1;
+}
+function comboMove(d){
+  const nodes = document.querySelectorAll('#reqList .combo-item');
+  if (!nodes.length) return;
+  comboIdx = (comboIdx + d + nodes.length) % nodes.length;
+  nodes.forEach((n,i)=>n.classList.toggle('act', i===comboIdx));
+  nodes[comboIdx].scrollIntoView({block:'nearest'});
+}
+function comboKey(e){
+  const open = !document.getElementById('reqList').classList.contains('hidden');
+  if (e.key==='ArrowDown'){ e.preventDefault(); open ? comboMove(1) : comboRender(e.target.value); }
+  else if (e.key==='ArrowUp'){ e.preventDefault(); comboMove(-1); }
+  else if (e.key==='Enter'){ if (open && comboIdx>=0){ e.preventDefault(); comboPick(comboIdx); } }
+  else if (e.key==='Escape'){ comboClose(); }
+}
+loadDirectory();
 
 function submitRequest(ev){
   ev.preventDefault();
@@ -125,11 +366,18 @@ function submitRequest(ev){
   if (!date) { showError('กรุณาระบุวันที่ให้บริการ'); return false; }
   if (!room) { showError('กรุณาระบุห้อง/สถานที่'); return false; }
 
+  // ชื่อและอีเมลไม่บังคับ — นิสิตหรือบุคคลทั่วไปส่งคำขอโดยไม่ระบุตัวตนก็ได้
+  const requester = document.getElementById('fRequester').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('รูปแบบอีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง หรือเว้นว่างไว้ก็ได้'); return false; }
+
   const payload = new URLSearchParams({
     date: date,
     type: document.getElementById('fType').value,
     detail: document.getElementById('fDetail').value.trim(),
     room: room,
+    requester: requester,
+    email: email,
     website: document.getElementById('website').value // honeypot
   });
 
@@ -171,6 +419,7 @@ function showError(msg){
 
 function resetForm(){
   document.getElementById('reqForm').reset();
+  document.getElementById('mailAuto').classList.add('hidden');
   document.getElementById('doneCard').classList.add('hidden');
   document.getElementById('formCard').classList.remove('hidden');
 }
