@@ -350,6 +350,9 @@ function comboKey(e){
 }
 loadDirectory();
 
+/* รหัสคำขอปัจจุบัน — สร้างใหม่ทุกครั้งที่เริ่มกรอกคำขอใบใหม่ */
+let currentNonce = '';
+
 function submitRequest(ev){
   ev.preventDefault();
   const btn = document.getElementById('submitBtn');
@@ -371,7 +374,14 @@ function submitRequest(ev){
   const email = document.getElementById('fEmail').value.trim();
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('รูปแบบอีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง หรือเว้นว่างไว้ก็ได้'); return false; }
 
+  /* รหัสคำขอ — ใช้ค่าเดิมตลอดการส่งครั้งนี้ รวมถึงตอนที่ระบบยิงซ้ำแบบ no-cors
+     ฝั่งเซิร์ฟเวอร์เห็นรหัสซ้ำจะตอบผลเดิมกลับโดยไม่เขียนแถวใหม่ จึงไม่เกิดเรื่องซ้ำ */
+  if (!currentNonce) {
+    currentNonce = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
   const payload = new URLSearchParams({
+    nonce: currentNonce,
     date: date,
     type: document.getElementById('fType').value,
     detail: document.getElementById('fDetail').value.trim(),
@@ -407,6 +417,7 @@ function submitRequest(ev){
 }
 
 function showDone(){
+  currentNonce = '';   /* ใบถัดไปต้องได้รหัสใหม่ ไม่งั้นจะถูกมองว่าเป็นคำขอซ้ำ */
   document.getElementById('formCard').classList.add('hidden');
   document.getElementById('doneCard').classList.remove('hidden');
 }
@@ -418,6 +429,7 @@ function showError(msg){
 }
 
 function resetForm(){
+  currentNonce = '';
   document.getElementById('reqForm').reset();
   document.getElementById('mailAuto').classList.add('hidden');
   document.getElementById('doneCard').classList.add('hidden');
