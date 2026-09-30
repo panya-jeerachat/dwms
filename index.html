@@ -1714,7 +1714,22 @@ function renderJobModal(r){
       '<dt>ระยะเวลา</dt><dd>'+r.duration+' นาที ('+(r.duration/60).toFixed(2)+' ชม.)</dd>'+
       '<dt>ภาระงาน</dt><dd>'+r.weight.toFixed(2)+' หน่วย</dd>'+
       '<dt>หมายเหตุ</dt><dd>'+esc(r.note)+'</dd>'+
-      (r.fileUrl?'<dt>ไฟล์ข้อมูล</dt><dd><a href="'+esc(r.fileUrl)+'" target="_blank" rel="noopener" style="color:#1565C0;font-weight:600;text-decoration:underline;">📎 เปิดไฟล์ประกอบ</a></dd>':'')+
+      (function(){
+        /* ช่องไฟล์แนบเก็บได้หลายไฟล์ บรรทัดละ 1 ลิงก์ */
+        /* แยกให้ได้ทุกรูปแบบ รวมถึงข้อมูลที่ลิงก์ต่อติดกันหรือคั่นด้วยเว้นวรรค */
+        var seen={};
+        var fs=String(r.fileUrl||'').replace(/(https?:\/{1,2})/gi,'\n$1').split(/\s+/)
+          .map(function(x){return x.trim().replace(/^(https?:)\/(?!\/)/i,'$1//');})
+          .filter(function(u){if(!/^https?:\/\/\S+/i.test(u)||seen[u])return false;seen[u]=true;return true;});
+        if(!fs.length)return '';
+        var items=fs.map(function(u,i){
+          var nm;
+          try{nm=decodeURIComponent(String(u).split('/').pop().split('?')[0]);}catch(e){nm='';}
+          if(!nm)nm='ไฟล์แนบ '+(i+1);
+          return '<div style="margin-bottom:3px;"><a href="'+esc(u)+'" target="_blank" rel="noopener" style="color:#1565C0;font-weight:600;text-decoration:underline;word-break:break-all;">📎 '+esc(nm)+'</a></div>';
+        }).join('');
+        return '<dt>ไฟล์แนบหลักฐาน ('+fs.length+' ไฟล์)</dt><dd>'+items+'</dd>';
+      })()+
       (r.rating?'<dt>ความพึงพอใจ</dt><dd><span style="color:#F9A825;letter-spacing:2px;">'+'★'.repeat(r.rating)+'</span><span style="color:#D7E3EF;letter-spacing:2px;">'+'★'.repeat(5-r.rating)+'</span> <span style="color:#64748B;font-weight:400;">('+r.rating+'/5)</span>'+(r.feedback?'<div style="color:#4A5B6B;font-weight:400;margin-top:3px;">"'+esc(r.feedback)+'"</div>':'')+'</dd>':'')+
       '<dt>ผู้ให้บริการ</dt><dd>นายปัญญา จีระฉัตร · นักวิชาการโสตทัศนศึกษา · โทร. 087-235-9848</dd>'+
     '</dl>'+
