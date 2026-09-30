@@ -27,6 +27,17 @@
   .print-only{display:none;}
 
   /* NAVBAR */
+  /* กันทั้งหน้าเลื่อนซ้ายขวาบนมือถือ (อาการโยกตอนเลื่อนขึ้นลงจนเวียนหัว)
+     ใช้ clip ไม่ใช่ hidden เพราะ hidden จะทำให้แถบเมนูด้านบนเลิกติดหัวจอ (sticky) ในบางเบราว์เซอร์
+     body ใส่ hidden สำรองไว้สำหรับเบราว์เซอร์รุ่นเก่าที่ยังไม่รู้จัก clip */
+  html{overflow-x:clip;}
+  body{overflow-x:hidden;overflow-x:clip;}
+  img,svg,video,canvas{max-width:100%;}
+  /* iPhone จะซูมหน้าจอเข้าเองทุกครั้งที่แตะช่องกรอกที่ตัวอักษรเล็กกว่า 16px
+     พอซูมแล้วหน้าจะปัดข้างได้ เลื่อนขึ้นลงก็โยกซ้ายขวาตลอด — จึงตั้งเป็น 16px บนจอมือถือ */
+  @media (max-width:760px){
+    input,select,textarea{font-size:16px!important;}
+  }
   .navbar{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:3px solid var(--blue);box-shadow:0 2px 12px rgba(21,101,192,.08);}
   .nav-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;flex-wrap:wrap;gap:12px;}
   .brand{display:flex;align-items:center;gap:13px;}
@@ -358,6 +369,14 @@
   .bar-x b{display:block;color:var(--gray-700);font-weight:600;}
   .bar-tip{position:absolute;bottom:104%;left:50%;transform:translateX(-50%) translateY(6px);background:var(--blue-deep);color:#fff;font-size:11.5px;padding:8px 11px;border-radius:9px;white-space:nowrap;opacity:0;pointer-events:none;transition:.22s;z-index:5;box-shadow:0 8px 18px rgba(13,71,161,.32);}
   .bar-col:hover .bar-tip{opacity:1;transform:translateX(-50%) translateY(0);}
+  /* แท่งริมจอ: ยึดกล่องข้อความกับขอบด้านใน */
+  .bar-col.tip-l .bar-tip{left:0;transform:translateY(6px);}
+  .bar-col.tip-l:hover .bar-tip{transform:translateY(0);}
+  .bar-col.tip-r .bar-tip{left:auto;right:0;transform:translateY(6px);}
+  .bar-col.tip-r:hover .bar-tip{transform:translateY(0);}
+  /* กล่องข้อความที่ซ่อนอยู่ไม่ควรกินพื้นที่ — ซ่อนจริงจนกว่าจะแตะ/ชี้ */
+  .bar-tip{visibility:hidden;}
+  .bar-col:hover .bar-tip{visibility:visible;}
   .chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:11.5px;color:var(--gray-500);}
   .chart-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px;}
 
@@ -1283,7 +1302,11 @@ function renderBars(){
   var max=Math.max.apply(null,vals)||1,peak=vals.indexOf(max),last=MONTHLY.length-1;
   MONTHLY.forEach(function(r,idx){
     var v=r[curMetric]||0,pct=Math.max((v/max)*100,2.5),sm=shortMonth(r.m);
-    var col=document.createElement('div');col.className='bar-col';
+    /* กล่องข้อความของแท่งริมซ้าย/ขวาต้องชิดขอบด้านใน ไม่งั้นจะล้นออกนอกจอ
+       ทำให้ทั้งหน้ากว้างเกินจอมือถือ เลื่อนขึ้นลงแล้วโยกซ้ายขวา และอ่านข้อความไม่ครบ */
+    var third=MONTHLY.length/3;
+    var edge=idx<third?' tip-l':(idx>=MONTHLY.length-third?' tip-r':'');
+    var col=document.createElement('div');col.className='bar-col'+edge;
     col.innerHTML='<div class="bar-tip"><b>'+r.m+'</b><br>'+met.label+': '+fmt(v,met.dec)+' '+met.unit+
       '<br>ให้บริการ '+fmt(r.n)+' ครั้ง · สำเร็จ '+r.rate.toFixed(2)+'%<br>มูลค่าที่ประหยัด '+fmt(r.money)+' บาท</div>'+
       '<div class="bar-val">'+fmt(v,met.dec)+'</div>'+
