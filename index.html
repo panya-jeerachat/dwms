@@ -424,87 +424,106 @@
   .gauge svg{transform:rotate(-90deg);}
   .gauge .ring{fill:none;stroke:#EDF3F9;stroke-width:16;}
   .gauge .prog{fill:none;stroke:url(#gaugeGrad);stroke-width:16;stroke-linecap:round;transition:stroke-dashoffset 1.8s cubic-bezier(.22,1,.36,1);}
-  /* ══ เส้นทางการกำกับติดตามงานบริการ (ภาพ 3 มิติ) ══
-     เคลื่อนไหวนุ่มนวล ไม่กะพริบ · เล่นเฉพาะตอนมองเห็น · กดหยุดได้ · เคารพการตั้งค่าลดการเคลื่อนไหว */
+  /* ══ เส้นทางการกำกับติดตามงานบริการ — การ์ดครบ 6 ขั้น + กล่อง 3 มิติบนเส้นทาง ══
+     คอม: การ์ดเรียงแถวบน กล่องไต่ขึ้นจากซ้ายไปขวาด้านล่าง
+     มือถือ: ไทม์ไลน์แนวตั้ง กล่องซ้าย การ์ดขวา (ข้อความครบทุกขั้นเหมือนกัน)
+     เคลื่อนไหวนุ่มนวล ไม่กะพริบ · เล่นเฉพาะตอนมองเห็น · กดหยุดได้ */
   .wf{max-width:1300px;margin:0 auto 22px;padding:0 24px;box-sizing:border-box;}
-  .wf-card{border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 14px 36px rgba(13,71,161,.14);}
-  .wf-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;
-    padding:20px 22px 14px;background:linear-gradient(120deg,#0B2E66,#0D47A1 55%,#1565C0);color:#fff;}
-  .wf-head h2{font-family:'Kanit';font-size:20px;font-weight:600;margin:0 0 4px;}
-  .wf-head p{margin:0;font-size:12.5px;opacity:.86;line-height:1.6;}
-  .wf-play{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:22px;
-    padding:8px 15px;font-family:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap;transition:background .2s;}
-  .wf-play:hover{background:rgba(255,255,255,.24);}
-  @property --wf-glow{syntax:'<color>';inherits:true;initial-value:rgba(30,136,229,.7);}
-  .wf-stage{position:relative;background-color:#081C3D;
-    background-image:radial-gradient(120% 90% at 50% 0%,var(--wf-glow) 0%,rgba(13,42,87,.95) 46%,#081C3D 100%);
-    transition:--wf-glow 1s ease;padding:6px 8px 4px;}
-  /* ภาพและป้ายอยู่ในกรอบเดียวกัน สัดส่วนเท่าภาพพอดี ป้ายจึงตรงกับกล่องทุกขนาดจอ */
-  .wf-inner{position:relative;margin:0 auto;width:100%;}
-  .wf-stage svg{display:block;width:100%;height:auto;overflow:hidden;}
-  .wf-labels{position:absolute;inset:0;pointer-events:none;}
-  .wf-lbl{position:absolute;transform:translate(-50%,-100%);text-align:center;color:#fff;width:clamp(124px,13.5vw,176px);
-    transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .45s;opacity:.82;}
-  .wf-lbl .n{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.3px;padding:1px 8px;border-radius:10px;
-    background:rgba(255,255,255,.16);margin-bottom:3px;}
-  .wf-lbl .t{font-family:'Kanit';font-size:13.5px;line-height:1.25;text-shadow:0 2px 8px rgba(0,0,0,.45);}
-  .wf-lbl .v{font-size:12px;margin-top:2px;color:#CFE6FF;}
-  .wf-lbl .v b{font-size:15px;color:#fff;}
-  .wf-lbl.on{opacity:1;transform:translate(-50%,calc(-100% - 6px));}
-  /* ป้ายของกล่องแถวล่าง วางไว้ใต้กล่อง ไม่ให้ทับกล่องแถวบน */
-  .wf-lbl.below{transform:translate(-50%,0);}
-  .wf-lbl.below.on{transform:translate(-50%,6px);}
-  .wf-lbl.on .n{background:var(--c);}
-  .wf-blk{cursor:pointer;outline:none;}
-  .wf-blk .lift{transition:transform .45s cubic-bezier(.22,1,.36,1);}
-  .wf-blk.on .lift{transform:translateY(-9px);}
-  .wf-blk .top{transition:filter .45s;}
-  .wf-blk.on .top{filter:brightness(1.18) saturate(1.1);}
-  .wf-blk:focus-visible .top{stroke:#fff;stroke-width:2.5;}
-  .wf-steps{display:flex;gap:6px;padding:12px 14px 4px;overflow:hidden;flex-wrap:wrap;justify-content:center;}
-  .wf-chip{display:flex;align-items:center;gap:6px;border:1px solid #DCE6F2;background:#F7FAFD;color:#42607F;border-radius:22px;
-    padding:6px 11px 6px 7px;font-family:inherit;font-size:12px;cursor:pointer;transition:background .25s,border-color .25s,color .25s;}
-  .wf-chip i{font-style:normal;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:11px;font-weight:700;color:#fff;background:var(--c);flex-shrink:0;}
-  .wf-chip:hover{border-color:var(--c);}
-  .wf-chip.on{background:var(--c);border-color:var(--c);color:#fff;}
-  .wf-chip.on i{background:rgba(255,255,255,.28);}
-  .wf-detail{padding:12px 22px 20px;}
-  .wf-dcard{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;border-radius:16px;padding:14px 16px;
-    background:linear-gradient(120deg,var(--cl),#fff 70%);border:1px solid var(--cb);}
-  .wf-dic{width:52px;height:52px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:26px;
-    background:var(--c);box-shadow:0 8px 18px var(--cs);}
-  .wf-dt{font-family:'Kanit';font-size:16px;color:#123C6B;margin:0;}
-  .wf-dwho{display:inline-block;font-size:11px;font-weight:600;color:var(--c);background:#fff;border:1px solid var(--cb);
-    border-radius:12px;padding:1px 9px;margin-left:6px;vertical-align:2px;}
-  .wf-dd{font-size:13px;color:#4A5D72;line-height:1.65;margin:4px 0 0;}
-  .wf-dv{text-align:right;min-width:120px;}
-  .wf-dv b{display:block;font-family:'Kanit';font-size:28px;color:var(--c);line-height:1.1;}
-  .wf-dv span{font-size:11.5px;color:#64748B;}
-  /* จอขนาดกลาง (แท็บเล็ต): ภาพย่อลง ป้ายจึงต้องย่อตาม ไม่ให้ป้ายริมซ้าย/ขวาล้นกรอบ */
+  .wf-card{background:#fff;border:1px solid #DCE9F6;border-radius:22px;box-shadow:0 12px 32px rgba(21,101,192,.10);padding:20px 20px 14px;}
+  .wf-head{display:flex;gap:14px;align-items:flex-start;}
+  .wf-hic{width:48px;height:48px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;
+    background:linear-gradient(135deg,#42A5F5,#1565C0);box-shadow:0 6px 14px rgba(21,101,192,.3);}
+  .wf-head h2{font-family:'Kanit';font-size:20px;font-weight:600;color:#123C6B;margin:2px 0 4px;}
+  .wf-head p{margin:0;font-size:12.5px;color:#5C748F;line-height:1.65;}
+  .wf-kpis{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 14px;}
+  .wf-kpi{display:flex;align-items:center;gap:7px;border:1px solid #E2EBF5;background:#FAFCFF;border-radius:22px;padding:7px 13px;font-size:12px;color:#5C748F;}
+  .wf-kpi i{width:9px;height:9px;border-radius:50%;background:var(--c);flex-shrink:0;}
+  .wf-kpi b{font-family:'Kanit';font-size:15px;color:#123C6B;font-weight:600;}
+  .wf-board{position:relative;border-radius:18px;padding:22px 14px 10px;overflow:hidden;
+    background:linear-gradient(180deg,#F3F8FE 0%,#EEF5FD 55%,#E6F0FB 100%);border:1px solid #E3EEF8;}
+  /* พื้นตารางจาง ๆ ด้านล่าง ให้กล่องดูตั้งอยู่บนพื้น */
+  .wf-board::after{content:"";position:absolute;left:8%;right:8%;bottom:-6px;height:46px;border-radius:50% 50% 0 0;pointer-events:none;
+    background:repeating-linear-gradient(90deg,rgba(21,101,192,.07) 0 1px,transparent 1px 34px),linear-gradient(180deg,rgba(255,255,255,0),rgba(21,101,192,.06));}
+  .wf-path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
+  .wf-cols{position:relative;z-index:2;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:14px;}
+
+  .wf-sc{grid-column:var(--dc);grid-row:1;position:relative;text-align:center;cursor:pointer;font-family:inherit;color:inherit;
+    background:#fff;border:1.5px solid #E6EEF7;border-radius:16px;padding:22px 10px 12px;margin-top:10px;
+    display:flex;flex-direction:column;align-items:center;box-shadow:0 4px 12px rgba(21,101,192,.06);
+    transition:border-color .45s,box-shadow .45s,transform .45s cubic-bezier(.22,1,.36,1);}
+  .wf-sc:hover{border-color:var(--c);transform:translateY(-2px);}
+  .wf-sc.on{border-color:var(--c);box-shadow:0 0 0 3px var(--cs),0 12px 26px var(--cs);transform:translateY(-3px);}
+  .wf-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--c);color:#fff;
+    font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:14px;box-shadow:0 4px 10px var(--cs);}
+  .wf-st{font-family:'Kanit';font-size:14px;font-weight:600;color:#123C6B;line-height:1.35;}
+  .wf-when{font-size:11px;color:#8CA3BA;margin-top:3px;line-height:1.4;}
+  .wf-big{font-family:'Kanit';font-size:22px;font-weight:600;color:var(--c);margin-top:9px;line-height:1.1;word-break:break-word;}
+  .wf-big small{font-size:13px;}
+  .wf-bl{font-size:11.5px;color:#475569;margin-top:2px;}
+  .wf-sub{font-size:11.5px;color:#334155;margin-top:6px;}
+  .wf-more{margin-top:auto;padding-top:10px;font-size:12px;font-weight:600;color:var(--c);text-decoration:underline;text-underline-offset:3px;}
+
+  .wf-cb{grid-column:var(--dc);grid-row:2;display:flex;flex-direction:column;align-items:center;}
+  .wf-conn{width:0;height:var(--conn);border-left:2px dashed var(--cb);}
+  .wf-cube{position:relative;width:88px;height:92px;border:none;background:none;padding:0;cursor:pointer;
+    transition:transform .5s cubic-bezier(.22,1,.36,1);}
+  .wf-cube svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 8px 10px rgba(13,42,87,.18));}
+  .wf-cube::after{content:"";position:absolute;left:14%;right:14%;bottom:-7px;height:12px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(13,42,87,.22),rgba(13,42,87,0));transition:transform .5s,opacity .5s;}
+  .wf-cube.on{transform:translateY(-12px);}
+  .wf-cube.on::after{transform:translateY(12px) scale(.75);opacity:.6;}
+  .wf-cube:focus-visible{outline:3px solid var(--c);outline-offset:4px;border-radius:10px;}
+  .wf-sc:focus-visible{outline:3px solid var(--c);outline-offset:3px;}
+
+  .wf-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
+  .wf-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:#64748B;}
+  .wf-legend i{width:12px;height:12px;border-radius:50%;border:3px solid #FF4D6D;background:#fff;flex-shrink:0;}
+  .wf-play{background:#fff;border:1px solid #D5E3F2;color:#123C6B;border-radius:22px;padding:8px 16px;font-family:inherit;
+    font-size:12.5px;font-weight:600;cursor:pointer;transition:background .2s,border-color .2s;}
+  .wf-play:hover{background:#F2F8FE;border-color:#90CAF9;}
+
+  .wf-modal{max-width:560px;}
+  .wf-mb{padding:18px 20px 20px;}
+  .wf-mrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0;}
+  .wf-mstat{border-radius:14px;padding:12px;background:var(--cl);border:1px solid var(--cb);}
+  .wf-mstat b{display:block;font-family:'Kanit';font-size:24px;color:var(--c);line-height:1.15;word-break:break-word;}
+  .wf-mstat span{font-size:12px;color:#475569;}
+  .wf-mnav{display:flex;justify-content:space-between;gap:10px;margin-top:6px;}
+  .wf-mnav button{flex:1;border:1px solid #D5E3F2;background:#fff;border-radius:12px;padding:10px;font-family:inherit;font-size:13px;
+    color:#123C6B;cursor:pointer;}
+  .wf-mnav button:hover{background:#F2F8FE;}
+  .wf-mnav button:disabled{opacity:.4;cursor:default;}
+
+  /* แท็บเล็ต: การ์ดแคบลง ย่อตัวอักษร */
   @media (max-width:1100px){
-    .wf-lbl .t{font-size:12px;}
-    .wf-lbl .v{font-size:11px;}
-    .wf-lbl .v b{font-size:13.5px;}
+    .wf-cols{column-gap:8px;}
+    .wf-sc{padding:22px 6px 10px;}
+    .wf-st{font-size:12.5px;}
+    .wf-big{font-size:18px;}
+    .wf-cube{width:72px;height:76px;}
   }
+  /* มือถือ: ไทม์ไลน์แนวตั้ง */
   @media (max-width:760px){
     .wf{padding:0 12px;}
-    .wf-head{padding:16px 16px 12px;}
+    .wf-card{padding:16px 12px 12px;}
     .wf-head h2{font-size:17px;}
-    /* จอแคบไม่มีที่พอให้ป้ายโดยไม่ทับกล่อง จึงแสดงเลขขั้นบนกล่องแทน
-       ข้อมูลของขั้นที่ลูกแก้วอยู่แสดงเต็ม ๆ ในการ์ดใต้ภาพ */
-    .wf-lbl,.wf-lbl.on{display:none;}
-    .wf-lbl .t{font-size:12.5px;}
-    .wf-chip span{display:none;}
-    .wf-chip{padding:6px;}
-    .wf-detail{padding:10px 12px 16px;}
-    .wf-dcard{grid-template-columns:auto 1fr;}
-    .wf-dv{grid-column:1/-1;text-align:left;display:flex;align-items:baseline;gap:8px;border-top:1px dashed var(--cb);padding-top:9px;}
-    .wf-dv b{display:inline;font-size:24px;}
+    .wf-hic{width:42px;height:42px;font-size:21px;}
+    .wf-kpi{padding:6px 10px;font-size:11.5px;}
+    .wf-kpi b{font-size:14px;}
+    .wf-board{padding:14px 10px 12px;}
+    .wf-board::after{display:none;}
+    .wf-cols{grid-template-columns:76px minmax(0,1fr);column-gap:10px;row-gap:16px;}
+    .wf-sc{grid-column:2;grid-row:var(--mr);margin-top:8px;align-items:flex-start;text-align:left;padding:18px 12px 11px;}
+    .wf-badge{left:12px;transform:none;}
+    .wf-st{font-size:14px;}
+    .wf-big{font-size:21px;}
+    .wf-more{align-self:flex-start;}
+    .wf-cb{grid-column:1;grid-row:var(--mr);justify-content:center;}
+    .wf-conn{display:none;}
+    .wf-cube{width:66px;height:70px;}
+    .wf-cube.on{transform:translateY(-6px);}
   }
-  @media (prefers-reduced-motion:reduce){
-    .wf-stage,.wf-lbl,.wf-blk .lift,.wf-blk .top,.wf-chip{transition:none;}
-  }
+  @media (prefers-reduced-motion:reduce){.wf-sc,.wf-cube,.wf-cube::after{transition:none;}}
 
   /* ══ คุณภาพการให้บริการ: กราฟย้อนหลัง 5 ปีงบประมาณ ══ */
   .q-trend{display:block;width:100%;margin-top:14px;border:1px solid #E3EEF8;background:linear-gradient(180deg,#FAFCFF,#F1F8F2);
@@ -1122,26 +1141,31 @@
 </div>
 
 <!-- ══════════ แถบผลประเมิน + ให้คะแนนความพึงพอใจ (ท้ายหน้า) ══════════ -->
-<!-- ══════════ เส้นทางการกำกับติดตามงานบริการ (ภาพ 3 มิติ) ══════════ -->
+<!-- ══════════ เส้นทางการกำกับติดตามงานบริการ (การ์ด + กล่อง 3 มิติ) ══════════ -->
 <section class="wf" id="workflow" aria-labelledby="wfTitle">
   <div class="wf-card">
     <div class="wf-head">
+      <div class="wf-hic" aria-hidden="true">🧭</div>
       <div>
-        <h2 id="wfTitle">🧭 เส้นทางการกำกับติดตามงานบริการ</h2>
-        <p>ทุกคำขอเดินผ่าน 6 ขั้นตอนนี้ · ตัวเลขบนแต่ละขั้นคือข้อมูลจริงจากทะเบียนงาน · แตะขั้นตอนเพื่อดูรายละเอียด</p>
-      </div>
-      <button type="button" class="wf-play" id="wfPlay" onclick="wfToggle()" aria-pressed="false">⏸ หยุดชั่วคราว</button>
-    </div>
-    <div class="wf-stage" id="wfStage">
-      <div class="wf-inner" id="wfInner">
-        <svg id="wfSvg" role="img" aria-label="แผนภาพสามมิติ ขั้นตอนการกำกับติดตามงานบริการ 6 ขั้นตอน" preserveAspectRatio="xMidYMid meet"></svg>
-        <div class="wf-labels" id="wfLabels" aria-hidden="true"></div>
+        <h2 id="wfTitle">เส้นทางการกำกับติดตามงานบริการ</h2>
+        <p id="wfIntro">ทุกคำขอเดินผ่าน 6 ขั้นตอน ตามลำดับจากซ้ายไปขวา แล้ววนกลับเริ่มรอบใหม่ ตัวเลขในแต่ละขั้นคือข้อมูลจริงจากระบบ · คลิกที่การ์ดหรือกล่องเพื่อดูรายละเอียด</p>
       </div>
     </div>
-    <div class="wf-steps" id="wfSteps" role="tablist" aria-label="เลือกขั้นตอน"></div>
-    <div class="wf-detail" id="wfDetail" aria-live="polite"></div>
+    <div class="wf-kpis" id="wfKpis"></div>
+    <div class="wf-board" id="wfBoard">
+      <svg class="wf-path" id="wfPath" aria-hidden="true"></svg>
+      <div class="wf-cols" id="wfCols"></div>
+    </div>
+    <div class="wf-foot">
+      <span class="wf-legend"><i aria-hidden="true"></i> จุดเคลื่อนที่แสดงงานที่กำลังเดินผ่านแต่ละขั้นตอน</span>
+      <button type="button" class="wf-play" id="wfPlay" onclick="wfToggle()" aria-pressed="false">⏸ หยุดการเคลื่อนไหว</button>
+    </div>
   </div>
 </section>
+
+<div class="modal-back" id="wfModal" onclick="if(event.target===this)wfClose()">
+  <div class="modal wf-modal" role="dialog" aria-modal="true" aria-labelledby="wfMTitle" id="wfModalBox"></div>
+</div>
 
 <section class="sat-strip" id="satStrip">
   <div class="sat-sum">
@@ -1497,228 +1521,175 @@ function renderQualModal(){
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape')closeQual();});
 
 /* ══════════════════════════════════════════════════════════════════
-   เส้นทางการกำกับติดตามงานบริการ — ภาพ 3 มิติแบบไอโซเมตริก (SVG)
+   เส้นทางการกำกับติดตามงานบริการ — การ์ดครบ 6 ขั้น + กล่อง 3 มิติบนเส้นทาง
    ────────────────────────────────────────────────────────────────
-   ใช้ SVG แทน CSS 3D เพราะแสดงผลเหมือนกันทุกเครื่อง (CSS 3D เพี้ยนบน iPhone หลายจุด)
-   เคลื่อนไหวนุ่มนวล ไม่กะพริบ · เล่นเฉพาะตอนเลื่อนมาเห็น · กดหยุดได้
-   ผู้ที่ตั้งค่าลดการเคลื่อนไหวในเครื่อง จะเห็นเป็นภาพนิ่งที่แตะดูทีละขั้นได้
+   การ์ดทุกใบแสดงข้อความครบตลอดเวลา อ่านเข้าใจได้ทันทีโดยไม่ต้องรอภาพเคลื่อนไหว
+   ตำแหน่งเส้นทางคำนวณจากตำแหน่งจริงของกล่องบนจอ จึงตรงกันเสมอทุกขนาดจอ
    ══════════════════════════════════════════════════════════════════ */
 var WF_STEPS=[
-  {icon:'📝',title:'แจ้งขอรับบริการ',who:'ผู้ขอรับบริการ',color:'#1E88E5',
-   desc:'กรอกแบบฟอร์มออนไลน์หรือสแกน QR ระบุวันที่ ห้อง และรายละเอียด ไม่ต้องล็อกอิน ไม่ต้องมีบัญชี'},
-  {icon:'🔔',title:'ออกเลขที่งานและแจ้งเตือน',who:'ระบบอัตโนมัติ',color:'#00ACC1',
-   desc:'ระบบออกเลขที่งาน AV ทันที ส่งอีเมลแจ้งเจ้าหน้าที่ และส่งลิงก์พร้อม QR ติดตามสถานะให้ผู้ขอรับบริการ'},
-  {icon:'📥',title:'รับเรื่องไว้ก่อน',who:'เจ้าหน้าที่',color:'#F9A825',
-   desc:'งานเข้าคิว เจ้าหน้าที่ตรวจสอบรายละเอียด สถานที่ และจัดลำดับตามความเร่งด่วน'},
-  {icon:'🛠️',title:'อยู่ระหว่างดำเนินการ',who:'เจ้าหน้าที่',color:'#7E57C2',
-   desc:'เจ้าหน้าที่กดรับงานจากอีเมลได้ทันที ระบบแจ้งผู้ขอรับบริการว่ากำลังเดินทางไป แล้วลงพื้นที่แก้ไข'},
-  {icon:'✅',title:'ปิดงานพร้อมหลักฐาน',who:'เจ้าหน้าที่',color:'#2E7D32',
-   desc:'บันทึกผล ระยะเวลา และภาระงาน แนบรูปหรือไฟล์เป็นหลักฐานดิจิทัล แล้วระบบแจ้งผลให้ผู้ขอรับบริการ'},
-  {icon:'⭐',title:'ประเมินความพึงพอใจ',who:'ผู้ขอรับบริการ',color:'#FFB300',
-   desc:'ผู้รับบริการให้คะแนนผ่านลิงก์ในอีเมลหรือแถบด้านล่างนี้ ผลรวมเข้าแดชบอร์ดเพื่อพัฒนาบริการต่อไป'}
+  {icon:'📝',title:'แจ้งขอรับบริการ',who:'ผู้ขอรับบริการ',when:'ตลอด 24 ชม. · ฟอร์มออนไลน์ / QR',color:'#1E88E5',
+   desc:'กรอกแบบฟอร์มออนไลน์หรือสแกน QR ระบุวันที่ ห้อง และรายละเอียด ไม่ต้องล็อกอิน ไม่ต้องมีบัญชี จะใส่ชื่อและอีเมลเพื่อรับแจ้งผลหรือไม่ก็ได้'},
+  {icon:'🔔',title:'ออกเลขที่งานและแจ้งเตือน',who:'ระบบอัตโนมัติ',when:'อัตโนมัติ · ภายในไม่กี่วินาที',color:'#00ACC1',
+   desc:'ระบบออกเลขที่งาน AV ให้ทันที ส่งอีเมลแจ้งเจ้าหน้าที่ และส่งลิงก์พร้อม QR ติดตามสถานะให้ผู้ขอรับบริการที่ให้อีเมลไว้'},
+  {icon:'📥',title:'รับเรื่องไว้ก่อน',who:'เจ้าหน้าที่',when:'ตรวจสอบและจัดคิวงาน',color:'#F59E0B',
+   desc:'งานเข้าคิว เจ้าหน้าที่ตรวจสอบรายละเอียด สถานที่ และจัดลำดับตามความเร่งด่วนของแต่ละคำขอ'},
+  {icon:'🛠️',title:'อยู่ระหว่างดำเนินการ',who:'เจ้าหน้าที่',when:'กดรับงานจากอีเมล · ลงพื้นที่',color:'#7E57C2',
+   desc:'เจ้าหน้าที่กดรับงานจากอีเมลได้ทันที ระบบแจ้งผู้ขอรับบริการว่ากำลังเดินทางไป จากนั้นลงพื้นที่แก้ไขปัญหา'},
+  {icon:'✅',title:'ปิดงานพร้อมหลักฐาน',who:'เจ้าหน้าที่',when:'บันทึกผล เวลา และหลักฐาน',color:'#16A34A',
+   desc:'บันทึกผลการดำเนินงาน ระยะเวลา และภาระงาน แนบรูปหรือไฟล์เป็นหลักฐานดิจิทัล แล้วระบบแจ้งผลให้ผู้ขอรับบริการ'},
+  {icon:'⭐',title:'ประเมินความพึงพอใจ',who:'ผู้ขอรับบริการ',when:'หลังปิดงาน · อีเมล / หน้าเว็บ',color:'#EAB308',
+   desc:'ผู้รับบริการให้คะแนนผ่านลิงก์ในอีเมลหรือแถบด้านล่างนี้ ผลรวมเข้าแดชบอร์ดเพื่อนำไปพัฒนาบริการรอบต่อไป'}
 ];
-var WF={i:0,playing:true,inView:false,raf:0,t0:0,phase:'dwell',L:null,data:null,reduced:false,built:false,vb:null};
-var WF_DWELL=2000,WF_TRAVEL=1500,WF_C=Math.cos(Math.PI/6),WF_SN=0.5;
+var WF={i:0,playing:true,inView:false,raf:0,t0:0,phase:'dwell',data:null,reduced:false,built:false,nodes:[],wrapped:false,modal:-1};
+var WF_DWELL=2100,WF_TRAVEL=1300;
 
 function wfRgb(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
 function wfRgba(h,a){var c=wfRgb(h);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
-function wfShade(h,k){var c=wfRgb(h).map(function(v){return Math.round(v*(1-k));});return 'rgb('+c.join(',')+')';}
-function wfP(x,y,z){var U=WF.L.U;return [(x-y)*WF_C*U,(x+y)*WF_SN*U-z*U];}
-function wfPts(a){return a.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ');}
+function wfMix(h,t,k){var a=wfRgb(h),b=wfRgb(t);return 'rgb('+a.map(function(v,i){return Math.round(v+(b[i]-v)*k);}).join(',')+')';}
+function wfIsMobile(){return !!(window.matchMedia&&window.matchMedia('(max-width:760px)').matches);}
 
 function wfData(){
-  var cur=currentFY(),fyN=0,fyDone=0,fyFail=0,recv=0,prog=0,last='',lastSeq=0,rs=[];
+  var cur=currentFY(),now=new Date(),todayK=now.getFullYear()*10000+(now.getMonth()+1)*100+now.getDate(),
+      monK=Math.floor(todayK/100),fyN=0,fyDone=0,fyFail=0,recv=0,prog=0,today=0,month=0,last='',lastSeq=0,rs=[],rooms={},oldestRecv=0;
   allRows.forEach(function(r){
     var st=getStatusClass(r.status).key,k=dateKey(r.date);
-    if(st==='recv')recv++;else if(st==='prog')prog++;
-    if(k&&fyOfKey(k)===cur){fyN++;if(st==='done')fyDone++;else if(st==='fail')fyFail++;}
+    if(st==='recv'){recv++;if(k&&(!oldestRecv||k<oldestRecv))oldestRecv=k;}else if(st==='prog')prog++;
+    if(k){
+      if(fyOfKey(k)===cur){fyN++;if(st==='done')fyDone++;else if(st==='fail')fyFail++;
+        var rm=String(r.room||'').trim();if(rm&&rm!=='-')rooms[rm.toUpperCase()]=1;}
+      if(k===todayK)today++;
+      if(Math.floor(k/100)===monK)month++;
+    }
     var m=String(r.no||'').match(/(\d+)\s*$/);if(m&&+m[1]>lastSeq){lastSeq=+m[1];last=r.no;}
     if(r.rating>=1&&r.rating<=5)rs.push(+r.rating);
   });
   (typeof VOTES!=='undefined'&&VOTES?VOTES:[]).forEach(function(v){if(v>=1&&v<=5)rs.push(+v);});
   var avg=rs.length?rs.reduce(function(a,b){return a+b;},0)/rs.length:null;
-  var rate=(fyDone+fyFail)?fyDone/(fyDone+fyFail)*100:null;
-  return [
-    {v:fmt(fyN),u:'คำขอ',s:'ปีงบประมาณ '+cur},
-    {v:last||'–',u:'',s:'เลขที่งานล่าสุด'},
-    {v:fmt(recv),u:'งาน',s:'รอดำเนินการขณะนี้'},
-    {v:fmt(prog),u:'งาน',s:'กำลังดำเนินการขณะนี้'},
-    {v:fmt(fyDone),u:'งาน',s:'ปิดงานสำเร็จ ปีงบ '+cur+(rate!==null?' · '+pctText(rate):'')},
-    {v:avg===null?'–':avg.toFixed(2),u:avg===null?'':'/ 5',s:rs.length?'จาก '+fmt(rs.length)+' การประเมิน':'ยังไม่มีการประเมิน'}
-  ];
+  var rate=(fyDone+fyFail)?fyDone/(fyDone+fyFail)*100:null,nRoom=Object.keys(rooms).length;
+  /* งานในคิวที่รอนานที่สุด นับจากวันที่ให้บริการถึงวันนี้ */
+  var waitTxt='ไม่มีงานค้างในคิว';
+  if(oldestRecv){var od=new Date(Math.floor(oldestRecv/10000),Math.floor(oldestRecv/100)%100-1,oldestRecv%100),
+    nd=new Date(now.getFullYear(),now.getMonth(),now.getDate()),dd=Math.round((nd-od)/86400000);
+    waitTxt=dd>0?'งานที่รอนานสุด: '+fmt(dd)+' วัน':(dd===0?'งานที่รออยู่: นัดวันนี้':'งานที่รออยู่: นัดล่วงหน้า');}
+  return {
+    kpis:[
+      {c:'#FF4D6D',l:'ลำดับการดำเนินงาน',v:'6 ขั้นตอน'},
+      {c:'#1E88E5',l:'คำขอ ปีงบ '+cur,v:fmt(fyN)+' งาน'},
+      {c:'#7E57C2',l:'งานที่ยังเปิดอยู่',v:fmt(recv+prog)+' งาน'},
+      {c:'#16A34A',l:'อัตราความสำเร็จ',v:pctText(rate)},
+      {c:'#EAB308',l:'ความพึงพอใจ',v:avg===null?'–':avg.toFixed(2)+' / 5'}
+    ],
+    steps:[
+      {big:fmt(fyN),u:'คำขอ',l:'ปีงบประมาณ '+cur,s:'ในระบบทั้งหมด: '+fmt(allRows.length)},
+      {big:last||'–',u:'',l:'เลขที่งานล่าสุด',s:'นัดให้บริการวันนี้: '+fmt(today)},
+      {big:fmt(recv),u:'งาน',l:'รอดำเนินการขณะนี้',s:waitTxt},
+      {big:fmt(prog),u:'งาน',l:'กำลังดำเนินการขณะนี้',s:'สถานที่ที่ไปให้บริการ ปีงบนี้: '+fmt(nRoom)+' แห่ง'},
+      {big:fmt(fyDone),u:'งาน',l:'ปิดงานสำเร็จ ปีงบ '+cur,s:'อัตราความสำเร็จ: '+pctText(rate)},
+      {big:avg===null?'–':avg.toFixed(2),u:avg===null?'':'/ 5',l:'คะแนนเฉลี่ย',s:rs.length?'จาก '+fmt(rs.length)+' การประเมิน':'ยังไม่มีการประเมิน'}
+    ]
+  };
 }
 
-/* ต้องใช้เกณฑ์เดียวกับ CSS @media (max-width:760px) — เวอร์ชันก่อนวัดความกว้างกรอบภาพแทน
-   ที่จอ 768px จึงได้รูปแบบมือถือแต่สไตล์คอม ป้ายทับกล่อง */
-function wfIsMobile(){return !!(window.matchMedia&&window.matchMedia('(max-width:760px)').matches);}
-function wfLayout(width){
-  var m=wfIsMobile();
-  return {mobile:m,U:m?44:60,w:1.3,h:0.6,
-    /* คอม: ไล่จากซ้ายไปขวาแบบขั้นบันไดขึ้นลง · มือถือ: ไล่จากบนลงล่างสลับซ้ายขวา */
-    pos:m?[[0,0],[2.6,0],[2.6,2.6],[5.2,2.6],[5.2,5.2],[7.8,5.2]]:[[0,0],[2.6,0],[2.6,-2.6],[5.2,-2.6],[5.2,-5.2],[7.8,-5.2]]};
+/* กล่อง 3 มิติ: หน้าบน หน้าซ้าย หน้าขวา ไล่เฉดให้ดูมีมิติ ตัวเลขอยู่หน้าซ้าย */
+function wfCube(k){
+  var c=WF_STEPS[k].color,id='wfg'+k;
+  return '<svg viewBox="0 0 88 92" aria-hidden="true"><defs>'+
+    '<linearGradient id="'+id+'t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+wfMix(c,'#ffffff',.55)+'"/><stop offset="1" stop-color="'+wfMix(c,'#ffffff',.25)+'"/></linearGradient>'+
+    '<linearGradient id="'+id+'l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+wfMix(c,'#ffffff',.08)+'"/><stop offset="1" stop-color="'+c+'"/></linearGradient>'+
+    '<linearGradient id="'+id+'r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+wfMix(c,'#000000',.18)+'"/><stop offset="1" stop-color="'+wfMix(c,'#000000',.36)+'"/></linearGradient>'+
+    '</defs>'+
+    '<polygon points="44,6 82,26 44,46 6,26" fill="url(#'+id+'t)"/>'+
+    '<polygon points="6,26 44,46 44,88 6,68" fill="url(#'+id+'l)"/>'+
+    '<polygon points="44,46 82,26 82,68 44,88" fill="url(#'+id+'r)"/>'+
+    '<polygon points="44,6 82,26 44,46 6,26" fill="none" stroke="rgba(255,255,255,.65)" stroke-width="1.2"/>'+
+    '<path d="M10 30 L40 46" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-linecap="round"/>'+
+    '<text x="25" y="65" text-anchor="middle" font-family="Kanit,Sarabun,sans-serif" font-size="22" font-weight="700" fill="#fff" '+
+    'transform="skewY(27)" transform-origin="25 60">'+(k+1)+'</text></svg>';
 }
 
 function wfBuild(){
-  var stage=document.getElementById('wfStage');if(!stage)return;
-  WF.L=wfLayout(stage.clientWidth||stage.offsetWidth||1000);
-  var L=WF.L,svg=document.getElementById('wfSvg'),hw=L.w/2,i;
-  /* ขอบเขตพื้น */
-  var xs=L.pos.map(function(p){return p[0];}),ys=L.pos.map(function(p){return p[1];});
-  /* พื้นตารางกว้างกว่าภาพมาก ปูเต็มพื้นหลัง แล้วให้กรอบภาพตัดส่วนเกินทิ้ง */
-  var fx0=Math.min.apply(null,xs)-7,fx1=Math.max.apply(null,xs)+7,fy0=Math.min.apply(null,ys)-7,fy1=Math.max.apply(null,ys)+7;
-  var floor=[wfP(fx0,fy0,0),wfP(fx1,fy0,0),wfP(fx1,fy1,0),wfP(fx0,fy1,0)];
-  /* กรอบภาพคิดจาก "กล่องจริง" + ความสูงที่ลูกแก้วลอยขึ้นไป — เวอร์ชันก่อนคิดจากพื้นทั้งผืน กล่องบนมือถือจึงเล็กมาก */
-  var all=[];L.pos.forEach(function(p){
-    all.push(wfP(p[0]-hw,p[1]-hw,L.h+1.6));all.push(wfP(p[0]+hw,p[1]+hw,0));
-    all.push(wfP(p[0]+hw,p[1]-hw,0));all.push(wfP(p[0]-hw,p[1]+hw,0));});
-  var minX=Math.min.apply(null,all.map(function(q){return q[0];})),maxX=Math.max.apply(null,all.map(function(q){return q[0];}));
-  var minY=Math.min.apply(null,all.map(function(q){return q[1];})),maxY=Math.max.apply(null,all.map(function(q){return q[1];}));
-  /* ป้ายแถวบนอยู่เหนือกล่อง ป้ายแถวล่างอยู่ใต้กล่อง จึงเว้นที่ทั้งด้านบนและล่าง */
-  var padT=L.mobile?8:40,padB=L.mobile?16:84,padX=L.mobile?14:140;
-  WF.vb=[minX-padX,minY-padT,(maxX-minX)+padX*2,(maxY-minY)+padT+padB];
-  wfApplyVB();
-
-  var s='<defs>'+
-    '<radialGradient id="wfOrb" cx="35%" cy="32%" r="70%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="45%" stop-color="#B3E5FC"/><stop offset="100%" stop-color="#29B6F6"/></radialGradient>'+
-    '<filter id="wfGlow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
-    '<filter id="wfSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>'+
-    '</defs>';
-  /* พื้นและตาราง */
-  s+='<polygon points="'+wfPts(floor)+'" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.10)" stroke-width="1"/>';
-  for(var gx=Math.ceil(fx0);gx<=fx1;gx++)s+='<line x1="'+wfP(gx,fy0,0)[0].toFixed(1)+'" y1="'+wfP(gx,fy0,0)[1].toFixed(1)+'" x2="'+wfP(gx,fy1,0)[0].toFixed(1)+'" y2="'+wfP(gx,fy1,0)[1].toFixed(1)+'" stroke="rgba(255,255,255,.05)"/>';
-  for(var gy=Math.ceil(fy0);gy<=fy1;gy++)s+='<line x1="'+wfP(fx0,gy,0)[0].toFixed(1)+'" y1="'+wfP(fx0,gy,0)[1].toFixed(1)+'" x2="'+wfP(fx1,gy,0)[0].toFixed(1)+'" y2="'+wfP(fx1,gy,0)[1].toFixed(1)+'" stroke="rgba(255,255,255,.05)"/>';
-  /* ถนนเชื่อมแต่ละขั้น */
-  var road=L.pos.map(function(p){return wfP(p[0],p[1],0);});
-  s+='<polyline points="'+wfPts(road)+'" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="'+(L.U*0.42).toFixed(1)+'" stroke-linejoin="round" stroke-linecap="round"/>';
-  for(i=0;i<road.length-1;i++)s+='<line class="wf-seg" data-i="'+i+'" x1="'+road[i][0].toFixed(1)+'" y1="'+road[i][1].toFixed(1)+'" x2="'+road[i+1][0].toFixed(1)+'" y2="'+road[i+1][1].toFixed(1)+'" stroke="rgba(255,255,255,.22)" stroke-width="2.5" stroke-dasharray="5 7" stroke-linecap="round" style="transition:stroke .6s"/>';
-  /* เงาของลูกแก้ว (อยู่บนพื้น วาดก่อนกล่อง) */
-  s+='<ellipse id="wfShadow" rx="12" ry="5" fill="rgba(0,0,0,.45)" filter="url(#wfSoft)"/>';
-  /* กล่องแต่ละขั้น — วาดจากไกลมาใกล้ */
-  var order=L.pos.map(function(p,k){return k;}).sort(function(a,b){return (L.pos[a][0]+L.pos[a][1])-(L.pos[b][0]+L.pos[b][1]);});
-  order.forEach(function(k){
-    var c=WF_STEPS[k].color,x=L.pos[k][0],y=L.pos[k][1],x0=x-hw,x1=x+hw,y0=y-hw,y1=y+hw,h=L.h;
-    var top=[wfP(x0,y0,h),wfP(x1,y0,h),wfP(x1,y1,h),wfP(x0,y1,h)];
-    var lf=[wfP(x0,y1,h),wfP(x1,y1,h),wfP(x1,y1,0),wfP(x0,y1,0)];
-    var rt=[wfP(x1,y0,h),wfP(x1,y1,h),wfP(x1,y1,0),wfP(x1,y0,0)];
-    var tc=wfP(x,y,h);
-    s+='<g class="wf-blk" data-i="'+k+'" tabindex="0" role="button" aria-label="ขั้นที่ '+(k+1)+' '+WF_STEPS[k].title+'">'+
-      '<ellipse cx="'+wfP(x,y,0)[0].toFixed(1)+'" cy="'+(wfP(x,y,0)[1]+L.U*0.18).toFixed(1)+'" rx="'+(L.U*1.05).toFixed(1)+'" ry="'+(L.U*0.42).toFixed(1)+'" fill="'+wfRgba(c,.28)+'" filter="url(#wfSoft)"/>'+
-      '<g class="lift">'+
-      '<polygon points="'+wfPts(lf)+'" fill="'+wfShade(c,.22)+'"/>'+
-      '<polygon points="'+wfPts(rt)+'" fill="'+wfShade(c,.40)+'"/>'+
-      '<polygon class="top" points="'+wfPts(top)+'" fill="'+c+'" stroke="rgba(255,255,255,.35)" stroke-width="1"/>'+
-      '<text x="'+tc[0].toFixed(1)+'" y="'+(tc[1]+L.U*0.14).toFixed(1)+'" text-anchor="middle" font-size="'+(L.U*0.42).toFixed(1)+'" style="pointer-events:none">'+WF_STEPS[k].icon+'</text>'+
-      (L.mobile?'<g style="pointer-events:none"><circle cx="'+wfP(x0+hw*0.42,y1-hw*0.42,h)[0].toFixed(1)+'" cy="'+(wfP(x0+hw*0.42,y1-hw*0.42,h)[1]).toFixed(1)+'" r="'+(L.U*0.2).toFixed(1)+'" fill="#fff"/>'+
-        '<text x="'+wfP(x0+hw*0.42,y1-hw*0.42,h)[0].toFixed(1)+'" y="'+(wfP(x0+hw*0.42,y1-hw*0.42,h)[1]+L.U*0.08).toFixed(1)+'" text-anchor="middle" font-size="'+(L.U*0.24).toFixed(1)+'" font-weight="700" fill="'+wfShade(c,.25)+'" font-family="Sarabun,sans-serif">'+(k+1)+'</text></g>':'')+
-      '</g></g>';
+  var cols=document.getElementById('wfCols');if(!cols)return;
+  var mobile=wfIsMobile(),n=WF_STEPS.length;
+  document.getElementById('wfIntro').textContent='ทุกคำขอเดินผ่าน 6 ขั้นตอน ตามลำดับ'+(mobile?'จากบนลงล่าง':'จากซ้ายไปขวา')+
+    ' แล้ววนกลับเริ่มรอบใหม่ ตัวเลขในแต่ละขั้นคือข้อมูลจริงจากระบบ · แตะที่การ์ดหรือกล่องเพื่อดูรายละเอียด';
+  var h='';
+  WF_STEPS.forEach(function(S,k){
+    var badge=k===0?'เริ่ม · 1':(k===n-1?n+' · วนกลับ ↻':String(k+1));
+    var vars='--c:'+S.color+';--cs:'+wfRgba(S.color,.22)+';--cb:'+wfRgba(S.color,.45)+';--dc:'+(k+1)+';--mr:'+(k+1)+';--conn:'+(26+(n-1-k)*15)+'px';
+    h+='<button type="button" class="wf-sc" data-i="'+k+'" style="'+vars+'" onclick="wfOpen('+k+')" aria-label="ขั้นที่ '+(k+1)+' '+S.title+' ดูรายละเอียด">'+
+      '<span class="wf-badge">'+badge+'</span>'+
+      '<span class="wf-st">'+S.icon+' '+S.title+'</span>'+
+      '<span class="wf-when">'+S.when+'</span>'+
+      '<span class="wf-big" id="wfV'+k+'">–</span>'+
+      '<span class="wf-bl" id="wfL'+k+'"></span>'+
+      '<span class="wf-sub" id="wfS'+k+'"></span>'+
+      '<span class="wf-more">ดูรายละเอียด ›</span></button>'+
+      '<div class="wf-cb" style="'+vars+'"><div class="wf-conn"></div>'+
+      '<button type="button" class="wf-cube" data-i="'+k+'" style="--c:'+S.color+'" onclick="wfOpen('+k+')" aria-label="กล่องขั้นที่ '+(k+1)+' '+S.title+'">'+wfCube(k)+'</button></div>';
   });
-  /* ลูกแก้วเรืองแสง */
-  s+='<g id="wfToken" filter="url(#wfGlow)" style="pointer-events:none"><circle r="'+(L.U*0.2).toFixed(1)+'" fill="url(#wfOrb)"/></g>';
-  svg.innerHTML=s;
-
-  /* ป้ายชื่อ (HTML ซ้อนบนภาพ ตัวอักษรคมชัดทุกขนาดจอ) */
-  var lb='';
-  var minSum=Math.min.apply(null,L.pos.map(function(q){return q[0]+q[1];}));
-  WF.anchors=[];
-  L.pos.forEach(function(p,k){
-    /* คอม: กล่องแถวบน -> ป้ายเหนือกล่อง · กล่องแถวล่าง -> ป้ายใต้กล่อง */
-    var below=L.mobile||(p[0]+p[1])>minSum+0.01;
-    var a=below?wfP(p[0]+hw,p[1]+hw,0):wfP(p[0]-hw,p[1]-hw,L.h);
-    WF.anchors[k]=[wfP(p[0],p[1],0)[0],a[1]+(below?8:-10)];
-    lb+='<div class="wf-lbl'+(below?' below':'')+'" data-i="'+k+'" style="--c:'+WF_STEPS[k].color+'">'+
-      '<div class="n">ขั้นที่ '+(k+1)+'</div><div class="t">'+WF_STEPS[k].title+'</div><div class="v" id="wfLv'+k+'">–</div></div>';
-  });
-  document.getElementById('wfLabels').innerHTML=lb;
-  wfPlaceLabels();wfFitLabels();
-
-  svg.querySelectorAll('.wf-blk').forEach(function(g){
-    var k=+g.dataset.i;
-    g.addEventListener('click',function(){wfSelect(k,true);});
-    g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();wfSelect(k,true);}});
-  });
-  if(!WF.built){
-    document.getElementById('wfSteps').innerHTML=WF_STEPS.map(function(S,k){
-      return '<button type="button" class="wf-chip" role="tab" data-i="'+k+'" style="--c:'+S.color+'" onclick="wfSelect('+k+',true)"><i>'+(k+1)+'</i><span>'+S.title+'</span></button>';
-    }).join('');
-  }
-  WF.built=true;
-  wfFillData();wfSetActive(WF.i);wfPlaceToken(WF.i,WF.i,0,1);
-}
-
-function wfApplyVB(){
-  var svg=document.getElementById('wfSvg'),inner=document.getElementById('wfInner'),vb=WF.vb;
-  svg.setAttribute('viewBox',vb.map(function(v){return v.toFixed(1);}).join(' '));
-  /* จำกัดความสูงบนจอใหญ่ โดยหดความกว้างกรอบตามสัดส่วน — ป้ายที่วางเป็น % จะตรงกับภาพเสมอ */
-  inner.style.aspectRatio=vb[2].toFixed(1)+' / '+vb[3].toFixed(1);
-  inner.style.maxWidth=WF.L.mobile?'':Math.round(470*vb[2]/vb[3])+'px';
-}
-function wfPlaceLabels(){
-  document.querySelectorAll('#wfLabels .wf-lbl').forEach(function(l){
-    var a=WF.anchors[+l.dataset.i];
-    l.style.left=((a[0]-WF.vb[0])/WF.vb[2]*100).toFixed(2)+'%';
-    l.style.top=((a[1]-WF.vb[1])/WF.vb[3]*100).toFixed(2)+'%';
-  });
-}
-/* วัดป้ายจริงหลังวาด แล้วขยายกรอบภาพจนป้ายไม่ล้นขอบ
-   (ป้ายเป็นตัวหนังสือขนาดคงที่ ไม่หดตามภาพ และบางป้ายตัดหลายบรรทัดบนจอแคบ จึงเผื่อเป็นตัวเลขตายตัวไม่ได้) */
-function wfFitLabels(){
-  var inner=document.getElementById('wfInner');if(!inner||!WF.vb)return;
-  for(var pass=0;pass<4;pass++){
-    var box=inner.getBoundingClientRect();if(!box.width)return;
-    var sc=box.width/WF.vb[2],top=0,bot=0,lft=0,rgt=0;
-    document.querySelectorAll('#wfLabels .wf-lbl').forEach(function(l){
-      if(getComputedStyle(l).display==='none')return;
-      var q=l.getBoundingClientRect();
-      top=Math.max(top,box.top-q.top+14);bot=Math.max(bot,q.bottom-box.bottom+14);
-      lft=Math.max(lft,box.left-q.left+6);rgt=Math.max(rgt,q.right-box.right+6);
-    });
-    if(top<=0&&bot<=0&&lft<=0&&rgt<=0)return;
-    if(top>0){WF.vb[1]-=top/sc;WF.vb[3]+=top/sc;}
-    if(bot>0)WF.vb[3]+=bot/sc;
-    if(lft>0){WF.vb[0]-=lft/sc;WF.vb[2]+=lft/sc;}
-    if(rgt>0)WF.vb[2]+=rgt/sc;
-    wfApplyVB();wfPlaceLabels();
-  }
+  cols.innerHTML=h;
+  WF.built=true;WF.mobile=mobile;
+  wfFillData();wfSetActive(WF.i);
 }
 
 function wfFillData(){
   WF.data=wfData();
-  WF.data.forEach(function(D,k){var el=document.getElementById('wfLv'+k);
-    if(el)el.innerHTML='<b>'+D.v+'</b>'+(D.u?' '+D.u:'');});
-  wfDetail(WF.i);
+  document.getElementById('wfKpis').innerHTML=WF.data.kpis.map(function(K){
+    return '<span class="wf-kpi" style="--c:'+K.c+'"><i></i>'+K.l+' <b>'+K.v+'</b></span>';}).join('');
+  WF.data.steps.forEach(function(D,k){
+    var v=document.getElementById('wfV'+k);if(!v)return;
+    v.innerHTML=D.big+(D.u?' <small>'+D.u+'</small>':'');
+    document.getElementById('wfL'+k).textContent=D.l;
+    document.getElementById('wfS'+k).textContent=D.s;
+  });
+  wfLayoutPath();
+  if(WF.modal>=0)wfOpen(WF.modal);
 }
 
-function wfDetail(k){
-  var S=WF_STEPS[k],D=(WF.data||wfData())[k],box=document.getElementById('wfDetail');if(!box)return;
-  box.innerHTML='<div class="wf-dcard" style="--c:'+S.color+';--cl:'+wfRgba(S.color,.12)+';--cb:'+wfRgba(S.color,.32)+';--cs:'+wfRgba(S.color,.35)+'">'+
-    '<div class="wf-dic">'+S.icon+'</div>'+
-    '<div><p class="wf-dt">ขั้นที่ '+(k+1)+' · '+S.title+'<span class="wf-dwho">'+S.who+'</span></p><p class="wf-dd">'+S.desc+'</p></div>'+
-    '<div class="wf-dv"><b>'+D.v+(D.u?' <small style="font-size:14px;">'+D.u+'</small>':'')+'</b><span>'+D.s+'</span></div></div>';
+/* วัดตำแหน่งจริงของกล่อง แล้ววาดเส้นทางและจุดเชื่อม */
+function wfLayoutPath(){
+  var board=document.getElementById('wfBoard'),svg=document.getElementById('wfPath');if(!board||!svg)return;
+  if(!board.offsetWidth)return;
+  /* วัดจากตำแหน่งในเลย์เอาต์ (offset) ซึ่งไม่ขยับตามแอนิเมชันยกกล่อง
+     ถ้าวัดตำแหน่งบนจอระหว่างกล่องกำลังยกตัว จุดเชื่อมจะคลาดเคลื่อน */
+  var cols=document.getElementById('wfCols'),nodes=[];
+  board.querySelectorAll('.wf-cube').forEach(function(cb){
+    nodes.push([cols.offsetLeft+cb.offsetLeft+cb.offsetWidth/2, cols.offsetTop+cb.offsetTop+cb.offsetHeight-4]);
+  });
+  WF.nodes=nodes;if(nodes.length<2)return;
+  var pts=nodes.slice();
+  if(!WF.mobile){   /* ต่อเส้นออกไปหัวและท้ายเล็กน้อย ให้ดูเป็นถนนต่อเนื่อง */
+    var a=nodes[0],b=nodes[1],y=nodes[nodes.length-1],x=nodes[nodes.length-2];
+    pts.unshift([a[0]-(b[0]-a[0])*.38,a[1]-(b[1]-a[1])*.38]);
+    pts.push([y[0]+(y[0]-x[0])*.38,y[1]+(y[1]-x[1])*.38]);
+  }
+  var P=function(q){return q[0].toFixed(1)+','+q[1].toFixed(1);};
+  var s='<polyline points="'+pts.map(P).join(' ')+'" fill="none" stroke="rgba(21,101,192,.12)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>';
+  for(var k=0;k<nodes.length-1;k++){
+    s+='<line class="wf-seg" data-i="'+k+'" x1="'+nodes[k][0].toFixed(1)+'" y1="'+nodes[k][1].toFixed(1)+'" x2="'+nodes[k+1][0].toFixed(1)+'" y2="'+nodes[k+1][1].toFixed(1)+
+      '" stroke="'+WF_STEPS[k].color+'" stroke-width="3" stroke-dasharray="8 6" stroke-linecap="round" opacity="'+(k<WF.i?1:.42)+'" style="transition:opacity .5s"/>';
+  }
+  nodes.forEach(function(q,k){
+    s+='<circle class="wf-node" data-i="'+k+'" cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="'+(k===WF.i?7:5.5)+'" fill="#fff" stroke="'+WF_STEPS[k].color+'" stroke-width="3"/>';
+  });
+  s+='<g id="wfDot" style="pointer-events:none"><circle r="13" fill="rgba(255,77,109,.16)"/><circle r="7.5" fill="#fff" stroke="#FF4D6D" stroke-width="3.5"/></g>';
+  svg.innerHTML=s;
+  wfPlaceDot(WF.i,WF.i,0,1);
 }
 
 function wfSetActive(k){
-  document.querySelectorAll('#wfSvg .wf-blk').forEach(function(g){g.classList.toggle('on',+g.dataset.i===k);});
-  document.querySelectorAll('#wfLabels .wf-lbl').forEach(function(l){l.classList.toggle('on',+l.dataset.i===k);});
-  document.querySelectorAll('#wfSteps .wf-chip').forEach(function(c){var on=+c.dataset.i===k;c.classList.toggle('on',on);c.setAttribute('aria-selected',on);});
-  document.querySelectorAll('#wfSvg .wf-seg').forEach(function(sg){var j=+sg.dataset.i;
-    sg.setAttribute('stroke',j<k?wfRgba(WF_STEPS[j+1].color,.95):'rgba(255,255,255,.22)');});
-  var st=document.getElementById('wfStage');if(st)st.style.setProperty('--wf-glow',wfRgba(WF_STEPS[k].color,.72));
-  wfDetail(k);
+  document.querySelectorAll('#wfCols .wf-sc').forEach(function(c){c.classList.toggle('on',+c.dataset.i===k);});
+  document.querySelectorAll('#wfCols .wf-cube').forEach(function(c){c.classList.toggle('on',+c.dataset.i===k);});
+  document.querySelectorAll('#wfPath .wf-seg').forEach(function(sg){sg.setAttribute('opacity',+sg.dataset.i<k?1:.42);});
+  document.querySelectorAll('#wfPath .wf-node').forEach(function(nd){nd.setAttribute('r',+nd.dataset.i===k?7:5.5);});
 }
 
-/* วางลูกแก้วระหว่างขั้น from -> to ที่ความคืบหน้า e (0..1) */
-function wfPlaceToken(from,to,e,alpha){
-  var L=WF.L;if(!L)return;
-  var A=L.pos[from],B=L.pos[to],x=A[0]+(B[0]-A[0])*e,y=A[1]+(B[1]-A[1])*e;
-  var lift=(document.querySelector('#wfSvg .wf-blk.on')&&from===to)?0.16:0;
-  var z=L.h+0.42+lift+Math.sin(Math.PI*e)*0.95;
-  var o=wfP(x,y,z),g=wfP(x,y,0);
-  var tk=document.getElementById('wfToken'),sh=document.getElementById('wfShadow');if(!tk)return;
-  tk.setAttribute('transform','translate('+o[0].toFixed(1)+','+o[1].toFixed(1)+')');
-  var a=alpha===undefined?1:alpha;tk.setAttribute('opacity',a.toFixed(2));
-  var sc=1-Math.sin(Math.PI*e)*0.35;
-  sh.setAttribute('cx',g[0].toFixed(1));sh.setAttribute('cy',(g[1]+L.U*0.05).toFixed(1));
-  sh.setAttribute('rx',(L.U*0.26*sc).toFixed(1));sh.setAttribute('ry',(L.U*0.1*sc).toFixed(1));sh.setAttribute('opacity',(a*0.9).toFixed(2));
+/* จุดเคลื่อนที่: จากขั้น from ไป to ที่ความคืบหน้า e (0..1) · ตำแหน่งปลายทางคิดเผื่อกล่องที่ยกตัวขึ้น */
+function wfPlaceDot(from,to,e,alpha){
+  var dot=document.getElementById('wfDot'),N=WF.nodes;if(!dot||!N.length)return;
+  var A=N[from],B=N[to],x=A[0]+(B[0]-A[0])*e,y=A[1]+(B[1]-A[1])*e;
+  dot.setAttribute('transform','translate('+x.toFixed(1)+','+y.toFixed(1)+')');
+  dot.setAttribute('opacity',(alpha===undefined?1:alpha).toFixed(2));
 }
 
 function wfTick(ts){
@@ -1727,53 +1698,71 @@ function wfTick(ts){
   if(!WF.t0)WF.t0=ts;
   var el=ts-WF.t0,n=WF_STEPS.length;
   if(WF.phase==='dwell'){
-    wfPlaceToken(WF.i,WF.i,0,1);
+    wfPlaceDot(WF.i,WF.i,0,1);
     if(el>=WF_DWELL){WF.phase='travel';WF.t0=ts;}
   }else{
     var t=Math.min(1,el/WF_TRAVEL),from=WF.i,to=(WF.i+1)%n,ez=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
     if(from===n-1){
-      /* ครบรอบ: ค่อย ๆ จางที่ขั้นสุดท้าย แล้วค่อย ๆ ปรากฏที่ขั้นแรก ไม่บินย้อนข้ามทั้งภาพ */
-      if(t<.5){wfPlaceToken(from,from,0,1-t*2);}
-      else{
-        if(!WF.wrapped){WF.wrapped=true;wfSetActive(0);}
-        wfPlaceToken(0,0,0,(t-.5)*2);
-      }
-    }else wfPlaceToken(from,to,ez,1);
-    if(t>=1){WF.i=to;WF.phase='dwell';WF.t0=ts;if(!WF.wrapped)wfSetActive(to);WF.wrapped=false;}
+      /* ครบรอบ: จางที่ขั้นสุดท้าย แล้วค่อย ๆ ปรากฏที่ขั้นแรก ไม่วิ่งย้อนข้ามทั้งเส้นทาง */
+      if(t<.5)wfPlaceDot(from,from,0,1-t*2);
+      else{if(!WF.wrapped){WF.wrapped=true;WF.i=0;wfSetActive(0);wfLayoutPath();}wfPlaceDot(0,0,0,(t-.5)*2);}
+    }else wfPlaceDot(from,to,ez,1);
+    if(t>=1){
+      if(!WF.wrapped){WF.i=to;wfSetActive(to);wfLayoutPath();}
+      WF.wrapped=false;WF.phase='dwell';WF.t0=ts;
+    }
   }
   WF.raf=requestAnimationFrame(wfTick);
 }
 function wfRun(){if(!WF.raf&&WF.playing&&WF.inView&&!WF.reduced){WF.t0=0;WF.raf=requestAnimationFrame(wfTick);}}
 function wfStop(){if(WF.raf){cancelAnimationFrame(WF.raf);WF.raf=0;}}
-
-function wfSelect(k,byUser){
-  wfStop();WF.i=k;WF.phase='dwell';WF.t0=0;wfSetActive(k);wfPlaceToken(k,k,0,1);
-  if(byUser&&WF.playing&&!WF.reduced){WF.playing=false;wfPlayBtn();}   /* ผู้ใช้เลือกเอง = หยุดให้อ่านได้เต็มที่ */
-}
 function wfPlayBtn(){
   var b=document.getElementById('wfPlay');if(!b)return;
   if(WF.reduced){b.style.display='none';return;}
-  b.textContent=WF.playing?'⏸ หยุดชั่วคราว':'▶ เล่นต่อ';b.setAttribute('aria-pressed',String(!WF.playing));
+  b.textContent=WF.playing?'⏸ หยุดการเคลื่อนไหว':'▶ เล่นการเคลื่อนไหว';b.setAttribute('aria-pressed',String(!WF.playing));
 }
 function wfToggle(){WF.playing=!WF.playing;wfPlayBtn();if(WF.playing)wfRun();else wfStop();}
 
+/* หน้าต่างรายละเอียด — เลื่อนดูขั้นก่อนหน้า/ถัดไปได้ */
+function wfOpen(k){
+  var S=WF_STEPS[k],D=(WF.data||wfData()).steps[k],n=WF_STEPS.length;WF.modal=k;
+  wfStop();WF.i=k;WF.phase='dwell';WF.t0=0;wfSetActive(k);wfLayoutPath();
+  document.getElementById('wfModalBox').innerHTML=
+    '<div class="modal-top" style="background:linear-gradient(120deg,'+wfMix(S.color,'#000000',.25)+','+S.color+');">'+
+      '<div><div id="wfMTitle" style="font-family:\'Kanit\';font-size:18px;font-weight:600;">'+S.icon+' ขั้นที่ '+(k+1)+' · '+S.title+'</div>'+
+      '<div style="font-size:12.5px;opacity:.9;margin-top:3px;">ผู้ดำเนินการ: '+S.who+' · '+S.when+'</div></div>'+
+      '<button class="modal-close" onclick="wfClose()" aria-label="ปิด">✕</button></div>'+
+    '<div class="wf-mb" style="--c:'+S.color+';--cl:'+wfRgba(S.color,.08)+';--cb:'+wfRgba(S.color,.3)+'">'+
+      '<p style="margin:0;font-size:14px;color:#334155;line-height:1.75;">'+S.desc+'</p>'+
+      '<div class="wf-mrow"><div class="wf-mstat"><b>'+D.big+(D.u?' <small style="font-size:14px;">'+D.u+'</small>':'')+'</b><span>'+D.l+'</span></div>'+
+      '<div class="wf-mstat"><b style="font-size:16px;padding-top:6px;">'+D.s.split(':').pop().trim()+'</b><span>'+D.s.split(':')[0]+'</span></div></div>'+
+      '<div class="wf-mnav"><button type="button" onclick="wfOpen('+(k-1)+')"'+(k===0?' disabled':'')+'>‹ ขั้นก่อนหน้า</button>'+
+      '<button type="button" onclick="wfOpen('+(k+1)+')"'+(k===n-1?' disabled':'')+'>ขั้นถัดไป ›</button></div></div>';
+  document.getElementById('wfModal').classList.add('show');
+}
+function wfClose(){
+  document.getElementById('wfModal').classList.remove('show');WF.modal=-1;
+  if(WF.playing)wfRun();
+}
+
 function wfInit(){
-  if(!document.getElementById('wfStage'))return;
+  if(!document.getElementById('wfBoard'))return;
   WF.reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   if(WF.reduced)WF.playing=false;
   wfBuild();wfPlayBtn();
   if('IntersectionObserver' in window){
-    new IntersectionObserver(function(en){WF.inView=en[0].isIntersecting;if(WF.inView)wfRun();else wfStop();},{threshold:0.25})
-      .observe(document.getElementById('wfStage'));
+    new IntersectionObserver(function(en){WF.inView=en[0].isIntersecting;if(WF.inView)wfRun();else wfStop();},{threshold:0.2})
+      .observe(document.getElementById('wfBoard'));
   }else{WF.inView=true;wfRun();}
-  var lastMobile=WF.L.mobile,rt=0;
-  window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){
-    var m=wfIsMobile();
-    if(m!==lastMobile){lastMobile=m;wfStop();wfBuild();wfRun();}
-    else wfBuild();   /* ขนาดเปลี่ยน ป้ายมีขนาดคงที่ จึงต้องวัดพื้นที่ใหม่ */
-  },200);});
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){wfFitLabels();});
+  /* ขนาดเปลี่ยน -> วัดตำแหน่งกล่องใหม่ · สลับคอม/มือถือ -> สร้างใหม่ */
+  var rt=0;
+  var relayout=function(){clearTimeout(rt);rt=setTimeout(function(){
+    if(wfIsMobile()!==WF.mobile)wfBuild();else wfLayoutPath();},120);};
+  window.addEventListener('resize',relayout);
+  if('ResizeObserver' in window)new ResizeObserver(relayout).observe(document.getElementById('wfBoard'));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(wfLayoutPath);
   document.addEventListener('visibilitychange',function(){if(document.hidden)wfStop();else wfRun();});
+  document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&WF.modal>=0)wfClose();});
 }
 
 function finish(rows){
