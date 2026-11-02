@@ -809,7 +809,7 @@
       <a href="#registry" class="active">📋 ทะเบียนงานบริการ</a>
       <a href="#dashboard">📊 แดชบอร์ดผู้บริหาร</a>
       <a href="#looker">🔗 รายงาน Looker</a>
-      <a class="nav-admin" href="https://script.google.com/a/macros/msu.ac.th/s/AKfycbz3ryLEOy1BilaqATR1K5wAjt-q6mTzMCrnB680Lg8_mCD2Z6E4jZNV582i0UDe1jJDmA/exec" target="_blank" rel="noopener" title="สำหรับผู้ดูแลระบบเท่านั้น"><span>🔐</span> เข้าสู่ระบบผู้ดูแล</a><button class="nav-admin-more" id="navAdminMore" title="เปลี่ยนวิธีเข้าสู่ระบบ" aria-label="เปลี่ยนวิธีเข้าสู่ระบบ">▾</button>
+      <a class="nav-admin" href="https://script.google.com/a/macros/msu.ac.th/s/AKfycbxTurcLkyGnBFWFEk6OnZCnF7ro_zrRRKU_goPx90GLRf_JMmSkDsjpWh5jiBs2ocU7Ww/exec" target="_blank" rel="noopener" title="สำหรับผู้ดูแลระบบเท่านั้น"><span>🔐</span> เข้าสู่ระบบผู้ดูแล</a><button class="nav-admin-more" id="navAdminMore" title="เปลี่ยนวิธีเข้าสู่ระบบ" aria-label="เปลี่ยนวิธีเข้าสู่ระบบ">▾</button>
       <a class="nav-qr" href="https://panya-jeerachat.github.io/dwms/request" target="_blank" rel="noopener" title="แบบฟอร์มขอรับบริการโสตทัศนูปกรณ์">
         <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt="QR แบบฟอร์มขอรับบริการ">
         <span><span class="t1">แบบฟอร์มขอรับบริการ</span><br><span class="t2">สแกน QR หรือคลิกที่รูป</span></span>
@@ -1847,15 +1847,32 @@ function parseCSV(text){
   if(cur!==''||row.length){row.push(cur);rows.push(row);}
   return rows.filter(function(r){return r.join('').trim()!=='';});
 }
+/* ══ อ่านทะเบียนผ่าน Apps Script (?page=data) ══
+   ส่งเฉพาะคอลัมน์ที่อนุญาต ไม่มีชื่อ/อีเมลผู้ขอรับบริการ จึงปิดการแชร์สเปรดชีตทะเบียนได้
+   (เดิมอ่านชีทตรงผ่านลิงก์สาธารณะ ซึ่งทำให้ทุกแท็บในไฟล์ รวมถึงบัญชีผู้ดูแล อ่านได้)
+   ถ้าทางนี้ไม่สำเร็จ จะลองทางเดิม (gviz) ซึ่งใช้ได้เฉพาะช่วงที่ยังไม่ปิดการแชร์ */
+var DATA_URL="https://script.google.com/macros/s/AKfycbxTurcLkyGnBFWFEk6OnZCnF7ro_zrRRKU_goPx90GLRf_JMmSkDsjpWh5jiBs2ocU7Ww/exec?page=data";
+var VOTES_FROM_API=false,LEGACY_MODE=false;
 function loadTrackingData(cb){
   var done=function(rows){finish(rows);if(typeof cb==='function')cb();};
+  fetch(DATA_URL+"&_="+Date.now(),{cache:"no-store",redirect:"follow",credentials:"omit"})
+    .then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(j){
+      if(!j||!j.ok||!j.labels||!j.rows)throw 0;
+      if(Array.isArray(j.votes)){VOTES=j.votes.slice();VOTES_FROM_API=true;try{renderSatisfaction();}catch(e){}}
+      done(buildRows(j.labels,j.rows));
+    })
+    .catch(function(){loadTrackingLegacy(done,cb);});
+}
+function loadTrackingLegacy(done,cb){
+  LEGACY_MODE=true; loadVoteStats();   /* ทางเดิมเท่านั้นที่อ่านแท็บโหวตตรง */
   gvizLoad(SHEET_ID,GID,function(l,m){done(buildRows(l,m));},function(){
     if(allRows.length===0)setMsg('⏳ กำลังลองช่องทางสำรอง...');
     fetch(CSV_URL+"&_="+Date.now(),{cache:"no-store"})
       .then(function(r){if(!r.ok)throw 0;return r.text();})
       .then(function(t){var rows=parseCSV(t);if(rows.length<2)throw 0;done(buildRows(rows[0],rows.slice(1)));})
       .catch(function(){
-        if(allRows.length===0)setMsg('⚠️ ไม่สามารถโหลดข้อมูลได้<br><span style="font-size:12px;color:#8A99A8;">ตรวจสอบการแชร์ชีตเป็น "ทุกคนที่มีลิงก์ · ผู้ดู"</span>','#D64545');
+        if(allRows.length===0)setMsg('⚠️ ไม่สามารถโหลดข้อมูลได้<br><span style="font-size:12px;color:#8A99A8;">กรุณาลองใหม่อีกครั้งในอีกสักครู่</span>','#D64545');
         endSync(false);if(typeof cb==='function')cb();
       });
   });
@@ -2260,6 +2277,8 @@ function submitRating(ev){
 
 /* สรุปโหวตสาธารณะ อ่านจากแท็บ DWMS_Votes โดยอ้างชื่อแท็บ ไม่ต้องรู้ gid */
 function loadVoteStats(){
+  /* คะแนนโหวตมากับ ?page=data แล้ว — อ่านแท็บโหวตตรงเฉพาะตอนใช้ทางเดิม (ก่อนปิดการแชร์) */
+  if(VOTES_FROM_API||!LEGACY_MODE)return;
   gvizLoadByName(SHEET_ID,'DWMS_Votes',function(labels,matrix){
     var iS=findIdx(labels,["คะแนน"]);
     if(iS<0)return;
