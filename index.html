@@ -694,24 +694,33 @@
   .quick-card p{font-size:13px;color:var(--gray-700);margin-bottom:18px;flex:1;line-height:1.7;}
   .btn-go{display:inline-block;align-self:flex-start;color:#fff;padding:9px 18px;border-radius:24px;font-size:13.5px;font-weight:500;background:var(--blue);transition:opacity .25s;}
   .btn-go:hover{opacity:.85;}
-  .quick-card:nth-child(1) .qicon{background:linear-gradient(135deg,#1E88E5,#0D47A1);animation:glowDb 2.6s ease-in-out infinite;}
+  /* สีของการ์ดระบบสนับสนุน ผูกกับตัวการ์ด (เดิมผูกกับลำดับ ทำให้เพิ่ม/ลบ/สลับการ์ดแล้วสีเลื่อน) */
+  .quick-card.qt-blue .qicon{background:linear-gradient(135deg,#1E88E5,#0D47A1);animation:glowDb 2.6s ease-in-out infinite;}
+  .quick-card.qt-sky .btn-go{background:var(--blue-dark);}
+  .quick-card.qt-navy .btn-go{background:var(--blue-deep);}
+  .quick-card.qt-green .tag{background:#E7F5EC;color:#1B7A43;}
+  .quick-card.qt-green .qicon{background:linear-gradient(135deg,#43A047,#1B5E20);animation:glowGreen 2.8s ease-in-out infinite;}
+  .quick-card.qt-green .btn-go{background:#2E7D32;}
+  .quick-card.qt-violet .tag{background:#F0E9FF;color:#5E35B1;}
+  .quick-card.qt-violet .qicon{background:linear-gradient(135deg,#7C4DFF,#3F1F9E);animation:glowViolet 2.7s ease-in-out infinite;}
+  .quick-card.qt-violet .btn-go{background:#5E35B1;}
+  .quick-card.qt-orange .tag{background:#FFF1E0;color:#B85600;}
+  .quick-card.qt-orange .qicon{background:linear-gradient(135deg,#FB8C00,#E65100);}
+  .quick-card.qt-orange .btn-go{background:#EF6C00;}
+  .quick-card.qt-teal .tag{background:#E0F5F2;color:#00695C;}
+  .quick-card.qt-teal .qicon{background:linear-gradient(135deg,#26A69A,#00695C);}
+  .quick-card.qt-teal .btn-go{background:#00897B;}
+  .quick-card.qt-red .tag{background:#FDECEC;color:#C62828;}
+  .quick-card.qt-red .qicon{background:linear-gradient(135deg,#EF5350,#B71C1C);}
+  .quick-card.qt-red .btn-go{background:#D32F2F;}
+  .qicon .qi-emoji{font-size:28px;line-height:1;} .qicon img,.lk-ic img{width:70%;height:70%;object-fit:contain;}
+  .qicon .qi-emoji,.lk-ic{font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;}
   @keyframes glowDb{0%,100%{box-shadow:0 6px 16px rgba(21,101,192,.28);}50%{box-shadow:0 6px 26px rgba(33,150,243,.62);}}
-  .quick-card:nth-child(1) .qicon svg .scan{animation:scanMove 2.2s ease-in-out infinite;}
   @keyframes scanMove{0%,100%{transform:translate(0,0);}50%{transform:translate(2px,-3px);}}
-  .quick-card:nth-child(2) .btn-go{background:var(--blue-dark);}
-  .quick-card:nth-child(3) .btn-go{background:var(--blue-deep);}
-  .quick-card:nth-child(4) .tag{background:#E7F5EC;color:#1B7A43;}
-  .quick-card:nth-child(4) .qicon{background:linear-gradient(135deg,#43A047,#1B5E20);animation:glowGreen 2.8s ease-in-out infinite;}
   @keyframes glowGreen{0%,100%{box-shadow:0 6px 16px rgba(27,94,32,.28);}50%{box-shadow:0 6px 26px rgba(67,160,71,.60);}}
-  .quick-card:nth-child(4) .qicon svg .pin{animation:pinBob 2.4s ease-in-out infinite;transform-origin:center;}
   @keyframes pinBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
-  .quick-card:nth-child(4) .btn-go{background:#2E7D32;}
-  .quick-card:nth-child(5) .tag{background:#F0E9FF;color:#5E35B1;}
-  .quick-card:nth-child(5) .qicon{background:linear-gradient(135deg,#7C4DFF,#3F1F9E);animation:glowViolet 2.7s ease-in-out infinite;}
   @keyframes glowViolet{0%,100%{box-shadow:0 6px 16px rgba(63,31,158,.28);}50%{box-shadow:0 6px 26px rgba(124,77,255,.62);}}
-  .quick-card:nth-child(5) .qicon svg .tick{animation:tickPop 2.4s ease-in-out infinite;transform-origin:center;}
   @keyframes tickPop{0%,100%{transform:scale(1);}50%{transform:scale(1.13);}}
-  .quick-card:nth-child(5) .btn-go{background:#5E35B1;}
 
   footer{background:var(--blue-deep);color:#D6E6F5;padding:40px 24px 22px;}
   .footer-inner{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;}
@@ -1046,10 +1055,10 @@
 
 <section class="looker-band" id="looker">
   <div class="looker-head">
-    <h3>📊 รายงานเชิงลึกบน Looker Studio</h3>
-    <p>รายงานต้นแบบและผลงานเผยแพร่ที่จัดทำไว้เดิม สำหรับย้อนกลับไปตรวจสอบข้อมูลเพิ่มเติม</p>
+    <h3 id="lookerTitle">📊 รายงานเชิงลึกบน Looker Studio</h3>
+    <p id="lookerSub">รายงานต้นแบบและผลงานเผยแพร่ที่จัดทำไว้เดิม สำหรับย้อนกลับไปตรวจสอบข้อมูลเพิ่มเติม</p>
   </div>
-  <div class="looker-grid">
+  <div class="looker-grid" id="lookerGrid">
     <a class="lk-card" href="https://datastudio.google.com/reporting/68984584-16fa-45f3-ab66-9b88b8f92168/page/page_12345" target="_blank" rel="noopener">
       <div class="lk-ic">🗂️</div><div class="lk-t">DWMS Looker Studio (ต้นแบบเดิม)</div>
       <div class="lk-d">แดชบอร์ดต้นแบบระบบภาระงาน สำหรับย้อนดูข้อมูลและรูปแบบรายงานเดิม</div><span class="lk-go">เปิดรายงาน →</span>
@@ -1065,9 +1074,9 @@
   </div>
 </section>
 
-<div class="section-head" id="quickaccess"><h2>ระบบสนับสนุนการทำงาน</h2><p>เข้าถึงเครื่องมือช่วยเหลือการทำงานของนักวิชาการโสตทัศนศึกษา</p></div>
-<div class="quick-grid">
-  <div class="quick-card">
+<div class="section-head" id="quickaccess"><h2 id="toolsTitle">ระบบสนับสนุนการทำงาน</h2><p id="toolsSub">เข้าถึงเครื่องมือช่วยเหลือการทำงานของนักวิชาการโสตทัศนศึกษา</p></div>
+<div class="quick-grid" id="toolsGrid">
+  <div class="quick-card qt-blue" data-icon="db">
     <span class="tag">DATABASE ASSISTANT</span>
     <div class="qicon">
       <svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1087,7 +1096,7 @@
     <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-assistant/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
   </div>
 
-  <div class="quick-card">
+  <div class="quick-card qt-sky" data-icon="calendar">
     <span class="tag">CALENDAR BOOKING</span>
     <div class="qicon">🗓️</div>
     <h3>DWMS-Calendar</h3>
@@ -1095,7 +1104,7 @@
     <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-calendar/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
   </div>
 
-  <div class="quick-card">
+  <div class="quick-card qt-navy" data-icon="ready">
     <span class="tag">READINESS REPORT</span>
     <div class="qicon">✅</div>
     <h3>DWMS-Ready</h3>
@@ -1103,7 +1112,7 @@
     <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-ready/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
   </div>
 
-  <div class="quick-card">
+  <div class="quick-card qt-green" data-icon="personnel">
     <span class="tag">PERSONNEL LOCATOR</span>
     <div class="qicon">
       <svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1124,7 +1133,7 @@
     <a class="btn-go" href="https://panya-jeerachat.github.io/dwms-personnel/" target="_blank" rel="noopener">เข้าใช้งาน →</a>
   </div>
 
-  <div class="quick-card">
+  <div class="quick-card qt-violet" data-icon="document">
     <span class="tag">DOCUMENT TRACKING</span>
     <div class="qicon">
       <svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1860,6 +1869,7 @@ function loadTrackingData(cb){
     .then(function(j){
       if(!j||!j.ok||!j.labels||!j.rows)throw 0;
       if(Array.isArray(j.votes)){VOTES=j.votes.slice();VOTES_FROM_API=true;try{renderSatisfaction();}catch(e){}}
+      if(j.site){try{applySite(j.site);siteSave(j.site);}catch(e){}}   /* การตั้งค่าหน้าสาธารณะจากหน้าผู้ดูแล */
       done(buildRows(j.labels,j.rows));
     })
     .catch(function(){loadTrackingLegacy(done,cb);});
@@ -2565,8 +2575,63 @@ function applyGlobalAssets(){
   if(ftImg)ftImg.src=makeQR(REQUEST_URL,300);
 }
 
+
+/* ══════════ ตั้งค่าหน้าสาธารณะจากหน้าผู้ดูแล ══════════
+   ลิงก์ผู้ดูแล/แบบฟอร์ม การ์ด Looker และการ์ดระบบสนับสนุน มาจากหลังบ้านพร้อมข้อมูลทะเบียน (?page=data)
+   จำค่าล่าสุดไว้ในเครื่อง รอบถัดไปแสดงทันทีไม่กะพริบ · ถ้าโหลดไม่ได้ ใช้เนื้อหาเดิมในไฟล์นี้ */
+var SITE_ICON_SVG={};
+document.querySelectorAll('#toolsGrid .quick-card[data-icon]').forEach(function(c){
+  var q=c.querySelector('.qicon'); if(q)SITE_ICON_SVG[c.getAttribute('data-icon')]=q.innerHTML;
+});
+function siteEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});}
+function siteUrl(u){u=String(u||'');return /^https:\/\/[^\s<>"']+$/i.test(u)?u:'#';}
+function siteIcon(ic,tool){
+  ic=String(ic||'');
+  if(tool&&SITE_ICON_SVG[ic])return SITE_ICON_SVG[ic];
+  if(/^https:\/\//i.test(ic))return '<img src="'+siteEsc(siteUrl(ic))+'" alt="">';
+  return tool?'<span class="qi-emoji">'+siteEsc(ic)+'</span>':siteEsc(ic);
+}
+var SITE_THEMES=['blue','sky','navy','green','violet','orange','teal','red'];
+function applySite(cfg){
+  if(!cfg||!cfg.links||!cfg.looker||!cfg.tools)return;
+  /* ลิงก์ผู้ดูแล (ระบบเลือกบัญชี @msu.ac.th / ทั่วไป ยังทำงานตามเดิม) */
+  if(/^https:\/\//i.test(cfg.links.admin)){ADMIN_PAGE_URL=cfg.links.admin;try{refreshAdminLinks();}catch(e){}}
+  /* ลิงก์แบบฟอร์ม + QR ทั้งบนแถบเมนูและท้ายหน้า */
+  if(/^https:\/\//i.test(cfg.links.request)&&cfg.links.request!==REQUEST_URL){
+    var old=REQUEST_URL;REQUEST_URL=cfg.links.request;
+    document.querySelectorAll('a[href="'+old+'"],.nav-qr,.qr-box').forEach(function(a){a.href=REQUEST_URL;});
+    var ni=document.querySelector('.nav-qr img'),fi=document.querySelector('.qr-box img');
+    try{if(ni)ni.src=makeQR(REQUEST_URL,180);if(fi)fi.src=makeQR(REQUEST_URL,300);}catch(e){}
+  }
+  /* รายงาน Looker */
+  var lk=document.getElementById('looker'),lkNav=document.querySelector('.nav-links a[href="#looker"]');
+  if(lk){lk.style.display=cfg.looker.show?'':'none';}
+  if(lkNav){lkNav.style.display=cfg.looker.show?'':'none';}
+  var lt=document.getElementById('lookerTitle'),ls=document.getElementById('lookerSub'),lg=document.getElementById('lookerGrid');
+  if(lt)lt.textContent=cfg.looker.title;if(ls)ls.textContent=cfg.looker.subtitle||'';
+  if(lg)lg.innerHTML=(cfg.looker.items||[]).map(function(it){
+    return '<a class="lk-card" href="'+siteEsc(siteUrl(it.url))+'" target="_blank" rel="noopener">'+
+      '<div class="lk-ic">'+siteIcon(it.icon,false)+'</div><div class="lk-t">'+siteEsc(it.title)+'</div>'+
+      '<div class="lk-d">'+siteEsc(it.desc)+'</div><span class="lk-go">'+siteEsc(it.button||'เปิดรายงาน →')+'</span></a>';
+  }).join('');
+  /* ระบบสนับสนุนการทำงาน */
+  var th=document.getElementById('quickaccess'),tg=document.getElementById('toolsGrid');
+  if(th)th.style.display=cfg.tools.show?'':'none';if(tg)tg.style.display=cfg.tools.show?'':'none';
+  var tt=document.getElementById('toolsTitle'),ts=document.getElementById('toolsSub');
+  if(tt)tt.textContent=cfg.tools.title;if(ts)ts.textContent=cfg.tools.subtitle||'';
+  if(tg)tg.innerHTML=(cfg.tools.items||[]).map(function(it){
+    var theme=SITE_THEMES.indexOf(it.theme)>=0?it.theme:'blue';
+    return '<div class="quick-card qt-'+theme+'">'+(it.badge?'<span class="tag">'+siteEsc(it.badge)+'</span>':'')+
+      '<div class="qicon">'+siteIcon(it.icon,true)+'</div><h3>'+siteEsc(it.title)+'</h3><p>'+siteEsc(it.desc)+'</p>'+
+      '<a class="btn-go" href="'+siteEsc(siteUrl(it.url))+'" target="_blank" rel="noopener">'+siteEsc(it.button||'เข้าใช้งาน →')+'</a></div>';
+  }).join('');
+}
+function siteFromCache(){try{var c=JSON.parse(localStorage.getItem('dwms_site')||'null');if(c)applySite(c);}catch(e){}}
+function siteSave(c){try{localStorage.setItem('dwms_site',JSON.stringify(c));}catch(e){}}
+
 document.addEventListener('DOMContentLoaded',function(){
   applyGlobalAssets();
+  siteFromCache();   /* ค่าที่จำไว้จากรอบก่อน — แสดงทันทีก่อนข้อมูลใหม่มาถึง */
   loadTrackingData();loadMonthly();
   setInterval(tickNextSync,1000);
   setInterval(function(){
