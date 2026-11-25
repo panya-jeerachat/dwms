@@ -440,5 +440,24 @@ function resetForm(){
   document.getElementById('doneCard').classList.add('hidden');
   document.getElementById('formCard').classList.remove('hidden');
 }
+
+/* ══ ประเภทงานบริการ — แก้ได้ที่หน้าผู้ดูแล "ตั้งค่าหน้าสาธารณะ" ไม่ต้องแก้ไฟล์นี้ ══
+   แสดงรายการที่จำไว้จากรอบก่อนทันที แล้วดึงล่าสุดจากหลังบ้าน (?page=form)
+   ถ้าดึงไม่ได้ ใช้รายการเดิมที่เขียนไว้ในไฟล์นี้ — แบบฟอร์มใช้งานได้เสมอ */
+(function(){
+  var sel = document.getElementById('fType'); if (!sel) return;
+  function fill(types){
+    if (!types || !types.length) return;
+    var cur = sel.value, first = sel.options[0] ? sel.options[0].cloneNode(true) : null;
+    sel.innerHTML = ''; if (first) sel.appendChild(first);
+    types.forEach(function(t){ var o = document.createElement('option'); o.textContent = String(t); o.value = String(t); sel.appendChild(o); });
+    if (cur && types.indexOf(cur) !== -1) sel.value = cur;
+  }
+  try { var c = JSON.parse(localStorage.getItem('dwms_form_types') || 'null'); if (c) fill(c); } catch(e){}
+  fetch(SCRIPT_URL + '?page=form&_=' + Date.now(), { cache: 'no-store', redirect: 'follow', credentials: 'omit' })
+    .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+    .then(function(j){ if (j && j.ok && Array.isArray(j.types) && j.types.length) { fill(j.types); try { localStorage.setItem('dwms_form_types', JSON.stringify(j.types)); } catch(e){} } })
+    .catch(function(){});
+})();
 </script>
 </body></html>
